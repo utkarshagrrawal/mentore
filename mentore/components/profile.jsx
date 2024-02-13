@@ -1,6 +1,7 @@
 import { React } from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { TbLogout } from "react-icons/tb";
 import Select from 'react-select';
 import Swal from 'sweetalert2';
 import { Loader } from './loader';
@@ -64,15 +65,27 @@ export function Profile() {
     getSkills();
   }, [])
 
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('name');
+    localStorage.removeItem('email');
+    navigate('/login');
+  }
+
   const profilePage = (
     <>
       <div className='flex justify-center'>
         <Link to='/' className='relative top-2'><img src="../static/logo.png" className="h-12 mix-blend-multiply" alt="Mentore" /></Link>
       </div>
-      <div className='min-h-screen gap-4 grid grid-cols-4 lg:mx-14 my-10'>
-        <div className='w-full border-solid border-2 border-dark-500'>
+      <div className='w-full'>
+        <div className='flex justify-end mx-14'>
+          <button onClick={handleLogout} type="button" class="flex items-center gap-2 text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center me-2 mb-2"><TbLogout className='w-6 h-auto' /> Logout</button>
+        </div>
+      </div>
+      <div className='min-h-screen gap-4 grid grid-cols-4 lg:mx-14 mb-10 mt-2'>
+        <div className='w-full border-solid border-2 border-dark-500 rounded-lg'>
           <div className='w-full'>
-            <div className='flex flex-col items-center mx-4 lg:mx-16 my-10 h-48 rounded-lg'>
+            <div className='flex flex-col items-center mx-4 lg:mx-16 my-10 h-48'>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#362af4" className="w-48 auto">
                 <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clipRule="evenodd" />
               </svg>
