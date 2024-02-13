@@ -5,9 +5,13 @@ const { APP_SECRET_KEY } = require('../config');
 const validateSignature = async (req, res) => {
   const signature = req.get('Authorization');
   if (signature) {
-    const payload = jwt.verify(signature, APP_SECRET_KEY);
-    req.user = payload;
-    return true;
+    try {
+      const payload = jwt.verify(signature, APP_SECRET_KEY);
+      req.user = payload;
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
   return false;
 }
