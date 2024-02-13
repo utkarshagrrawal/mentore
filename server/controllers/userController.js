@@ -23,15 +23,17 @@ const loginUser = async (req, res) => {
     .from('users')
     .select()
     .eq('email', email)
+  if (!data) {
+    return res.json({ error: 'User account not found' })
+  }
   const salt = data[0].salt;
   const hashedPassword = await GeneratePassword(password, salt);
-
   if (hashedPassword !== data[0].password) {
-    res.json({ error: 'Invalid credentials' })
+    return res.json({ error: 'Invalid credentials' })
   } else {
     let username = await supabase.from('users').select('name').eq('email', email);
     const sign = GenerateSignature({ email: email, name: username.data[0].name });
-    res.json({ success: 'User logged in successfully', token: sign, name: username.data[0].name })
+    return res.json({ success: 'User logged in successfully', token: sign, name: username.data[0].name })
   }
 }
 
