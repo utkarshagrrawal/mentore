@@ -1,12 +1,15 @@
 import { React, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { data } from '../src/assets/stories';
+import { questions } from '../src/assets/question_ans';
+
 
 
 
 export function Home() {
   const [visible, setVisible] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
   const welcomeMessages = [
     'Cracking your dream job',
     'Staying consistent and motivated',
@@ -77,6 +80,9 @@ export function Home() {
     return () => clearInterval(interval);
   }, []);
 
+  const handleQuestionClick = (id) => {
+    setSelectedQuestion(id === selectedQuestion ? null : id);
+  };
 
 
   return (
@@ -157,7 +163,7 @@ export function Home() {
         <p className='font-bold md:text-6xl text-2xl'>alone anymore</p>
       </div>
 
-      <div className="grid lg:grid-cols-2 grid-cols-1 md:gap-2 w-3/4 mx-auto mb-10">
+      <div className="grid lg:grid-cols-2 grid-cols-1 md:gap-2 w-3/4 mx-auto mb-20">
         <div className='flex flex-col items-center justify-center md:flex-row border-solid border-2 border-dark-500 rounded-lg p-10'>
           <div className='flex flex-col w-64 p-1 '>
             <p className='mb-8 text-sm'>1:1 SESSION</p>
@@ -209,6 +215,42 @@ export function Home() {
             <img src="../static/grid_1.webp" className='rounded-lg' alt="grid image" />
           </div>
         </div>
+      </div>
+
+
+      <div className='flex flex-col mb-10 gap-4 justify-center items-center mx-auto'>
+        <p className='font-bold md:text-6xl text-2xl'>Frequently Asked</p>
+        <p className='font-bold md:text-6xl text-2xl'>Questions</p>
+      </div>
+
+
+
+      <div className='flex w-3/4 flex-col mx-auto mb-20'>
+        {questions.map(({ id, question, answer }) => (
+          <div key={id} className="w-full mb-4">
+            <button
+              type="button"
+              className="flex items-center justify-between w-full p-5 font-medium text-black border border-b-0 border-gray-200 rounded-t-xl  dark:text-black hover:bg-gray-100 dark:hover:bg-gray-200 gap-3"
+              onClick={() => handleQuestionClick(id)}
+            >
+              <span>{question.split(': ')[1]}</span>
+              <svg
+                className="w-3 h-3 rotate-180 shrink-0"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 10 6"
+              >
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5 5 1 1 5" />
+              </svg>
+            </button>
+            {selectedQuestion === id && (
+              <div className="p-5 border border-b-0 border-gray-200 dark:border-gray-150 dark:bg-gray-100">
+                <p className="mb-2 text-gray-500 dark:text-black">{answer}</p>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
 
       <footer className="bg-white rounded-lg inset-x-0 relative bottom-0">
