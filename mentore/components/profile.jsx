@@ -3,11 +3,14 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import Swal from 'sweetalert2';
+import { Loader } from './loader';
 
 export function Profile() {
   const user = useRef({});
   const allSkills = useRef([]);
   const [loading, setLoading] = useState(true);
+  const [isMentor, setIsMentor] = useState(false);
+  const [skillsLoading, setSkillsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,6 +39,9 @@ export function Profile() {
         return navigate('/login');
       } else {
         user.current = result.result;
+        if (user.current.type === 'mentor') {
+          setIsMentor(true);
+        }
       }
       setLoading(false);
     }
@@ -53,24 +59,12 @@ export function Profile() {
       let skills = await fetch('http://localhost:3000/getallskills', options)
       let result = await skills.json();
       allSkills.current = result.result;
+      setSkillsLoading(false);
     }
-    document.addEventListener('DOMContentLoaded', getSkills());
-    return () => document.removeEventListener('DOMContentLoaded', getSkills());
+    getSkills();
   }, [])
 
-  let extraDetails;
-
-  if (user.current.type === 'mentor') {
-    extraDetails = (
-      <Select isMulti className="basic-multi-select w-full my-2"
-        classNamePrefix="select" options={
-          allSkills.current.map((skill) => {
-            return { value: skill.name, label: skill.name }
-          })} />
-    )
-  }
-
-  return (
+  const profilePage = (
     <>
       <div className='flex justify-center'>
         <Link to='/' className='relative top-2'><img src="../static/logo.png" className="h-12 mix-blend-multiply" alt="Mentore" /></Link>
@@ -92,17 +86,32 @@ export function Profile() {
               <h1 className='text-xl font-semibold text-black w-full my-4'> Email </h1>
               <h1 className='text-xl font-semibold text-black w-full my-4'> DOB </h1>
               <h1 className='text-xl font-semibold text-black w-full my-4'> Type </h1>
-              <h1 className='text-xl font-semibold text-black w-full my-4'> Specialization </h1>
+              <h1 className='text-xl font-semibold text-black w-full my-4'> Skills </h1>
             </div>
             <div className='flex flex-col col-span-3 justify-between items-center border-solid rounded-lg'>
               <p className='block w-full mx-auto rounded-md bg-gray-200 border-0 p-2 text-gray-900 min-w-fit shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 my-2'> {user.current && user.current.email} </p>
               <p className='block w-full mx-auto rounded-md bg-gray-200 border-0 p-2 text-gray-900 min-w-fit shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 my-2'> {user.current && new Date(user.current.dob).toLocaleDateString()} </p>
               <p className='block w-full mx-auto rounded-md bg-gray-200 border-0 p-2 text-gray-900 min-w-fit shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 my-2'> {user.current && user.current.type} </p>
-              {extraDetails}
+              {(isMentor && !skillsLoading) ? (
+                <Select isMulti className="basic-multi-select w-full my-2"
+                  classNamePrefix="select" options={
+                    allSkills.current.map((skill) => {
+                      return { value: skill.name, label: skill.name }
+                    })} />
+              ) : (
+                <Select isMulti className="basic-multi-select w-full my-2"
+                  classNamePrefix="select" />
+              )}
             </div>
           </div>
         </div>
       </div>
     </>
+  )
+
+  return (
+    <div className='flex justify-center items-center flex-col'>
+      {loading ? <Loader /> : profilePage}
+    </div>
   )
 }
