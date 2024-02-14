@@ -101,17 +101,25 @@ export function Profile() {
     navigate('/login');
   }
 
+  const handleApprove = async (element) => {
+    console.log(element.target.closest('tr'))
+  }
+
+  const handleReject = async (element) => {
+    console.log(element.target)
+  }
+
   const profilePage = (
     <>
       <div className='flex justify-center'>
-        <Link to='/' className='relative top-2'><img src="../static/logo.png" className="h-12 mix-blend-multiply" alt="Mentore" /></Link>
+        <Link to='/' className='relative top-3'><img src="../static/logo.png" className="h-12 mix-blend-multiply" alt="Mentore" /></Link>
       </div>
       <div className='w-full'>
         <div className='flex justify-end mx-14'>
           <button onClick={handleLogout} type="button" className="flex items-center gap-2 text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center me-2 mb-2"><TbLogout className='w-6 h-auto' /> Logout</button>
         </div>
       </div>
-      <div className='min-h-screen gap-4 grid grid-cols-4 lg:mx-14 mb-10 mt-2'>
+      <div className='gap-4 grid grid-cols-4 lg:mx-14 mt-2'>
         <div className='w-full border-solid border-2 border-dark-500 rounded-lg'>
           <div className='flex flex-col items-center mx-4 lg:mx-16 my-10 h-48'>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#362af4" className="w-48 auto">
@@ -161,7 +169,7 @@ export function Profile() {
                   </div>
                 </div>
                 <div className='flex justify-center items-center'>
-                  <div className='grid grid-cols-4 w-full mx-10 mt-4'>
+                  <div className='grid grid-cols-4 w-full mx-10 my-4'>
                     <h1 className='text-xl font-semibold text-black w-full my-4'> Skills </h1>
                     <Select isMulti className="basic-multi-select w-full col-span-3" isDisabled={true}
                       classNamePrefix="select" defaultValue={mentorDetails.current && mentorDetails.current.skills.skills.map(skill => {
@@ -177,6 +185,150 @@ export function Profile() {
           </div>
         </div>
       </div>
+
+      <h1 className='text-center text-3xl font-bold my-8'>Pending Requests</h1>
+      <div className='w-full'>
+        <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left rtl:text-right text-blue-100 dark:text-blue-100 table-fixed">
+            <thead className="text-xs text-white uppercase bg-blue-600 dark:text-white">
+              <tr className='text-center'>
+                <th scope="col" className="px-6 py-3">
+                  Student name
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Date
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Time
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  About
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-blue-400 text-center">
+                <th scope="row" className="px-6 py-4 font-medium text-black whitespace-pre-line">
+                  Ahmed darwish
+                </th>
+                <td className="px-6 py-4 text-black">
+                  29/01/2024
+                </td>
+                <td className="px-6 py-4 text-black">
+                  4PM
+                </td>
+                <td className="px-6 py-4 text-black">
+                  machine learning
+                </td>
+                <td className="px-6 py-4 text-black">
+                  <button onClick={event => handleApprove(event)} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4'>
+                    Accept
+                  </button>
+                  <button onClick={event => handleReject(event)} className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full'>
+                    Reject
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <h1 className='text-center text-3xl font-bold my-8'>Upcoming Requests</h1>
+      <div className='w-full'>
+        <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left rtl:text-right text-blue-100 dark:text-blue-100 table-fixed">
+            <thead className="text-xs text-white uppercase bg-blue-600 dark:text-white">
+              <tr className='text-center'>
+                <th scope="col" className="px-6 py-3">
+                  Student name
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Date
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Time
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  About
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-blue-400 text-center">
+                <th scope="row" className="px-6 py-4 font-medium text-black whitespace-pre-line">
+                  Ahmed darwish
+                </th>
+                <td className="px-6 py-4 text-black">
+                  29/01/2024
+                </td>
+                <td className="px-6 py-4 text-black">
+                  4PM
+                </td>
+                <td className="px-6 py-4 text-black">
+                  machine learning
+                </td>
+                <td className="px-6 py-4 text-black">
+                  <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4' onClick={event => handleJoin(event)}>Join</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <h1 className='text-center text-3xl font-bold my-8'>Completed Requests</h1>
+      <div className='w-full mb-8'>
+        <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left rtl:text-right text-blue-100 dark:text-blue-100 table-fixed">
+            <thead className="text-xs text-white uppercase bg-blue-600 dark:text-white">
+              <tr className='text-center'>
+                <th scope="col" className="px-6 py-3">
+                  Student name
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Date
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Time
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  About
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Action
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-blue-400 text-center">
+                <th scope="row" className="px-6 py-4 font-medium text-black whitespace-pre-line">
+                  Ahmed darwish
+                </th>
+                <td className="px-6 py-4 text-black">
+                  29/01/2024
+                </td>
+                <td className="px-6 py-4 text-black">
+                  4PM
+                </td>
+                <td className="px-6 py-4 text-black">
+                  machine learning
+                </td>
+                <td className="px-6 py-4 text-black">
+                  <button className='bg-green-400 text-white font-bold py-2 px-4 rounded-full mr-4' disabled>Completed</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </>
   )
 
