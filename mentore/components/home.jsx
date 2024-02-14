@@ -144,7 +144,7 @@ export function Home() {
         </form>
       </div>
 
-      <div className='flex flex-col h-screen justify-center items-center mt-10'>
+      <div className='flex flex-col justify-center items-center mt-10'>
         <p className='font-bold md:text-6xl text-2xl mb-12'>Our Testimonials</p>
         <div className="flex flex-wrap justify-center w-full transition-all duration-5000">
           {data.slice(currentIndex, currentIndex + 3).map((data) => (
