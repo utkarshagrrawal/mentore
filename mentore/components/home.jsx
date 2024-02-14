@@ -30,9 +30,6 @@ export function Home() {
   }
 
   useEffect(() => {
-    if (localStorage.getItem('token') === null) {
-      return navigate('/login');
-    }
     const getUser = async () => {
       let options = {
         method: 'GET',
@@ -48,7 +45,6 @@ export function Home() {
         localStorage.removeItem('token');
         localStorage.removeItem('name');
         localStorage.removeItem('email');
-        return navigate('/login');
       } else {
         setLoggedIn(true);
       }
