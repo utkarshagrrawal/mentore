@@ -49,12 +49,13 @@ class SCHEDULER:
 
 
 if __name__ == "__main__":
-    from database import DATABASE
-    import logging
+    # from database import DATABASE
+    # import logging
 
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
+    # logger = logging.getLogger()
+    # logger.setLevel(logging.INFO)
 
-    database  = DATABASE(logger).connect()
-    scheduler = SCHEDULER(logger, database)
-    logger.info(scheduler.isValid("2024-02-17T01:00:00", "2024-02-17T01:30:00", "divyas@gmail.com"))
+    # database  = DATABASE(logger).connect()
+    # scheduler = SCHEDULER(logger, database)
+    # logger.info(scheduler.isValid("2024-02-17T01:00:00", "2024-02-17T01:30:00", "divyas@gmail.com"))
+    pass

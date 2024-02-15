@@ -17,8 +17,6 @@ class SCHEDULE_REQUEST(BaseModel):
     mentor_email   : str
 
 
-
-
 @backend.post('/schedule')
 def schedule(input: SCHEDULE_REQUEST):
 
