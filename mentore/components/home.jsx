@@ -353,7 +353,7 @@ export function Home() {
             >
               <span>{question.split(": ")[1]}</span>
               <svg
-                className={`h-3 w-3 shrink-0 ${selectedQuestion != id ? "rotate-180 transform" : ""}`}
+                className={`h-3 w-3 shrink-0 ${selectedQuestion != id ? "rotate-180 transform transition duration-500" : "transition duration-500"}`}
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
