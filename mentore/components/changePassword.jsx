@@ -8,7 +8,7 @@ import { FaCheck } from "react-icons/fa";
 export function ChangePassword() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [password, setPassword] = useState({ password: '', confirmPassword: '' });
+  const [password, setPassword] = useState({ oldPassword: '', password: '', confirmPassword: '' });
   const conditions = {
     '1': 'Password must contain at least one uppercase letter',
     '2': 'Password must contain at least one lowercase letter',
@@ -93,7 +93,7 @@ export function ChangePassword() {
       },
       body: JSON.stringify(password)
     })
-    let response = changePassword.json();
+    let response = await changePassword.json();
     if (response.error) {
       Swal.fire({
         icon: 'error',
@@ -120,6 +120,22 @@ export function ChangePassword() {
       </div>
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6" onSubmit={handleChangePassword}>
+          <div>
+            <label htmlFor="oldPassword" className="block text-sm font-medium leading-6 text-gray-900">
+              Old password
+            </label>
+            <div className="mt-2">
+              <input
+                id="oldPassword"
+                name="oldPassword"
+                type="password"
+                value={password.oldPassword}
+                onChange={handleChange}
+                required
+                className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+              />
+            </div>
+          </div>
           <div>
             <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
               Password
