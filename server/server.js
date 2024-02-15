@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors');
 const session = require('express-session');
-const { registerUser, loginUser, forgotPassword, getcurrentuser } = require('./controllers/userController');
+const { registerUser, loginUser, forgotPassword, getcurrentuser, verifyOtp, resendOtp } = require('./controllers/userController');
 const { authentication } = require('./utility/passportUtility');
 const { getAllSkills, getMentorSkills, getMentorDetails } = require('./controllers/mentorController');
 
@@ -26,6 +26,10 @@ app.get('/getcurrentuser', authentication, getcurrentuser)
 app.get('/getallskills', getAllSkills)
 
 app.get('/getmentordetails', authentication, getMentorDetails)
+
+app.post('/verifyotp', verifyOtp)
+
+app.post('/resendotp', resendOtp)
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000')

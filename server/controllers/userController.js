@@ -1,5 +1,7 @@
 const { GenerateSignature, GenerateSalt, GeneratePassword } = require("../utility/passportUtility");
 const { supabase } = require('../utility/dbConnection');
+const { generateOtp } = require("../utility/otpConnection");
+const { sendForgotPasswordMail, sendNewPasswordMail } = require("../utility/mailConnection");
 
 const registerUser = async (req, res) => {
   const { email, password, name, age, registerFor } = req.body;
@@ -46,7 +48,103 @@ const forgotPassword = async (req, res) => {
   if (data.length === 0) {
     res.json({ error: 'Invalid email' })
   } else {
+    const checkOtp = await supabase.from('otp').select('').eq('email', email);
+    if (checkOtp.data && checkOtp.data.length > 0) {
+      return res.json({ error: 'Otp already sent' })
+    }
+    const totp = generateOtp();
+    const { error } = await supabase
+      .from('otp')
+      .insert({
+        email: email,
+        otp: totp,
+        created_at: new Date()
+      })
+    if (error) {
+      return res.json({ error: error.message })
+    }
+    sendForgotPasswordMail(email, totp);
+    setTimeout(() => {
+      supabase.from('otp').delete().eq('email', email);
+    }, 1000 * 60 * 15)
     res.json({ success: 'Password reset email sent successfully' })
+  }
+}
+
+const verifyOtp = async (req, res) => {
+  const { email, otp } = req.body;
+  const { data, error } = await supabase
+    .from('otp')
+    .select()
+    .eq('email', email)
+    .eq('otp', otp)
+  if (data && data.length === 0) {
+    return res.json({ error: 'Invalid otp' })
+  } else if (!error) {
+    const { data, error } = await supabase
+      .from('otp')
+      .delete()
+      .eq('email', email)
+    const salt = await GenerateSalt();
+    const password = email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1);
+    const hashedPassword = await GeneratePassword(password, salt);
+    const { error: newError } = await supabase
+      .from('users')
+      .update({ password: hashedPassword, salt: salt })
+      .eq('email', email)
+    if (!error) {
+      sendNewPasswordMail(email, password);
+    } else {
+      return res.json({ error: 'Password reset failed' })
+    }
+    return res.json({ success: 'Otp verified successfully' })
+  } else {
+    return res.json({ error: 'Otp verification failed' })
+  }
+}
+
+const resendOtp = async (req, res) => {
+  const { email } = req.body;
+  const { data, error } = await supabase
+    .from('otp')
+    .select()
+    .eq('email', email)
+  if (data.length === 0) {
+    let totp = generateOtp();
+    const { error } = await supabase
+      .from('otp')
+      .insert({
+        email: email,
+        otp: totp,
+        created_at: new Date()
+      })
+    if (!error) {
+      sendForgotPasswordMail(email, totp);
+      return res.json({ success: 'Otp resend successfull!' })
+    } else {
+      return res.json({ error: 'Otp resend failed!' })
+    }
+  } else if (!error) {
+    const { error } = await supabase
+      .from('otp')
+      .delete()
+      .eq('email', email)
+    let totp = generateOtp();
+    const { error: newError } = await supabase
+      .from('otp')
+      .insert({
+        email: email,
+        otp: totp,
+        created_at: new Date()
+      })
+    if (!error) {
+      sendForgotPasswordMail(email, totp);
+      return res.json({ success: 'Otp resend successfull!' })
+    } else {
+      return res.json({ error: 'Otp resend failed!' })
+    }
+  } else {
+    return res.json({ error: 'Otp resend failed!' })
   }
 }
 
@@ -64,4 +162,6 @@ module.exports = {
   loginUser,
   forgotPassword,
   getcurrentuser,
+  verifyOtp,
+  resendOtp
 }

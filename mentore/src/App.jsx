@@ -7,7 +7,8 @@ import { Home } from '../components/home'
 import { Profile } from '../components/profile'
 import { AskMentor } from '../components/askMentor'
 import { FindMentor } from '../components/findMentor'
-import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import { MentorView } from '../components/mentorView'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 
 import './App.css'
@@ -23,6 +24,7 @@ function App() {
         <Route path='/profile' element={<Profile />} />
         <Route path='/ask-mentor' element={<AskMentor />} />
         <Route path='/find-mentor' element={<FindMentor />} />
+        <Route path='/mentor/:email' element={<MentorView />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Router>
