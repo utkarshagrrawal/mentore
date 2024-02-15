@@ -100,7 +100,7 @@ export function ForgotPassword() {
 
 
   const sendMailCode = (
-    <>
+    <div className='border-2 border-black mt-3 py-4 w-1/3 flex flex-col bg-white rounded-xl'>
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Forgot your password?
@@ -139,11 +139,11 @@ export function ForgotPassword() {
           Go back to <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500 underline">sign in</Link>
         </div>
       </div>
-    </>
+    </div>
   )
 
   const verifyOtpCode = (
-    <>
+    <div className='border-2 border-black mt-3 py-4 w-1/3 flex flex-col bg-white rounded-xl'>
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Forgot your password?
@@ -187,7 +187,7 @@ export function ForgotPassword() {
           Go back to <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500 underline">sign in</Link>
         </div>
       </div>
-    </>
+    </div>
   )
 
   const forgotPasswordCode = (
@@ -197,8 +197,8 @@ export function ForgotPassword() {
   )
 
   return (
-    <div className="flex min-h-screen flex-1 flex-col items-center justify-center px-6 py-12 lg:px-8 bg-gradient-to-r from-blue-300 via-gray-300 to-yellow-300">
-      <Link to='/' className='absolute top-2'><img src="../static/logo.png" className="h-12 mix-blend-multiply" alt="Mentore" /></Link>
+    <div className="flex min-h-screen flex-col items-center justify-center px-6 py-12 lg:px-8 bg-gradient-to-r from-blue-300 via-gray-300 to-yellow-300">
+      <Link to='/' className='relative'><img src="../static/logo.png" className="h-12 mix-blend-multiply" alt="Mentore" /></Link>
       {loading ? <Loader /> : forgotPasswordCode}
     </div>
   )

@@ -148,6 +148,21 @@ const resendOtp = async (req, res) => {
   }
 }
 
+const changepassword = async (req, res) => {
+  const { password } = req.body;
+  const { email } = req.user;
+  const salt = await GenerateSalt();
+  const hashedPassword = await GeneratePassword(password, salt);
+  const { error } = await supabase
+    .from('users')
+    .update({ password: hashedPassword, salt: salt })
+    .eq('email', email)
+  if (error) {
+    return res.json({ error: error.message })
+  }
+  return res.json({ success: 'Password changed successfully' })
+}
+
 const getcurrentuser = async (req, res) => {
   const { email } = req.user;
   const { data } = await supabase
@@ -161,6 +176,7 @@ module.exports = {
   registerUser,
   loginUser,
   forgotPassword,
+  changepassword,
   getcurrentuser,
   verifyOtp,
   resendOtp

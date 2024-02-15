@@ -80,7 +80,7 @@ export function Login() {
   }
 
   const loginCode = (
-    <div className="flex flex-1 flex-col justify-center">
+    <div className="border-2 border-black mt-3 py-4 w-1/3 flex flex-col bg-white rounded-xl">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Sign in to your account
@@ -162,8 +162,8 @@ export function Login() {
   )
 
   return (
-    <div className='bg-gradient-to-r from-blue-300 via-gray-300 to-yellow-300 min-h-screen justify-center flex'>
-      <Link to='/' className='absolute top-2'><img src="../static/logo.png" className="h-12 mix-blend-multiply" alt="Mentore" /></Link>
+    <div className='bg-gradient-to-r from-blue-300 via-gray-300 to-yellow-300 flex min-h-screen flex-col items-center justify-center px-6 py-12 lg:px-8'>
+      <Link to='/' className='relative'><img src="../static/logo.png" className="h-12 mix-blend-multiply" alt="Mentore" /></Link>
       {loading ? <Loader /> : loginCode}
     </div>
   )

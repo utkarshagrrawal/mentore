@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors');
 const session = require('express-session');
-const { registerUser, loginUser, forgotPassword, getcurrentuser, verifyOtp, resendOtp } = require('./controllers/userController');
+const { registerUser, loginUser, forgotPassword, getcurrentuser, verifyOtp, resendOtp, changepassword } = require('./controllers/userController');
 const { authentication } = require('./utility/passportUtility');
 const { getAllSkills, getMentorSkills, getMentorDetails } = require('./controllers/mentorController');
 
@@ -20,6 +20,8 @@ app.post('/register', registerUser)
 app.post('/login', loginUser)
 
 app.post('/forgotpassword', forgotPassword)
+
+app.post('/changepassword', authentication, changepassword)
 
 app.get('/getcurrentuser', authentication, getcurrentuser)
 

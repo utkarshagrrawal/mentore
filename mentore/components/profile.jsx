@@ -2,6 +2,7 @@ import { React } from 'react';
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { TbLogout } from "react-icons/tb";
+import { FaLock } from "react-icons/fa6";
 import Select from 'react-select';
 import Swal from 'sweetalert2';
 import { Loader } from './loader';
@@ -115,7 +116,8 @@ export function Profile() {
         <Link to='/' className='relative top-3'><img src="../static/logo.png" className="h-12 mix-blend-multiply" alt="Mentore" /></Link>
       </div>
       <div className='w-full'>
-        <div className='flex justify-end mx-14'>
+        <div className='flex justify-between mx-14'>
+          <Link to='/change-password' type="button" className="flex items-center gap-2 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center me-2 mb-2"><FaLock className='w-4 h-auto' /> Change password</Link>
           <button onClick={handleLogout} type="button" className="flex items-center gap-2 text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center me-2 mb-2"><TbLogout className='w-6 h-auto' /> Logout</button>
         </div>
       </div>
