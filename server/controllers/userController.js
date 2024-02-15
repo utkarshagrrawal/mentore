@@ -149,18 +149,32 @@ const resendOtp = async (req, res) => {
 }
 
 const changepassword = async (req, res) => {
-  const { password } = req.body;
+  const { password, oldPassword } = req.body;
   const { email } = req.user;
-  const salt = await GenerateSalt();
-  const hashedPassword = await GeneratePassword(password, salt);
-  const { error } = await supabase
+  const { data, error: newError } = await supabase
     .from('users')
-    .update({ password: hashedPassword, salt: salt })
+    .select()
     .eq('email', email)
-  if (error) {
-    return res.json({ error: error.message })
+  if (!newError) {
+    const salt = data[0].salt;
+    const hashedPassword = await GeneratePassword(oldPassword, salt);
+    if (data[0].password === hashedPassword) {
+      const salt = await GenerateSalt();
+      const hashedPassword = await GeneratePassword(password, salt);
+      const { error } = await supabase
+        .from('users')
+        .update({ password: hashedPassword, salt: salt })
+        .eq('email', email)
+      if (error) {
+        return res.json({ error: error.message })
+      }
+      return res.json({ success: 'Password changed successfully' })
+    } else {
+      return res.json({ error: 'Invalid old password' })
+    }
+  } else {
+    return res.json({ error: 'Invalid email' })
   }
-  return res.json({ success: 'Password changed successfully' })
 }
 
 const getcurrentuser = async (req, res) => {
