@@ -137,6 +137,7 @@ const resendOtp = async (req, res) => {
         otp: totp,
         created_at: new Date()
       })
+    console.log('hi')
     if (!error) {
       sendForgotPasswordMail(email, totp);
       return res.json({ success: 'Otp resend successfull!' })
