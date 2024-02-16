@@ -4,6 +4,8 @@ APP_SECRET_KEY = 'thisisAVerysuperSecretKey'
 RAZORPAY_KEY_ID = ''
 RAZORPAY_KEY_SECRET = ''
 GMAIL_SECRET_KEY = 'tqxb vyrl ewmc cejh'
+DYTE_ORG_ID = '81c4e94c-f699-4b5f-af86-e0ac610857ca'
+DYTE_API_KEY = 'f5bf22ca7f8c7c620868'
 
 module.exports = {
   SUPABASE_URL,
@@ -11,5 +13,7 @@ module.exports = {
   APP_SECRET_KEY,
   RAZORPAY_KEY_ID,
   RAZORPAY_KEY_SECRET,
-  GMAIL_SECRET_KEY
+  GMAIL_SECRET_KEY,
+  DYTE_ORG_ID,
+  DYTE_API_KEY
 }

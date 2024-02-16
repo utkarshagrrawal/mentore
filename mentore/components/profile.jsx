@@ -11,10 +11,14 @@ export function Profile() {
   const user = useRef({});
   const allSkills = useRef([]);
   const mentorDetails = useRef([]);
+  const allWebinars = useRef([]);
   const [loading, setLoading] = useState(true);
   const [isMentor, setIsMentor] = useState(false);
   const [skillsLoading, setSkillsLoading] = useState(true);
   const [detailsLoading, setDetailsLoading] = useState(true);
+  const [webinarDetails, setWebinarDetails] = useState({ title: '', start: '', end: '' });
+  const [webinarDetailsShow, setWebinarDetailsShow] = useState(false);
+  const [webinarDetailsLoading, setWebinarDetailsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,6 +55,25 @@ export function Profile() {
     }
     getUser();
   }, [])
+
+  useEffect(() => {
+    const getWebinars = async () => {
+      let options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('token')
+        },
+      }
+      let webinars = await fetch('http://localhost:3000/getwebinars', options);
+      let response = await webinars.json();
+      allWebinars.current = response.success;
+      setWebinarDetailsLoading(false);
+    }
+    if (isMentor) {
+      getWebinars();
+    }
+  }, [isMentor])
 
   useEffect(() => {
     const getSkills = async () => {
@@ -108,6 +131,92 @@ export function Profile() {
 
   const handleReject = async (element) => {
     console.log(element.target)
+  }
+
+  // handles webinar details
+  const handleWebinarDetails = (e) => {
+    setWebinarDetails({ ...webinarDetails, [e.target.name]: e.target.value });
+  }
+
+  const showDetailsButton = () => {
+    if (webinarDetailsShow) {
+      document.getElementById('showDetailsBtn').innerHTML = 'Create webinar'
+      setWebinarDetailsShow(false)
+    } else {
+      document.getElementById('showDetailsBtn').innerHTML = 'Cancel creation'
+      setWebinarDetailsShow(true)
+    }
+  }
+
+  // handles creating webinar
+  const handleCreateWebinar = async () => {
+    if (webinarDetails.title === '') {
+      Swal.fire(
+        'Error',
+        'Please enter a title for the webinar',
+        'error'
+      )
+      return;
+    } else if (webinarDetails.title.trim() === '') {
+      Swal.fire(
+        'Error',
+        'Please enter a valid title for the webinar',
+        'error'
+      )
+      return;
+    } else if (!webinarDetails.title.trim().match('^[a-zA-Z0-9-_]*$')) {
+      Swal.fire(
+        'Error',
+        'The title can only contain letters, numbers, hyphens and underscores',
+        'error'
+      )
+      return;
+    } else if (webinarDetails.start === '') {
+      Swal.fire(
+        'Error',
+        'Please enter a start date and time for the webinar',
+        'error'
+      )
+      return;
+    } else if (webinarDetails.end === '') {
+      Swal.fire(
+        'Error',
+        'Please enter an end date and time for the webinar',
+        'error'
+      )
+      return;
+    } else if (new Date(webinarDetails.start).toISOString() > new Date(webinarDetails.end).toISOString()) {
+      Swal.fire(
+        'Error',
+        'The start date and time cannot be greater than the end date and time',
+        'error'
+      )
+      return;
+    }
+    setLoading(true);
+    const createMeeting = await fetch('http://localhost:3000/createwebinar', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      },
+      body: JSON.stringify(webinarDetails)
+    })
+    const response = await createMeeting.json();
+    if (response.error) {
+      Swal.fire(
+        'Error',
+        response.error,
+        'error'
+      )
+    } else {
+      Swal.fire(
+        'Success',
+        response.result,
+        'success'
+      )
+    }
+    setLoading(false)
   }
 
   const profilePage = (
@@ -188,8 +297,8 @@ export function Profile() {
         </div>
       </div>
 
-      <h1 className='text-center text-3xl font-bold my-8'>Pending Requests</h1>
-      <div className='w-full'>
+      <h1 className='text-center text-3xl font-bold my-4 mt-8'>Pending Requests</h1>
+      <div className='w-full mb-8'>
         <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left rtl:text-right text-blue-100 dark:text-blue-100 table-fixed">
             <thead className="text-xs text-white uppercase bg-blue-600 dark:text-white">
@@ -239,8 +348,8 @@ export function Profile() {
         </div>
       </div>
 
-      <h1 className='text-center text-3xl font-bold my-8'>Upcoming Requests</h1>
-      <div className='w-full'>
+      <h1 className='text-center text-3xl font-bold my-4'>Upcoming Requests</h1>
+      <div className='w-full mb-8'>
         <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left rtl:text-right text-blue-100 dark:text-blue-100 table-fixed">
             <thead className="text-xs text-white uppercase bg-blue-600 dark:text-white">
@@ -277,7 +386,7 @@ export function Profile() {
                   machine learning
                 </td>
                 <td className="px-6 py-4 text-black">
-                  <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mr-4' onClick={event => handleJoin(event)}>Join</button>
+                  <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full' onClick={event => handleJoin(event)}>Join</button>
                 </td>
               </tr>
             </tbody>
@@ -285,7 +394,7 @@ export function Profile() {
         </div>
       </div>
 
-      <h1 className='text-center text-3xl font-bold my-8'>Completed Requests</h1>
+      <h1 className='text-center text-3xl font-bold my-4'>Completed Requests</h1>
       <div className='w-full mb-8'>
         <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
           <table className="w-full text-sm text-left rtl:text-right text-blue-100 dark:text-blue-100 table-fixed">
@@ -331,6 +440,74 @@ export function Profile() {
         </div>
       </div>
 
+      <h1 className='text-center text-3xl font-bold my-4'>Schedule webinars</h1>
+      <div className='w-full'>
+        <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left rtl:text-right text-blue-100 dark:text-blue-100 table-fixed">
+            <thead className="text-xs text-white uppercase bg-blue-600 dark:text-white">
+              <tr className='text-center'>
+                <th scope="col" className="px-6 py-3">
+                  Date and time
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Till date and time
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Title
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Link
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {!webinarDetailsLoading && allWebinars.current.map((item, id) => {
+                return (
+                  <tr key={id} className="border-b border-blue-400 text-center">
+                    <td className="px-6 py-4 text-black">
+                      {new Date(item.start_time).toLocaleDateString() + ' and ' + new Date(item.start_time).toLocaleTimeString()}
+                    </td>
+                    <td className="px-6 py-4 text-black">
+                      {new Date(item.end_time).toLocaleDateString() + ' and ' + new Date(item.end_time).toLocaleTimeString()}
+                    </td>
+                    <td className="px-6 py-4 text-black">
+                      {item.title}
+                    </td>
+                    <td className="px-6 py-4 text-black whitespace-pre-line">
+                      <Link to={item.meeting_link} target='_blank' className='text-blue-500 hover:text-blue-700 hover:underline'>{item.meeting_link}</Link>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className='flex w-full mb-8 mt-2 px-14 justify-end'>
+        <button id='showDetailsBtn' onClick={showDetailsButton} className='bg-blue-500 text-white font-bold py-2 px-4 rounded-full'>Create webinar</button>
+      </div>
+
+      {webinarDetailsShow ? (
+        <div className='w-full mb-8'>
+          <div className='grid grid-cols-3 gap-2 mx-14'>
+            <div className='w-full flex flex-col'>
+              <h1 className='font-bold my-4'>Title</h1>
+              <input id='title' name='title' type='text' onChange={handleWebinarDetails} className='w-full p-2 border-2 border-blue-400 rounded-md' />
+            </div>
+            <div className='w-full flex flex-col'>
+              <h1 className='font-bold my-4'>Start time</h1>
+              <input id='start' name='start' type='datetime-local' onChange={handleWebinarDetails} className='w-full p-2 border-2 border-blue-400 rounded-md' />
+            </div>
+            <div className='w-full flex flex-col'>
+              <h1 className='font-bold my-4'>End time</h1>
+              <input id='end' name='end' type='datetime-local' onChange={handleWebinarDetails} className='w-full p-2 border-2 border-blue-400 rounded-md' />
+            </div>
+          </div>
+          <div className='flex w-full mb-8 mt-2 px-14 justify-end'>
+            <button onClick={handleCreateWebinar} className='bg-blue-500 text-white font-bold py-2 px-4 rounded-full'>Schedule</button>
+          </div>
+        </div>
+      ) : null}
     </>
   )
 
