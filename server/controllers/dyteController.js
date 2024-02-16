@@ -29,10 +29,22 @@ const createWebinar = async (req, res) => {
 }
 
 const getWebinars = async (req, res) => {
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('webinar')
     .select('*')
     .eq('mentor_email', req.user.email)
+    .eq('validity', true)
+  if (error) {
+    return res.json({ error: error.message })
+  }
+  return res.json({ success: data })
+}
+
+const getAllWebinars = async (req, res) => {
+  const { data, error } = await supabase
+    .from('webinar')
+    .select('*')
+    .eq('validity', true)
   if (error) {
     return res.json({ error: error.message })
   }
@@ -41,5 +53,6 @@ const getWebinars = async (req, res) => {
 
 module.exports = {
   createWebinar,
-  getWebinars
+  getWebinars,
+  getAllWebinars
 }
