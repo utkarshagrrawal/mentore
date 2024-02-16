@@ -219,6 +219,30 @@ export function Profile() {
     setLoading(false)
   }
 
+  const handleJoinWebinar = async (meeting_id) => {
+    let options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": localStorage.getItem("token"),
+      },
+      body: JSON.stringify({
+        "meeting_id": meeting_id
+      })
+    };
+    let webinars = await fetch('http://localhost:3000/joinwebinarhost', options);
+    const result = await webinars.json();
+    if (!result.success) {
+      Swal.fire(
+        "Error",
+        "Some error occurred while joining webinar",
+        "error"
+      )
+    } else {
+      location.href = result.success;
+    }
+  }
+
   const profilePage = (
     <>
       <div className='flex justify-center'>
@@ -474,7 +498,7 @@ export function Profile() {
                       {item.title}
                     </td>
                     <td className="px-6 py-4 text-black whitespace-pre-line">
-                      <Link to={item.meeting_link} target='_blank' className='text-blue-500 hover:text-blue-700 hover:underline'>{item.meeting_link}</Link>
+                      <button onClick={() => handleJoinWebinar(item.meeting_link)} target='_blank' className='text-blue-500 font-bold hover:text-blue-700 hover:underline'>Join</button>
                     </td>
                   </tr>
                 )

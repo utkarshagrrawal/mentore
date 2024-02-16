@@ -33,13 +33,76 @@ const getWebinars = async (req, res) => {
     .from('webinar')
     .select('*')
     .eq('mentor_email', req.user.email)
+    .eq('validity', true)
   if (error) {
     return res.json({ error: error.message })
   }
   return res.json({ success: data })
 }
 
+const getAllWebinars = async (req, res) => {
+  const { data, error } = await supabase
+    .from('webinar')
+    .select('*')
+    .eq('validity', true)
+  if (error) {
+    return res.json({ error: error.message })
+  }
+  return res.json({ success: data })
+}
+
+const addParticipant = async (req, res) => {
+  const concatenatedString = DYTE_ORG_ID + ':' + DYTE_API_KEY
+  const webinar = await fetch(req.body.meeting_id + '/participants', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Basic ${Buffer.from(concatenatedString).toString('base64')}`
+    },
+    body: JSON.stringify({
+      "name": req.user.name,
+      "preset_name": "group_call_participant",
+      "custom_participant_id": req.user.email
+    })
+  })
+  const response = await webinar.json()
+  if (!response) {
+    return res.json({ error: response.error })
+  } else if (response && !response.success) {
+    return res.json({ error: response.error })
+  } else {
+    return res.json({ success: 'https://app.dyte.io/v2/meeting?id=' + response.data.id + '&authToken=' + response.data.token })
+  }
+}
+
+const addHost = async (req, res) => {
+  const concatenatedString = DYTE_ORG_ID + ':' + DYTE_API_KEY
+  const webinar = await fetch(req.body.meeting_id + '/participants', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Basic ${Buffer.from(concatenatedString).toString('base64')}`
+    },
+    body: JSON.stringify({
+      "name": req.user.name,
+      "preset_name": "group_call_host",
+      "custom_participant_id": req.user.email
+    })
+  })
+  const response = await webinar.json()
+  if (!response) {
+    return res.json({ error: response.error })
+  } else if (response && !response.success) {
+    return res.json({ error: response.error })
+  } else {
+    return res.json({ success: 'https://app.dyte.io/v2/meeting?id=' + response.data.id + '&authToken=' + response.data.token })
+  }
+}
+
 module.exports = {
   createWebinar,
-  getWebinars
+  getWebinars,
+  getAllWebinars,
+  addParticipant,
+  addHost
 }
