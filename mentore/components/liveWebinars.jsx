@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
-import { DYTE_API_KEY, DYTE_ORG_ID } from "../src/assets/credentials.js";
 
 export function LiveWebinars() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -68,30 +67,26 @@ export function LiveWebinars() {
   }
 
   const handleJoinWebinar = async (meeting_id) => {
-    const concatenateString = DYTE_ORG_ID + ':' + DYTE_API_KEY;
     let options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": 'Basic ' + btoa(concatenateString),
+        "Authorization": localStorage.getItem("token"),
       },
       body: JSON.stringify({
-        "name": localStorage.getItem("name"),
-        "preset_name": "group_call_participant",
-        "custom_participant_id": localStorage.getItem("email"),
+        "meeting_id": meeting_id
       })
     };
-    let webinars = await fetch(meeting_id + "/participants", options);
+    let webinars = await fetch('http://localhost:3000/joinwebinarparticipant', options);
     const result = await webinars.json();
     if (!result.success) {
-      console.log(result.error)
       Swal.fire(
         "Error",
         "Some error occurred while joining webinar",
         "error"
       )
     } else {
-      location.href = 'https://app.dyte.io/v2/meeting?id=' + result.data.id + '&authToken=' + result.data.token;
+      location.href = result.success;
     }
   }
 
