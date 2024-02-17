@@ -107,23 +107,25 @@ export function LiveWebinars() {
         <div className="flex w-full flex-wrap justify-center items-center my-3">
           <div className="w-full mx-16 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
             {!loading.webinarsLoading && allWebinars.current.map((webinar, index) => {
-              return (
-                <div key={index} className="max-w-sm bg-white border border-gray-200 rounded-lg shadow">
-                  <Link to="/">
-                    <img className="rounded-t-lg" src="https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?cs=srgb&dl=pexels-pixabay-417173.jpg&fm=jpg" alt="" />
-                  </Link>
-                  <div className="p-5">
+              if (new Date().toISOString() < new Date(webinar.end_time).toISOString()) {
+                return (
+                  <div key={index} className="max-w-sm bg-white border border-gray-200 rounded-lg shadow">
                     <Link to="/">
-                      <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{webinar.title}</h5>
+                      <img className="rounded-t-lg" src="https://images.pexels.com/photos/417173/pexels-photo-417173.jpeg?cs=srgb&dl=pexels-pixabay-417173.jpg&fm=jpg" alt="" />
                     </Link>
-                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{'From: ' + new Date(webinar.start_time).toLocaleDateString() + ' ' + new Date(webinar.start_time).toLocaleTimeString() + ' '}</p>
-                    <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{'Till: ' + new Date(webinar.end_time).toLocaleDateString() + ' ' + new Date(webinar.end_time).toLocaleTimeString() + ' '}</p>
-                    <button onClick={() => handleJoinWebinar(webinar.meeting_link)} target="_blank" className="inline-flex w-full items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                      Join Webinar
-                    </button>
+                    <div className="p-5">
+                      <Link to="/">
+                        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">{webinar.title}</h5>
+                      </Link>
+                      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{'From: ' + new Date(webinar.start_time).toLocaleDateString() + ' ' + new Date(webinar.start_time).toLocaleTimeString() + ' '}</p>
+                      <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{'Till: ' + new Date(webinar.end_time).toLocaleDateString() + ' ' + new Date(webinar.end_time).toLocaleTimeString() + ' '}</p>
+                      <button onClick={() => handleJoinWebinar(webinar.meeting_link)} target="_blank" className="inline-flex w-full items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                        Join Webinar
+                      </button>
+                    </div>
                   </div>
-                </div>
-              )
+                )
+              }
             })
             }
           </div>

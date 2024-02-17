@@ -3,8 +3,9 @@ const cors = require('cors');
 const session = require('express-session');
 const { registerUser, loginUser, forgotPassword, getcurrentuser, verifyOtp, resendOtp, changepassword } = require('./controllers/userController');
 const { authentication } = require('./utility/passportUtility');
-const { getAllSkills, getMentorSkills, getMentorDetails } = require('./controllers/mentorController');
-const { createWebinar, getWebinars, getAllWebinars, addParticipant, addHost } = require('./controllers/dyteController')
+const { getAllSkills, getMentorDetails } = require('./controllers/mentorController');
+const { createWebinar, getWebinars, getAllWebinars, addParticipant, addHost } = require('./controllers/dyteController');
+const { getBlogs, createBlog, getCurrentBlog, getAllBlogs } = require('./controllers/blogController');
 
 const app = express()
 app.use(session({
@@ -43,6 +44,14 @@ app.get('/allwebinars', getAllWebinars)
 app.post('/joinwebinarparticipant', authentication, addParticipant)
 
 app.post('/joinwebinarhost', authentication, addHost)
+
+app.get('/getblogs', authentication, getBlogs)
+
+app.post('/createblog', authentication, createBlog)
+
+app.post('/getcurrentblog', authentication, getCurrentBlog)
+
+app.get('/getallblogs', getAllBlogs)
 
 // const checkSchedule = async (req, res) => {
 //   const schedule = await fetch('https://mentore-api.onrender.com/schedule', {
