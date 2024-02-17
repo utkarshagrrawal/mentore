@@ -6,12 +6,16 @@ import { FaLock } from "react-icons/fa6";
 import Select from 'react-select';
 import Swal from 'sweetalert2';
 import { Loader } from './loader';
+import { Editor } from '@tinymce/tinymce-react';
+import { TINY_MCE_API_KEY } from '../src/assets/credentials'
 
 export function Profile() {
   const user = useRef({});
   const allSkills = useRef([]);
   const mentorDetails = useRef([]);
   const allWebinars = useRef([]);
+  const editorRef = useRef(null);
+  const allBlogs = useRef([]);
   const [loading, setLoading] = useState(true);
   const [isMentor, setIsMentor] = useState(false);
   const [skillsLoading, setSkillsLoading] = useState(true);
@@ -19,6 +23,8 @@ export function Profile() {
   const [webinarDetails, setWebinarDetails] = useState({ title: '', start: '', end: '' });
   const [webinarDetailsShow, setWebinarDetailsShow] = useState(false);
   const [webinarDetailsLoading, setWebinarDetailsLoading] = useState(true);
+  const [blogCreate, setBlogCreate] = useState(false);
+  const [blogCreateLoading, setBlogCreateLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -70,10 +76,10 @@ export function Profile() {
       allWebinars.current = response.success;
       setWebinarDetailsLoading(false);
     }
-    if (isMentor) {
+    if (isMentor && webinarDetailsLoading) {
       getWebinars();
     }
-  }, [isMentor])
+  }, [isMentor, webinarDetailsLoading])
 
   useEffect(() => {
     const getSkills = async () => {
@@ -138,13 +144,23 @@ export function Profile() {
     setWebinarDetails({ ...webinarDetails, [e.target.name]: e.target.value });
   }
 
-  const showDetailsButton = () => {
+  const handleWebinarCreateBtn = () => {
     if (webinarDetailsShow) {
       document.getElementById('showDetailsBtn').innerHTML = 'Create webinar'
       setWebinarDetailsShow(false)
     } else {
       document.getElementById('showDetailsBtn').innerHTML = 'Cancel creation'
       setWebinarDetailsShow(true)
+    }
+  }
+
+  const handleCreateBlogBtn = () => {
+    if (blogCreate) {
+      document.getElementById('blogCreateBtn').innerHTML = 'Create blog'
+      setBlogCreate(false)
+    } else {
+      document.getElementById('blogCreateBtn').innerHTML = 'Cancel creation'
+      setBlogCreate(true)
     }
   }
 
@@ -194,6 +210,7 @@ export function Profile() {
       return;
     }
     setLoading(true);
+    setWebinarDetailsLoading(true);
     const createMeeting = await fetch('http://localhost:3000/createwebinar', {
       method: 'POST',
       headers: {
@@ -242,6 +259,94 @@ export function Profile() {
       location.href = result.success;
     }
   }
+
+  // handles publishing blog
+  const handlePublishBlog = async () => {
+    const content = editorRef.current && editorRef.current.getContent();
+    const title = document.getElementById('blogTitle').value;
+    if (content === '') {
+      Swal.fire(
+        'Error',
+        'Please enter some content for the blog',
+        'error'
+      )
+      return;
+    }
+    if (title === '') {
+      Swal.fire(
+        'Error',
+        'Please enter a title for the blog',
+        'error'
+      )
+      return;
+    }
+    if (title.trim() === '') {
+      Swal.fire(
+        'Error',
+        'Please enter a valid title for the blog',
+        'error'
+      )
+      return;
+    }
+    if (!title.trim().match('^[a-zA-Z0-9-_]*$')) {
+      Swal.fire(
+        'Error',
+        'The title can only contain letters, numbers, hyphens and underscores',
+        'error'
+      )
+      return;
+    }
+    setLoading(true);
+    setBlogCreateLoading(true);
+    const createBlog = await fetch('http://localhost:3000/createblog', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.getItem('token')
+      },
+      body: JSON.stringify({
+        title: title,
+        content: content
+      })
+    })
+    const response = await createBlog.json();
+    if (response.error) {
+      Swal.fire(
+        'Error',
+        response.error,
+        'error'
+      )
+    }
+    setLoading(false);
+  }
+
+  // get all blogs
+  useEffect(() => {
+    const getBlogs = async () => {
+      let options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': localStorage.getItem('token')
+        }
+      }
+      const response = await fetch('http://localhost:3000/getblogs', options);
+      const data = await response.json();
+      if (data.error) {
+        Swal.fire(
+          'Error',
+          data.error,
+          'error'
+        )
+      } else {
+        allBlogs.current = data.result;
+      }
+      setBlogCreateLoading(false);
+    }
+    if (blogCreateLoading) {
+      getBlogs();
+    }
+  }, [setBlogCreateLoading])
 
   const profilePage = (
     <>
@@ -324,8 +429,8 @@ export function Profile() {
       <h1 className='text-center text-3xl font-bold my-4 mt-8'>Schedule meetings</h1>
       <div className='w-full mb-8'>
         <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left rtl:text-right text-blue-100 dark:text-blue-100 table-fixed">
-            <thead className="text-xs text-white uppercase bg-blue-600 dark:text-white">
+          <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
+            <thead className="text-xs text-white uppercase bg-blue-600">
               <tr className='text-center'>
                 <th scope="col" className="px-6 py-3">
                   Student name
@@ -370,8 +475,8 @@ export function Profile() {
       <h1 className='text-center text-3xl font-bold my-4'>Schedule webinars</h1>
       <div className='w-full'>
         <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left rtl:text-right text-blue-100 dark:text-blue-100 table-fixed">
-            <thead className="text-xs text-white uppercase bg-blue-600 dark:text-white">
+          <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
+            <thead className="text-xs text-white uppercase bg-blue-600">
               <tr className='text-center'>
                 <th scope="col" className="px-6 py-3">
                   Date and time
@@ -401,7 +506,13 @@ export function Profile() {
                       {item.title}
                     </td>
                     <td className="px-6 py-4 text-black whitespace-pre-line">
-                      <button onClick={() => handleJoinWebinar(item.meeting_link)} target='_blank' className='text-blue-500 font-bold hover:text-blue-700 hover:underline'>Join</button>
+                      {
+                        new Date().toISOString() > new Date(item.end_time).toISOString() ? (
+                          <button className='bg-red-400 text-white font-bold py-2 px-4 rounded-full' disabled>Expired</button>
+                        ) : (
+                          <button onClick={() => handleJoinWebinar(item.meeting_link)} target='_blank' className='text-white bg-blue-500 py-2 px-4 rounded-full font-bold hover:text-blue-700 hover:underline'>Join</button>
+                        )
+                      }
                     </td>
                   </tr>
                 )
@@ -411,7 +522,7 @@ export function Profile() {
         </div>
       </div>
       <div className='flex w-full mb-8 mt-2 px-14 justify-end'>
-        <button id='showDetailsBtn' onClick={showDetailsButton} className='bg-blue-500 text-white font-bold py-2 px-4 rounded-full'>Create webinar</button>
+        <button id='showDetailsBtn' onClick={handleWebinarCreateBtn} className='bg-blue-500 text-white font-bold py-2 px-4 rounded-full'>Create webinar</button>
       </div>
 
       {webinarDetailsShow ? (
@@ -435,6 +546,77 @@ export function Profile() {
           </div>
         </div>
       ) : null}
+
+      <h1 className='text-center text-3xl font-bold my-4'>Manage blogs</h1>
+      <div className='w-full'>
+        <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
+          <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
+            <thead className="text-xs text-white uppercase bg-blue-600">
+              <tr className='text-center'>
+                <th scope="col" className="px-6 py-3">
+                  Posted on
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Title
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Link
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {!blogCreateLoading && allBlogs.current.map((item, id) => {
+                return (
+                  <tr key={id} className="border-b border-blue-400 text-center">
+                    <td className="px-6 py-4 text-black">
+                      {new Date(item.created_at).toLocaleDateString() + ' at ' + new Date(item.created_at).toLocaleTimeString()}
+                    </td>
+                    <td className="px-6 py-4 text-black">
+                      {item.title}
+                    </td>
+                    <td className="px-6 py-4 text-black whitespace-pre-line">
+                      <Link to={`/blog/${item.id}`} className='text-white bg-blue-500 py-2 px-4 rounded-full font-bold'>View</Link>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className='flex w-full mb-8 mt-2 px-14 justify-end'>
+        <button id='blogCreateBtn' onClick={handleCreateBlogBtn} className='bg-blue-500 text-white font-bold py-2 px-4 rounded-full'>Create blog</button>
+      </div>
+
+      {blogCreate ? (
+        <div className='w-full flex flex-col px-14 mb-8'>
+          <div className='w-1/2'>
+            <h1 className='font-bold my-4'>Title</h1>
+            <input id='blogTitle' name='blogTitle' type='text' className='w-full p-2 border-2 border-blue-400 rounded-md mb-4' />
+          </div>
+          <Editor
+            apiKey={TINY_MCE_API_KEY}
+            onInit={(evt, editor) => editorRef.current = editor}
+            initialValue="<p>This is the initial content of the editor.</p>"
+            init={{
+              height: 500,
+              menubar: false,
+              plugins: [
+                'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+              ],
+              toolbar: 'undo redo | blocks | ' +
+                'bold italic forecolor | alignleft aligncenter ' +
+                'alignright alignjustify | bullist numlist outdent indent | ' +
+                'removeformat | help',
+              content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+            }}
+          />
+          <button onClick={handlePublishBlog} className='bg-blue-500 text-white font-bold py-2 px-4 rounded-full w-32 self-end mt-4'>Publish</button>
+        </div>
+      ) : null
+      }
     </>
   )
 

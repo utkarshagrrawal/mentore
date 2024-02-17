@@ -131,10 +131,10 @@ export function Home() {
               </li>
               <li>
                 <Link
-                  to="/ask-mentor"
+                  to="/insights"
                   className="block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700"
                 >
-                  Ask mentor
+                  Insights
                 </Link>
               </li>
               {!loggedIn ? (
@@ -409,10 +409,10 @@ export function Home() {
               </li>
               <li>
                 <Link
-                  to="/ask-mentor"
+                  to="/insights"
                   className="block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700"
                 >
-                  Ask mentor
+                  Insights
                 </Link>
               </li>
             </ul>
