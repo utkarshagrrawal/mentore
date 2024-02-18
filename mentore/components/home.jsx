@@ -2,6 +2,7 @@ import { React, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { data } from "../src/assets/stories";
 import { questions } from "../src/assets/question_ans";
+import parse from "html-react-parser";
 
 export function Home() {
   const [visible, setVisible] = useState(false);
@@ -370,10 +371,7 @@ export function Home() {
             </button>
             {selectedQuestion === id && (
               <div className="dark:border-gray-150 border border-b-0 border-gray-200 p-5 dark:bg-gray-100">
-                <p
-                  className="mb-2 text-gray-500 dark:text-black"
-                  dangerouslySetInnerHTML={{ __html: answer }} // Update this line
-                />
+                {parse(answer)}
               </div>
             )}
           </div>
