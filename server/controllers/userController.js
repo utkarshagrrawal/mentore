@@ -25,7 +25,7 @@ const loginUser = async (req, res) => {
     .from('users')
     .select()
     .eq('email', email)
-  if (!data) {
+  if (error) {
     return res.json({ error: 'User account not found' })
   }
   const salt = data[0].salt;
