@@ -3,7 +3,7 @@ const cors = require('cors');
 const session = require('express-session');
 const { registerUser, loginUser, forgotPassword, getcurrentuser, verifyOtp, resendOtp, changepassword } = require('./controllers/userController');
 const { authentication } = require('./utility/passportUtility');
-const { getAllSkills, getMentorDetails } = require('./controllers/mentorController');
+const { getAllSkills, getMentorDetails, getAllMentors } = require('./controllers/mentorController');
 const { createWebinar, getWebinars, getAllWebinars, addParticipant, addHost } = require('./controllers/dyteController');
 const { getBlogs, createBlog, getCurrentBlog, getAllBlogs } = require('./controllers/blogController');
 
@@ -30,6 +30,8 @@ app.get('/getcurrentuser', authentication, getcurrentuser)
 app.get('/getallskills', getAllSkills)
 
 app.get('/getmentordetails', authentication, getMentorDetails)
+
+app.get('/getallmentors', getAllMentors)
 
 app.post('/verifyotp', verifyOtp)
 
