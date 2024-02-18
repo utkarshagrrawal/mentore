@@ -4,14 +4,20 @@ const { generateOtp } = require("../utility/otpConnection");
 const { sendForgotPasswordMail, sendNewPasswordMail } = require("../utility/mailConnection");
 
 const registerUser = async (req, res) => {
-  const { email, password, name, age, registerFor } = req.body;
-  let checkUser = await supabase.from('users').select().eq('email', email);
-  if (checkUser.data.length > 0) {
+  const { email, password, name, age, registerFor, profession, company, experience, skills } = req.body;
+  let { data, error } = await supabase.from('users').select().eq('email', email);
+  if (data && data.length > 0) {
     return res.json({ error: 'User already exists' })
   }
   let salt = await GenerateSalt();
   let hashedPassword = await GeneratePassword(password, salt);
   let newUser = await supabase.from('users').insert([{ email: email, password: hashedPassword, name: name, dob: age, type: registerFor, salt: salt }]);
+  if (registerFor === 'mentor') {
+    const { error } = await supabase.from('mentors').insert([{ email: email, name: name, skills: { "skills": skills }, profession: profession, company: company, experience: experience, fees: 150 }]);
+    if (error) {
+      return res.json({ error: error.message })
+    }
+  }
   if (newUser.error) {
     res.json({ error: newUser.error.message })
   } else {

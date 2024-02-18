@@ -1,13 +1,16 @@
-import { React, useEffect } from 'react';
-import { useState } from 'react';
+import { React, useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import Select from 'react-select';
 import { Loader } from './loader';
 import swal from 'sweetalert2';
 
 export function Register() {
-  const [register, setRegister] = useState({ name: '', email: '', password: '', age: '', registerFor: '' });
+  const [register, setRegister] = useState({ name: '', email: '', password: '', age: '', registerFor: '', profession: '', company: '', experience: 0 });
+  const [mentorSkills, setMentorSkills] = useState([]);
   const [eyeState, setEyeState] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState({ webLoading: false, skillsLoading: true });
+  const [isMentor, setIsMentor] = useState(false);
+  const allSkills = useRef([]);
   const navigate = useNavigate();
 
   const conditions = {
@@ -20,8 +23,23 @@ export function Register() {
 
   const [conditionalList, setConditionalList] = useState(conditions);
 
+  const handleSelectChange = selectedOptions => {
+    setMentorSkills(() => {
+      return selectedOptions.map(option => {
+        return option.value;
+      })
+    })
+  }
+
   const handleChange = (e) => {
     setRegister({ ...register, [e.target.name]: e.target.value });
+    if (e.target.name === 'registerFor') {
+      if (e.target.value === 'mentor') {
+        setIsMentor(true);
+      } else {
+        setIsMentor(false);
+      }
+    }
     if (e.target.name === 'password') {
       const password = e.target.value;
 
@@ -69,7 +87,7 @@ export function Register() {
 
   let passwordConditions = Object.keys(conditionalList).map((key, index) => {
     return (
-      <li key={index} className='text-sm text-red-500'>{conditionalList[key]}</li>
+      <li key={index} className='text-sm font-semibold text-red-500'>{conditionalList[key]}</li>
     )
   })
 
@@ -80,28 +98,52 @@ export function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (new Date().getFullYear() - new Date(register.age).getFullYear() < 18) {
-      swal.fire(
+      return swal.fire(
         'Error',
         'You must be at least 18 years old to register',
         'error'
       );
     }
     if (conditions.length > 0) {
-      swal.fire(
+      return swal.fire(
         'Error',
         'Password is not strong enough',
         'error'
       );
     }
+    if (isMentor && mentorSkills.length === 0) {
+      return swal.fire(
+        'Error',
+        'Please select at least one skill',
+        'error'
+      );
+    }
+    if (isMentor && register.experience < 1) {
+      return swal.fire(
+        'Error',
+        'Please enter your experience greater than 0 years',
+        'error'
+      );
+    }
 
-    setLoading(!loading);
+    setLoading({ ...loading, webLoading: true });
 
     let sendData = await fetch('http://localhost:3000/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(register)
+      body: JSON.stringify({
+        name: register.name,
+        email: register.email,
+        password: register.password,
+        age: register.age,
+        registerFor: register.registerFor,
+        profession: register.profession,
+        company: register.company,
+        experience: register.experience,
+        skills: register.registerFor === 'mentor' ? mentorSkills : []
+      })
     })
 
     let resp = await sendData.json();
@@ -119,7 +161,7 @@ export function Register() {
       );
       navigate('/login');
     }
-    setLoading(false);
+    setLoading({ ...loading, webLoading: false });
   }
 
   const handleEyeChange = () => {
@@ -154,6 +196,33 @@ export function Register() {
     }
     getUser();
   }, [])
+
+  useEffect(() => {
+    setLoading({ ...loading, skillsLoading: true });
+    const getSkills = async () => {
+      let options = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+      let skills = await fetch('http://localhost:3000/getallskills', options);
+      let response = await skills.json();
+      if (response.error) {
+        swal.fire(
+          'Error',
+          response.error,
+          'error'
+        );
+      } else {
+        allSkills.current = response.result;
+      }
+      setLoading({ ...loading, skillsLoading: false });
+    }
+    if (isMentor) {
+      getSkills();
+    }
+  }, [isMentor])
 
   const registerPage = (
     <div className='border-2 border-black mt-3 py-4 w-1/3 flex flex-col bg-white rounded-xl'>
@@ -214,6 +283,77 @@ export function Register() {
             </div>
           </div>
 
+          {(isMentor && !loading.skillsLoading) ? (
+            <>
+              <div>
+                <label htmlFor="skills" className="block text-sm font-medium leading-6 text-gray-900">
+                  Skills
+                </label>
+                <div className="mt-2">
+                  <Select isMulti className="basic-multi-select w-full" id='skills' name='skills'
+                    classNamePrefix="select"
+                    options={
+                      allSkills.current.map((skill) => {
+                        return { value: skill.name, label: skill.name }
+                      })}
+                    onChange={handleSelectChange}
+                    required />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="profession" className="block text-sm font-medium leading-6 text-gray-900">
+                  Profession
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="profession"
+                    name="profession"
+                    type="text"
+                    autoComplete="profession"
+                    onChange={handleChange}
+                    value={register.profession}
+                    required
+                    className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="company" className="block text-sm font-medium leading-6 text-gray-900">
+                  Company
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="company"
+                    name="company"
+                    type="text"
+                    autoComplete="company"
+                    onChange={handleChange}
+                    value={register.company}
+                    required
+                    className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+              <div>
+                <label htmlFor="experience" className="block text-sm font-medium leading-6 text-gray-900">
+                  Experience
+                </label>
+                <div className="mt-2">
+                  <input
+                    id="experience"
+                    name="experience"
+                    type="number"
+                    autoComplete="experience"
+                    onChange={handleChange}
+                    value={register.experience}
+                    required
+                    className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+            </>
+          ) : null}
+
           <div>
             <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
               Email address
@@ -234,8 +374,7 @@ export function Register() {
 
           <div>
             <div className="flex items-center justify-between">
-              <label htmlFor="
-                            password" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
                 Password
               </label>
             </div>
@@ -267,7 +406,7 @@ export function Register() {
             </div>
           </div>
 
-          <div className='bg-gray-100 p-2 rounded-md hidden' id='passwordStrengthPointsDiv'>
+          <div className='py-2 rounded-md hidden' id='passwordStrengthPointsDiv'>
             {passwordConditions}
           </div>
 
@@ -280,14 +419,14 @@ export function Register() {
             Already have an account? <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-500 underline">Login</Link>
           </p>
         </form>
-      </div>
-    </div>
+      </div >
+    </div >
   )
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-6 py-4 lg:px-8 bg-gradient-to-r from-blue-300 via-gray-300 to-yellow-300">
       <Link to='/' className='relative'><img src="../static/logo.png" className="h-12 mix-blend-multiply" alt="Mentore" /></Link>
-      {loading ? <Loader /> : registerPage}
+      {loading.webLoading ? <Loader /> : registerPage}
     </div>
   )
 }
