@@ -1,3 +1,5 @@
+const {supabase} = require("../utility/dbConnection")
+
 const getMentorAvailability = async (req, res) => {
   let options = {
     method: 'POST',
@@ -22,4 +24,9 @@ const getMentorAvailability = async (req, res) => {
       return res.json({ error: 'Mentor is not available' })
     }
   }
+}
+
+
+module.exports = {
+  
 }

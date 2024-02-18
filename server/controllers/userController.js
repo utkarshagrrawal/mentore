@@ -25,7 +25,7 @@ const loginUser = async (req, res) => {
     .from('users')
     .select()
     .eq('email', email)
-  if (!data) {
+  if (error) {
     return res.json({ error: 'User account not found' })
   }
   const salt = data[0].salt;
@@ -185,6 +185,7 @@ const getcurrentuser = async (req, res) => {
     .eq('email', email)
   return res.json({ result: data[0] })
 }
+
 
 module.exports = {
   registerUser,
