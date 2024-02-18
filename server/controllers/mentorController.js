@@ -23,7 +23,19 @@ const getMentorDetails = async (req, res) => {
   }
 }
 
+const getAllMentors = async (req, res) => {
+  const { data, error } = await supabase
+    .from('mentors')
+    .select()
+  if (error) {
+    return res.json({ error: error.message })
+  } else {
+    return res.json({ result: data })
+  }
+}
+
 module.exports = {
   getAllSkills,
-  getMentorDetails
+  getMentorDetails,
+  getAllMentors
 }

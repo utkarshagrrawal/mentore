@@ -31,6 +31,8 @@ app.get('/getallskills', getAllSkills)
 
 app.get('/getmentordetails', authentication, getMentorDetails)
 
+app.get('/getallmentors', getAllMentors)
+
 app.post('/verifyotp', verifyOtp)
 
 app.post('/resendotp', resendOtp)
