@@ -27,8 +27,6 @@ const getMentorAvailability = async (req, res) => {
 }
 
 
-
-
 module.exports = {
   
 }

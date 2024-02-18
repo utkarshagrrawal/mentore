@@ -186,6 +186,7 @@ const getcurrentuser = async (req, res) => {
   return res.json({ result: data[0] })
 }
 
+
 module.exports = {
   registerUser,
   loginUser,
