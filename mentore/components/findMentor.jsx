@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import Swal from 'sweetalert2';
+import '../styles/pagination.css';
 
 export function FindMentor() {
     const navigate = useNavigate();
@@ -69,7 +70,6 @@ export function FindMentor() {
                 )
             } else {
                 mentors.current = result.result;
-                console.log(result)
             }
             setDetailsLoading(false);
         }
@@ -103,14 +103,14 @@ export function FindMentor() {
             {/* Mentor Grid */}
             <div className='w-full mb-8'>
                 {!detailsLoading && (
-                    <div className='grid lg:grid-cols-3  md:grid-cols-2 grid-cols-1'>
+                    <div className='grid lg:grid-cols-3 gap-2 md:grid-cols-2 grid-cols-1 place-content-center place-items-center'>
                         {currentMentors.map((mentor, index) => (
                             <div
                                 key={index}
-                                className='max-w-sm mx-16 px-4 pt-8 pb-3 bg-gray-100 mb-8 border border-gray-200 rounded-2xl shadow'
+                                className='max-w-sm w-full mx-16 px-4 pt-8 pb-3 bg-gray-100 mb-8 border border-gray-200 rounded-2xl shadow'
                             >
                                 <img
-                                    className='rounded-t-lg h-48 object-contain w-full'
+                                    className='rounded-t-lg h-48 object-contain w-full mix-blend-multiply'
                                     src={
                                         mentor && mentor.male
                                             ? '../static/male-avatar.png'
@@ -118,23 +118,23 @@ export function FindMentor() {
                                     }
                                     alt=''
                                 />
-                                <div className='p-5'>
-                                    <h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 text-center'>
+                                <div className='p-5 relative min-h-[15rem]'>
+                                    <h5 className='mb-2 text-2xl mb-4 font-bold tracking-tight text-gray-900 text-center'>
                                         {mentor && mentor.name}
                                     </h5>
-                                    <p className='font-normal text-gray-700 dark:text-gray-400 text-center'>
+                                    <p className='font-normal text-gray-700 text-center'>
                                         {mentor && mentor.profession}
                                     </p>
-                                    <p className='font-normal text-gray-700 dark:text-gray-400 text-center'>
+                                    <p className='font-normal text-gray-700 text-center'>
                                         {' '}
                                         {mentor && mentor.company}
                                     </p>
-                                    <p className='font-normal text-gray-700 dark:text-gray-400 text-center'>
+                                    <p className='font-normal text-gray-700 text-center'>
                                         Experience: {mentor.experience} years
                                     </p>
                                     <Link
                                         to={`/mentor/${mentor.email}`}
-                                        className='flex justify-center w-full items-center mt-8 px-3 py-3 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300'
+                                        className='flex justify-center w-[19.1rem] items-center bottom-0 absolute px-3 py-3 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300'
                                     >
                                         View details
                                     </Link>
@@ -147,21 +147,21 @@ export function FindMentor() {
 
             {/* Pagination */}
             {!detailsLoading && (
-                <div className="flex justify-center items-center w-3/4">
+                <div className="flex justify-center items-center w-3/4 mb-8">
                     <ReactPaginate
                         breakLabel="..."
                         nextLabel="Next"
                         previousLabel="Previous"
                         pageCount={Math.ceil(mentors.current.length / mentorsPerPage)}
                         marginPagesDisplayed={2}
-                        pageRangeDisplayed={5}
+                        pageRangeDisplayed={3}
                         onPageChange={handlePageChange}
-                        containerClassName="pagination flex justify-evenly items-center"
-                        activeClassName="active"
-                        previousLinkClassName="bg-gray-200 px-3 py-2 rounded-lg mr-2"
-                        nextLinkClassName="bg-gray-200 px-3 py-2 rounded-lg ml-2"
-                        pageClassName="px-3 py-2 rounded-lg mb-2 bg-gray-200 "
-                        pageLinkClassName="hover:bg-gray-300  "
+                        containerClassName="pagination flex justify-center items-center space-x-2"
+                        activeClassName="bg-blue-500 text-white"
+                        previousLinkClassName="px-4 py-2 rounded-lg h-full bg-gray-200 hover:bg-gray-300 flex items-center"
+                        nextLinkClassName="px-4 py-2 rounded-lg h-full bg-gray-200 hover:bg-gray-300 flex items-center"
+                        pageClassName="px-3 py-2 rounded-lg"
+                        pageLinkClassName="hover:bg-blue-300"
                     />
                 </div>
 
