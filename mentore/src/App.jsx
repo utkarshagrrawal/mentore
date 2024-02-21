@@ -27,7 +27,7 @@ function App() {
         <Route path='/profile' element={<Profile />} />
         <Route path='/insights' element={<Insights />} />
         <Route path='/find-mentor' element={<FindMentor />} />
-        <Route path='/mentor/:email' element={<MentorView />} />
+        <Route path='/mentor/:id?' element={<MentorView />} />
         <Route path='/live-webinars' element={<LiveWebinars />} />
         <Route path='/change-password' element={<ChangePassword />} />
         <Route path='/blog/:id' element={<Blog />} />
