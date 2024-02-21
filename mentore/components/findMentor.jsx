@@ -133,7 +133,7 @@ export function FindMentor() {
                                         Experience: {mentor.experience} years
                                     </p>
                                     <Link
-                                        to={`/mentor/${mentor.email}`}
+                                        to={`/mentor/${mentor.uniq_id}`}
                                         className='flex justify-center w-[19.1rem] items-center bottom-0 absolute px-3 py-3 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300'
                                     >
                                         View details
