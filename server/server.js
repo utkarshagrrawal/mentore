@@ -5,7 +5,7 @@ const { registerUser, loginUser, forgotPassword, getcurrentuser, verifyOtp, rese
 const { authentication } = require('./utility/passportUtility');
 const { getAllSkills, getMentorDetails, getAllMentors } = require('./controllers/mentorController');
 const { createWebinar, getWebinars, getAllWebinars, addParticipant, addHost } = require('./controllers/dyteController');
-const { getBlogs, createBlog, getCurrentBlog, getAllBlogs } = require('./controllers/blogController');
+const { getBlogs, createBlog, getCurrentBlog, getAllBlogs, deleteBlog } = require('./controllers/blogController');
 
 const app = express()
 app.use(session({
@@ -54,6 +54,8 @@ app.post('/createblog', authentication, createBlog)
 app.post('/getcurrentblog', authentication, getCurrentBlog)
 
 app.get('/getallblogs', getAllBlogs)
+
+app.post('/deleteblog', authentication, deleteBlog)
 
 // const checkSchedule = async (req, res) => {
 //   const schedule = await fetch('https://mentore-api.onrender.com/schedule', {

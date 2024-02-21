@@ -49,9 +49,23 @@ const getCurrentBlog = async (req, res) => {
     return res.json({ error: error.message })
 }
 
+const deleteBlog = async (req, res) => {
+    const { id } = req.body;
+    const { error } = await supabase
+        .from('blogs')
+        .delete()
+        .eq('id', id)
+    if (!error) {
+        return res.json({ success: 'Blog deleted successfully!' })
+    } else {
+        return res.json({ error: error.message })
+    }
+}
+
 module.exports = {
     getBlogs,
     getAllBlogs,
     createBlog,
-    getCurrentBlog
+    getCurrentBlog,
+    deleteBlog
 }
