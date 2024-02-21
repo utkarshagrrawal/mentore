@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Loader } from './loader';
 
@@ -7,6 +7,7 @@ export function MentorView() {
     const navigate = useNavigate();
     const [loggedIn, setLoggedIn] = useState(false);
     const [loading, setLoading] = useState({ webLoading: true })
+    const mentorDetails = useRef([]);
 
     useEffect(() => {
         setLoading({ ...loading, webLoading: true })
@@ -25,6 +26,7 @@ export function MentorView() {
                 localStorage.removeItem("token");
                 localStorage.removeItem("name");
                 localStorage.removeItem("email");
+                navigate('/login')
             } else {
                 setLoggedIn(true);
             }
@@ -32,6 +34,33 @@ export function MentorView() {
         };
         getUser();
     }, []);
+
+    useEffect(() => {
+        setLoading({ ...loading, webLoading: true })
+        const getMentorDetails = async () => {
+            let options = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token')
+                }
+            }
+            let mentors = await fetch(`http://localhost:3000/getmentorprofile?id=${id}`, options);
+            const result = await mentors.json();
+            if (result.error) {
+                Swal.fire(
+                    'Error',
+                    result.error,
+                    'error'
+                )
+            } else {
+                mentorDetails.current = result.result;
+                console.log(mentorDetails.current)
+            }
+            setLoading({ ...loading, webLoading: false })
+        }
+        getMentorDetails();
+    }, [])
 
     const handleLoginButton = () => {
         if (loggedIn) {
