@@ -1,11 +1,11 @@
 const nodemailer = require('nodemailer');
-const { GMAIL_SECRET_KEY } = require('../config');
+require('dotenv').config();
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'mentore.capstone@gmail.com',
-        pass: GMAIL_SECRET_KEY
+        pass: process.env.GMAIL_SECRET_KEY
     }
 });
 
@@ -16,7 +16,7 @@ const sendForgotPasswordMail = (to, otp) => {
         subject: 'Forgot password for mentore account',
         html: `<p>Hey, your otp for verification is: <strong>${otp}</strong> </p>`
     };
-    transporter.sendMail(mailOptions, function(error, info) {
+    transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             return error.message;
         }
@@ -31,7 +31,7 @@ const sendNewPasswordMail = (to, password) => {
         subject: 'New password for your mentore account',
         html: `<p>Hey, your new password is: <strong>${password}</strong>. Please change it ASAP. </p>`
     };
-    transporter.sendMail(mailOptions, function(error, info) {
+    transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             return error.message;
         } else {
