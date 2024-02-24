@@ -1,56 +1,38 @@
 require('dotenv').config();
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
-const createTransporter = async () => {
-    var transporter = nodemailer.createTransport({
-        host: "sandbox.smtp.mailtrap.io",
-        port: 2525,
-        auth: {
-            user: process.env.EMAIL_USERNAME,
-            pass: process.env.EMAIL_PASSWORD
-        }
-    });
-
-    return transporter;
-}
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 const sendForgotPasswordMail = async (to, otp) => {
     const mailOptions = {
-        from: process.env.EMAIL,
-        to: to,
+        from: 'onboarding@resend.dev',
+        to: process.env.GMAIL_ID,
         subject: 'Forgot password for mentore account',
         html: `<p>Hey, your otp for verification is: <strong>${otp}</strong> </p>`
     };
 
-    const transporter = await createTransporter();
+    const { data, error } = await resend.emails.send(mailOptions)
 
-    console.log(transporter)
-
-    transporter.sendMail(mailOptions, function (error, info) {
-        console.log('sending mail')
-        if (error) {
-            console.log(error);
-            return error.message;
-        }
-        console.log(info)
-        return info;
-    })
+    if (error) {
+        return error.message;
+    }
+    return;
 }
 
-const sendNewPasswordMail = (to, password) => {
+const sendNewPasswordMail = async (to, password) => {
     const mailOptions = {
-        from: 'nodemailer',
-        to: to,
+        from: 'onboarding@resend.dev',
+        to: process.env.GMAIL_ID,
         subject: 'New password for your mentore account',
         html: `<p>Hey, your new password is: <strong>${password}</strong>. Please change it ASAP. </p>`
     };
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            return error.message;
-        } else {
-            return info;
-        }
-    })
+
+    const { data, error } = await resend.emails.send(mailOptions)
+
+    if (error) {
+        return error.message;
+    }
+    return;
 }
 
 module.exports = {
