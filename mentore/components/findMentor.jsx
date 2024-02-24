@@ -7,7 +7,6 @@ import '../styles/pagination.css';
 export function FindMentor() {
     const navigate = useNavigate();
     const [loggedIn, setLoggedIn] = useState(false);
-    const [isMentor, setIsMentor] = useState(false);
     const [detailsLoading, setDetailsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0); // Track current page
     const mentorsPerPage = 18; // Number of mentors per page
@@ -20,16 +19,12 @@ export function FindMentor() {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: localStorage.getItem("token"),
                 },
             };
             let users = await fetch("http://localhost:3000/getcurrentuser", options);
             const result = await users.json();
             if (result.error) {
                 setLoggedIn(false);
-                localStorage.removeItem("token");
-                localStorage.removeItem("name");
-                localStorage.removeItem("email");
             } else {
                 setLoggedIn(true);
             }
@@ -57,7 +52,6 @@ export function FindMentor() {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': localStorage.getItem('token')
                 }
             }
             let mentorDetail = await fetch('http://localhost:3000/getallmentors', options)

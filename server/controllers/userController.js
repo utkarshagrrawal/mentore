@@ -2,6 +2,7 @@ const { GenerateSignature, GenerateSalt, GeneratePassword } = require("../utilit
 const { supabase } = require('../utility/dbConnection');
 const { generateOtp } = require("../utility/otpConnection");
 const { sendForgotPasswordMail, sendNewPasswordMail } = require("../utility/mailConnection");
+const { storeInRedis, getFromRedis, deleteFromRedis } = require("../utility/redisConnection");
 
 const registerUser = async (req, res) => {
     const { email, password, name, age, registerFor, profession, company, experience, skills } = req.body;
@@ -44,7 +45,8 @@ const loginUser = async (req, res) => {
     } else {
         let username = await supabase.from('users').select('name').eq('email', email);
         const sign = GenerateSignature({ email: email, name: username.data[0].name });
-        return res.json({ success: 'User logged in successfully', token: sign, name: username.data[0].name })
+        await storeInRedis("token", sign);
+        return res.json({ success: 'User logged in successfully' })
     }
 }
 
@@ -54,12 +56,24 @@ const forgotPassword = async (req, res) => {
         .from('users')
         .select()
         .eq('email', email)
-    if (data.length === 0) {
+    if (data && data.length === 0) {
         res.json({ error: 'Invalid email' })
+    } else if (error) {
+        res.json({ error: error.message })
     } else {
         const checkOtp = await supabase.from('otp').select('').eq('email', email);
         if (checkOtp.data && checkOtp.data.length > 0) {
-            return res.json({ error: 'Otp already sent' })
+            if (new Date() - new Date(checkOtp.data[0].created_at) < 1000 * 60 * 15) {
+                return res.json({ error: 'Otp already sent' })
+            } else {
+                const { error } = await supabase
+                    .from('otp')
+                    .delete()
+                    .eq('email', email)
+                if (error) {
+                    return res.json({ error: error.message })
+                }
+            }
         }
         const totp = generateOtp();
         const { error } = await supabase
@@ -73,9 +87,6 @@ const forgotPassword = async (req, res) => {
             return res.json({ error: error.message })
         }
         sendForgotPasswordMail(email, totp);
-        setTimeout(() => {
-            supabase.from('otp').delete().eq('email', email);
-        }, 1000 * 60 * 15)
         res.json({ success: 'Password reset email sent successfully' })
     }
 }
@@ -138,6 +149,9 @@ const resendOtp = async (req, res) => {
             .from('otp')
             .delete()
             .eq('email', email)
+        if (error) {
+            return res.json({ error: 'Otp resend failed!' })
+        }
         let totp = generateOtp();
         const { error: newError } = await supabase
             .from('otp')
@@ -146,7 +160,7 @@ const resendOtp = async (req, res) => {
                 otp: totp,
                 created_at: new Date()
             })
-        if (!error) {
+        if (!newError) {
             sendForgotPasswordMail(email, totp);
             return res.json({ success: 'Otp resend successfull!' })
         } else {
@@ -160,6 +174,9 @@ const resendOtp = async (req, res) => {
 const changepassword = async (req, res) => {
     const { password, oldPassword } = req.body;
     const { email } = req.user;
+    if (!email) {
+        return res.json({ error: 'Invalid session' })
+    }
     const { data, error: newError } = await supabase
         .from('users')
         .select()
@@ -167,7 +184,7 @@ const changepassword = async (req, res) => {
     if (!newError) {
         const salt = data[0].salt;
         const hashedPassword = await GeneratePassword(oldPassword, salt);
-        if (data[0].password === hashedPassword) {
+        if (data[0].password !== hashedPassword) {
             const salt = await GenerateSalt();
             const hashedPassword = await GeneratePassword(password, salt);
             const { error } = await supabase
@@ -188,11 +205,23 @@ const changepassword = async (req, res) => {
 
 const getcurrentuser = async (req, res) => {
     const { email } = req.user;
+    if (!email) {
+        return res.json({ error: 'Invalid session' })
+    }
     const { data } = await supabase
         .from('users')
         .select('')
         .eq('email', email)
     return res.json({ result: data[0] })
+}
+
+const logout = async (req, res) => {
+    const { email } = req.user;
+    if (!email) {
+        return res.json({ error: 'Invalid session' })
+    }
+    await deleteFromRedis('token');
+    return res.json({ success: 'User logged out successfully' })
 }
 
 
@@ -203,5 +232,6 @@ module.exports = {
     changepassword,
     getcurrentuser,
     verifyOtp,
-    resendOtp
+    resendOtp,
+    logout
 }

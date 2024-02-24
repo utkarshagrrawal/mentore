@@ -16,16 +16,12 @@ export function Insights() {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: localStorage.getItem("token"),
                 },
             };
             let users = await fetch("http://localhost:3000/getcurrentuser", options);
             const result = await users.json();
             if (result.error) {
                 setLoggedIn(false);
-                localStorage.removeItem("token");
-                localStorage.removeItem("name");
-                localStorage.removeItem("email");
             } else {
                 setLoggedIn(true);
             }

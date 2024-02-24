@@ -1,27 +1,40 @@
-const nodemailer = require('nodemailer');
 require('dotenv').config();
+const nodemailer = require('nodemailer');
 
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: 'mentore.capstone@gmail.com',
-        pass: process.env.GMAIL_SECRET_KEY
-    }
-});
+const createTransporter = async () => {
+    var transporter = nodemailer.createTransport({
+        host: "sandbox.smtp.mailtrap.io",
+        port: 2525,
+        auth: {
+            user: process.env.EMAIL_USERNAME,
+            pass: process.env.EMAIL_PASSWORD
+        }
+    });
 
-const sendForgotPasswordMail = (to, otp) => {
+    return transporter;
+}
+
+const sendForgotPasswordMail = async (to, otp) => {
     const mailOptions = {
-        from: 'nodemailer',
+        from: process.env.EMAIL,
         to: to,
         subject: 'Forgot password for mentore account',
         html: `<p>Hey, your otp for verification is: <strong>${otp}</strong> </p>`
     };
+
+    const transporter = await createTransporter();
+
+    console.log(transporter)
+
     transporter.sendMail(mailOptions, function (error, info) {
+        console.log('sending mail')
         if (error) {
+            console.log(error);
             return error.message;
         }
+        console.log(info)
         return info;
-    });
+    })
 }
 
 const sendNewPasswordMail = (to, password) => {
