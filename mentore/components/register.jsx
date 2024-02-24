@@ -174,22 +174,15 @@ export function Register() {
     }
 
     useEffect(() => {
-        if (localStorage.getItem('token') === null) {
-            return;
-        }
         const getUser = async () => {
             let user = await fetch('http://localhost:3000/getcurrentuser', {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': localStorage.getItem('token')
                 }
             });
             let result = await user.json();
             if (result.error) {
-                localStorage.removeItem('token');
-                localStorage.removeItem('name');
-                localStorage.removeItem('email');
-                return;
+                return
             } else {
                 navigate('/');
             }
@@ -225,7 +218,7 @@ export function Register() {
     }, [isMentor])
 
     const registerPage = (
-        <div className='border-2 border-black mt-3 py-4 w-1/3 flex flex-col bg-white rounded-xl'>
+        <div className='border-2 border-black mt-3 px-6 py-4 w-full md:w-1/2 lg:w-1/3 flex flex-col bg-white rounded-xl'>
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                     Register for an account

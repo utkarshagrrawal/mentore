@@ -10,6 +10,23 @@ export function ForgotPassword() {
     const [emailSent, setEmailSent] = useState(false);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const getUser = async () => {
+            let user = await fetch('http://localhost:3000/getcurrentuser', {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            let result = await user.json();
+            if (result.error) {
+                return;
+            } else {
+                navigate('/');
+            }
+        }
+        getUser();
+    }, [])
+
     const handleChange = (e) => {
         setForgotPassword({ ...forgotPassword, [e.target.name]: e.target.value });
     }
@@ -87,7 +104,6 @@ export function ForgotPassword() {
                 response.success,
                 'success'
             )
-            navigate('/login');
         } else {
             Swal.fire(
                 'Error',
@@ -100,7 +116,7 @@ export function ForgotPassword() {
 
 
     const sendMailCode = (
-        <div className='border-2 border-black mt-3 py-4 w-1/3 flex flex-col bg-white rounded-xl'>
+        <div className='border-2 border-black mt-3 px-4 py-4 w-full md:w-1/2 lg:w-1/3 flex flex-col bg-white rounded-xl'>
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                     Forgot your password?
@@ -143,7 +159,7 @@ export function ForgotPassword() {
     )
 
     const verifyOtpCode = (
-        <div className='border-2 border-black mt-3 py-4 w-1/3 flex flex-col bg-white rounded-xl'>
+        <div className='border-2 border-black mt-3 px-4 py-4 w-full md:w-1/2 lg:w-1/3 flex flex-col bg-white rounded-xl'>
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                     Forgot your password?

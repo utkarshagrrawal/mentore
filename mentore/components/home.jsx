@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { data } from "../src/assets/stories";
 import { questions } from "../src/assets/question_ans";
 import parse from "html-react-parser";
@@ -16,7 +16,6 @@ export function Home() {
         "Switching to a new Domain",
     ];
     const [index, setIndex] = useState(0);
-    const navigate = useNavigate();
 
     const handleChange = () => {
         setVisible(!visible);
@@ -33,16 +32,12 @@ export function Home() {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: localStorage.getItem("token"),
                 },
             };
             let users = await fetch("http://localhost:3000/getcurrentuser", options);
             const result = await users.json();
             if (result.error) {
                 setLoggedIn(false);
-                localStorage.removeItem("token");
-                localStorage.removeItem("name");
-                localStorage.removeItem("email");
             } else {
                 setLoggedIn(true);
             }

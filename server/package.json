@@ -21,6 +21,7 @@
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.9",
     "razorpay": "^2.9.2",
+    "redis": "^4.6.13",
     "speakeasy": "^2.0.0"
   },
   "devDependencies": {

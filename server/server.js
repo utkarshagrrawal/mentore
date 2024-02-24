@@ -1,21 +1,26 @@
 const express = require('express')
 const cors = require('cors');
-const { registerUser, loginUser, forgotPassword, getcurrentuser, verifyOtp, resendOtp, changepassword } = require('./controllers/userController');
+const { registerUser, loginUser, forgotPassword, getcurrentuser, verifyOtp, resendOtp, changepassword, logout } = require('./controllers/userController');
 const { authentication } = require('./utility/passportUtility');
 const { getAllSkills, getMentorDetails, getAllMentors, getMentorProfile } = require('./controllers/mentorController');
 const { createWebinar, getWebinars, getAllWebinars, addParticipant, addHost } = require('./controllers/dyteController');
 const { getBlogs, createBlog, getCurrentBlog, getAllBlogs, deleteBlog } = require('./controllers/blogController');
+const { linkRedis } = require('./utility/redisConnection');
 require('dotenv').config();
 
 const app = express()
 app.use(cors())
 app.use(express.json())
 
+linkRedis();
+
 app.post('/register', registerUser)
 
 app.post('/login', loginUser)
 
 app.post('/forgotpassword', forgotPassword)
+
+app.post('/logout', authentication, logout)
 
 app.post('/changepassword', authentication, changepassword)
 

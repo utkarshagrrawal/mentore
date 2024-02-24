@@ -28,23 +28,16 @@ export function Profile() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (localStorage.getItem('token') === null) {
-            navigate('/login');
-        }
         const getUser = async () => {
             let options = {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': localStorage.getItem('token')
                 },
             }
             let users = await fetch('http://localhost:3000/getcurrentuser', options);
             let result = await users.json();
             if (result.error) {
-                localStorage.removeItem('token');
-                localStorage.removeItem('name');
-                localStorage.removeItem('email');
                 Swal.fire(
                     'Error',
                     result.error,
@@ -67,8 +60,7 @@ export function Profile() {
             let options = {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': localStorage.getItem('token')
+                    'Content-Type': 'application/json'
                 },
             }
             let webinars = await fetch('http://localhost:3000/getwebinars', options);
@@ -102,8 +94,7 @@ export function Profile() {
             let options = {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': localStorage.getItem('token')
+                    'Content-Type': 'application/json'
                 }
             }
             let mentorDetail = await fetch('http://localhost:3000/getmentordetails', options)
@@ -124,10 +115,21 @@ export function Profile() {
         }
     }, [isMentor])
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('name');
-        localStorage.removeItem('email');
+    const handleLogout = async () => {
+        const sendLogoutRequest = await fetch('http://localhost:3000/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        const response = await sendLogoutRequest.json();
+        if (response.error) {
+            return Swal.fire(
+                'Error',
+                response.error,
+                'error'
+            )
+        }
         navigate('/login');
     }
 
@@ -211,7 +213,6 @@ export function Profile() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
             },
             body: JSON.stringify(webinarDetails)
         })
@@ -238,7 +239,6 @@ export function Profile() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": localStorage.getItem("token"),
             },
             body: JSON.stringify({
                 "meeting_id": meeting_id
@@ -264,7 +264,6 @@ export function Profile() {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': localStorage.getItem('token')
                 }
             }
             const response = await fetch('http://localhost:3000/getblogs', options);
@@ -282,7 +281,6 @@ export function Profile() {
         }
         if (blogCreateLoading) {
             getBlogs();
-            console.log('runnning')
         }
     }, [blogCreateLoading])
 
@@ -328,7 +326,6 @@ export function Profile() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
             },
             body: JSON.stringify({
                 title: title,
@@ -372,7 +369,6 @@ export function Profile() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('token')
             },
             body: JSON.stringify({
                 id: id
@@ -407,7 +403,7 @@ export function Profile() {
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#362af4" className="w-48 auto">
                             <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clipRule="evenodd" />
                         </svg>
-                        <h1 className='text-3xl font-semibold text-black'> {localStorage.getItem('name').charAt(0).toUpperCase() + localStorage.getItem('name').slice(1)} </h1>
+                        <h1 className='text-3xl font-semibold text-black'> {user.current && user.current.name} </h1>
                     </div>
                 </div>
                 <div className='w-full col-span-3 border-solid border-2 border-dark-500 rounded-lg'>

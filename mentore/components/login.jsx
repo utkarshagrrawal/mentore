@@ -32,9 +32,6 @@ export function Login() {
                 showConfirmButton: false,
                 timer: 1500
             })
-            localStorage.setItem('token', result.token);
-            localStorage.setItem('name', result.name);
-            localStorage.setItem('email', login.email);
             navigate('/');
         } else {
             Swal.fire(
@@ -47,21 +44,14 @@ export function Login() {
     }
 
     useEffect(() => {
-        if (localStorage.getItem('token') === null) {
-            return;
-        }
         const getUser = async () => {
             let user = await fetch('http://localhost:3000/getcurrentuser', {
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': localStorage.getItem('token')
                 }
             });
             let result = await user.json();
             if (result.error) {
-                localStorage.removeItem('token');
-                localStorage.removeItem('name');
-                localStorage.removeItem('email');
                 return;
             } else {
                 navigate('/');
