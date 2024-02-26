@@ -1,13 +1,10 @@
-import { React } from 'react';
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { TbLogout } from "react-icons/tb";
-import { FaLock } from "react-icons/fa6";
 import Select from 'react-select';
 import Swal from 'sweetalert2';
 import { Loader } from './loader';
 import { Editor } from '@tinymce/tinymce-react';
-import { TINY_MCE_API_KEY } from '../src/assets/credentials'
+import { TINY_MCE_API_KEY } from '../src/assets/credentials';
 
 export function Profile() {
     const user = useRef({});
@@ -136,11 +133,9 @@ export function Profile() {
                 )
             } else {
                 meetings.current = result.result;
-                console.log(meetings.current)
             }
             setMeetingsLoading(false);
         }
-
         getMeetings()
     }, [])
 
@@ -162,12 +157,52 @@ export function Profile() {
         navigate('/login');
     }
 
-    const handleApprove = async (element) => {
-        console.log(element.target.closest('tr'))
+    const handleApprove = async (id) => {
+        const approveRequest = await fetch('http://localhost:3000/approvemeetings?id=' + id, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const response = await approveRequest.json();
+        if (response.error) {
+            Swal.fire(
+                'Error',
+                response.error,
+                'error'
+            )
+        } else {
+            Swal.fire(
+                'Success',
+                response.result,
+                'success'
+            )
+        }
+        return;
     }
 
-    const handleReject = async (element) => {
-        console.log(element.target.closest('tr'))
+    const handleReject = async (id) => {
+        const rejectRequest = await fetch('http://localhost:3000/rejectmeetings?id=' + id, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        const response = await rejectRequest.json();
+        if (response.error) {
+            Swal.fire(
+                'Error',
+                response.error,
+                'error'
+            )
+        } else {
+            Swal.fire(
+                'Success',
+                response.result,
+                'success'
+            )
+        }
+        return;
     }
 
     // handles webinar details
@@ -417,22 +452,23 @@ export function Profile() {
 
     const profilePage = (
         <>
-            <div className='flex justify-center'>
-                <Link to='/' className='relative top-3'><img src="../static/logo.png" className="h-12 mix-blend-multiply" alt="Mentore" /></Link>
-            </div>
-            <div className='w-full'>
-                <div className='flex justify-between mx-14 mt-4'>
-                    <Link to='/change-password' type="button" className="flex items-center gap-2 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center me-2 mb-2"><FaLock className='w-4 h-auto' /> Change password</Link>
-                    <button onClick={handleLogout} type="button" className="flex items-center gap-2 text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center me-2 mb-2"><TbLogout className='w-6 h-auto' /> Logout</button>
+            <div className='w-full bg-[#d2d2d217]'>
+                <div className='flex flex-wrap justify-center items-center md:justify-between lg:justify-between mx-16 my-3'>
+                    <Link to='/'><img src="../static/logo.png" className="h-8 mix-blend-multiply" alt="Mentore" /></Link>
+                    <div className='flex items-center gap-2'>
+                        <Link to='/change-password' type="button" className="flex items-center gap-1 px-3 py-1 font-medium rounded-lg text-sm text-blue-700 hover:text-white border-blue-700 border hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 hover:duration-150">Change password</Link>
+                        <button onClick={handleLogout} type="button" className="flex items-center gap-1 px-3 py-1 font-medium rounded-lg text-sm text-red-700 hover:text-white border-red-700 border hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 hover:duration-150">Logout</button>
+                    </div>
                 </div>
             </div>
-            <div className='gap-4 sm:grid sm:grid-cols-4 flex flex-col mx-10 sm:mx-14 mt-2'>
+            <hr className='w-full'></hr>
+            <div className='gap-4 sm:grid sm:grid-cols-4 flex flex-col mx-10 sm:mx-14 mt-8'>
                 <div className='w-full border-solid border-2 border-dark-500 rounded-lg'>
                     <div className='flex flex-col items-center mx-4 lg:mx-16 my-10 h-48'>
                         {user.current.male ? (
-                            <img src="../static/male-avatar.png" className="h-24 w-24 rounded-full" alt="Profile" />
+                            <img src="../static/male-avatar.png" className="h-36 w-36 rounded-full" alt="Profile" />
                         ) : (
-                            <img src="../static/female-avatar.png" className="h-24 w-24 rounded-full" alt="Profile" />
+                            <img src="../static/female-avatar.png" className="h-36 w-36 rounded-full" alt="Profile" />
                         )}
                         <h1 className='text-3xl text-center font-semibold text-black'> {user.current && user.current.name && user.current.name.trim()} </h1>
                     </div>
@@ -531,10 +567,10 @@ export function Profile() {
                                         <td className="px-6 py-4 text-black">
                                             {item.status === 'pending' ? (
                                                 <div className='grid grid-cols-2 gap-2'>
-                                                    <button onClick={handleApprove} className='border border-green-500 duration-150 hover:bg-green-700 focus:ring-2 focus:ring-green-500 hover:text-white font-medium rounded-lg text-sm px-6 py-1'>
+                                                    <button onClick={() => handleApprove(item.uniq_id)} className='border border-green-500 duration-150 hover:bg-green-700 focus:ring-2 focus:ring-green-500 hover:text-white font-medium rounded-lg text-sm px-6 py-1'>
                                                         Accept
                                                     </button>
-                                                    <button onClick={handleReject} className='border border-red-500 duration-150 hover:bg-red-700 focus:ring-2 focus:ring-red-500 hover:text-white font-medium rounded-lg text-sm px-6 py-1'>
+                                                    <button onClick={() => handleReject(item.uniq_id)} className='border border-red-500 duration-150 hover:bg-red-700 focus:ring-2 focus:ring-red-500 hover:text-white font-medium rounded-lg text-sm px-6 py-1'>
                                                         Reject
                                                     </button>
                                                 </div>
@@ -658,10 +694,10 @@ export function Profile() {
                                             {item.title}
                                         </td>
                                         <td className="px-6 py-4 text-black whitespace-pre-line">
-                                            <Link to={`/blog/${item.id}`} className='text-white bg-blue-500 py-2 px-4 rounded-full font-bold'>View</Link>
+                                            <Link to={`/blog/${item.id}`} className='border border-blue-500 duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-6 py-1'>View</Link>
                                         </td>
                                         <td className="px-6 py-4 text-black">
-                                            <button className='bg-red-400 text-white font-bold py-2 px-4 rounded-full' onClick={() => handleBlogDelete(item.id)}>Delete</button>
+                                            <button className='border border-red-500 duration-150 hover:bg-red-700 focus:ring-2 focus:ring-red-500 hover:text-white font-medium rounded-lg text-sm px-6 py-1' onClick={() => handleBlogDelete(item.id)}>Delete</button>
                                         </td>
                                     </tr>
                                 )
