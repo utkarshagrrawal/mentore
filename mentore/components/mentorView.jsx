@@ -286,7 +286,7 @@ export function MentorView() {
                         <textarea id='about' name='about' value={schedulingDetails.about} onChange={handleSchedulingDetails} placeholder='Please specify the reason in brief for this session requirement' className='border rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'></textarea>
                     </div>
                     <div className='flex justify-center mt-4'>
-                        <button className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-3 w-full' onClick={handleSchedule}>Schedule</button>
+                        <button className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-[0.4rem] w-full' onClick={handleSchedule}>Schedule</button>
                     </div>
                 </div>
             </div>

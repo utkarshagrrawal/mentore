@@ -128,11 +128,37 @@ const paymentsuccess = async (req, res) => {
     return res.json({ success: 'Payment successful' })
 }
 
+const approveMeeting = async (req, res) => {
+    const { id } = req.query
+    const { data, error } = await supabase
+        .from('schedule_mentors')
+        .update({ status: 'approved' })
+        .eq('uniq_id', id)
+    if (error) {
+        return res.json({ error: error.message })
+    }
+    return res.json({ success: 'Meeting approved' })
+}
+
+const rejectMeeting = async (req, res) => {
+    const { id } = req.query
+    const { data, error } = await supabase
+        .from('schedule_mentors')
+        .update({ status: 'rejected' })
+        .eq('uniq_id', id)
+    if (error) {
+        return res.json({ error: error.message })
+    }
+    return res.json({ success: 'Meeting rejected' })
+}
+
 
 module.exports = {
     getMentorAvailability,
     getMentorBookings,
     mentorAllBookings,
     pay,
-    paymentsuccess
+    paymentsuccess,
+    approveMeeting,
+    rejectMeeting
 }
