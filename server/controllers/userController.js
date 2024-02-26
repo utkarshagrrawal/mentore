@@ -212,6 +212,9 @@ const getcurrentuser = async (req, res) => {
         .from('users')
         .select('')
         .eq('email', email)
+    if (!data) {
+        return res.json({ error: 'Invalid session' })
+    }
     return res.json({ result: data[0] })
 }
 
