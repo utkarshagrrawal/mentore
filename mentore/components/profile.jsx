@@ -16,10 +16,12 @@ export function Profile() {
     const allWebinars = useRef([]);
     const editorRef = useRef(null);
     const allBlogs = useRef([]);
+    const meetings = useRef([]);
     const [loading, setLoading] = useState(true);
     const [isMentor, setIsMentor] = useState(false);
     const [skillsLoading, setSkillsLoading] = useState(true);
     const [detailsLoading, setDetailsLoading] = useState(true);
+    const [meetingsLoading, setMeetingsLoading] = useState(true);
     const [webinarDetails, setWebinarDetails] = useState({ title: '', start: '', end: '' });
     const [webinarDetailsShow, setWebinarDetailsShow] = useState('Create webinar');
     const [webinarDetailsLoading, setWebinarDetailsLoading] = useState(true);
@@ -114,6 +116,33 @@ export function Profile() {
             getMentorDetails();
         }
     }, [isMentor])
+
+    useEffect(() => {
+        const options = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }
+
+        const getMeetings = async () => {
+            const response = await fetch('http://localhost:3000/getmentorallmeetings', options);
+            const result = await response.json();
+            if (result.error) {
+                Swal.fire(
+                    'Error',
+                    result.error,
+                    'error'
+                )
+            } else {
+                meetings.current = result.result;
+                console.log(meetings.current)
+            }
+            setMeetingsLoading(false);
+        }
+
+        getMeetings()
+    }, [])
 
     const handleLogout = async () => {
         const sendLogoutRequest = await fetch('http://localhost:3000/logout', {
@@ -392,18 +421,20 @@ export function Profile() {
                 <Link to='/' className='relative top-3'><img src="../static/logo.png" className="h-12 mix-blend-multiply" alt="Mentore" /></Link>
             </div>
             <div className='w-full'>
-                <div className='flex justify-between mx-14'>
+                <div className='flex justify-between mx-14 mt-4'>
                     <Link to='/change-password' type="button" className="flex items-center gap-2 text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1 text-center me-2 mb-2"><FaLock className='w-4 h-auto' /> Change password</Link>
                     <button onClick={handleLogout} type="button" className="flex items-center gap-2 text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1 text-center me-2 mb-2"><TbLogout className='w-6 h-auto' /> Logout</button>
                 </div>
             </div>
-            <div className='gap-4 grid grid-cols-4 lg:mx-14 mt-2'>
+            <div className='gap-4 sm:grid sm:grid-cols-4 flex flex-col mx-10 sm:mx-14 mt-2'>
                 <div className='w-full border-solid border-2 border-dark-500 rounded-lg'>
                     <div className='flex flex-col items-center mx-4 lg:mx-16 my-10 h-48'>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#362af4" className="w-48 auto">
-                            <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" clipRule="evenodd" />
-                        </svg>
-                        <h1 className='text-3xl font-semibold text-black'> {user.current && user.current.name} </h1>
+                        {user.current.male ? (
+                            <img src="../static/male-avatar.png" className="h-24 w-24 rounded-full" alt="Profile" />
+                        ) : (
+                            <img src="../static/female-avatar.png" className="h-24 w-24 rounded-full" alt="Profile" />
+                        )}
+                        <h1 className='text-3xl text-center font-semibold text-black'> {user.current && user.current.name && user.current.name.trim()} </h1>
                     </div>
                 </div>
                 <div className='w-full col-span-3 border-solid border-2 border-dark-500 rounded-lg'>
@@ -471,13 +502,10 @@ export function Profile() {
                         <thead className="text-xs text-white uppercase bg-blue-600">
                             <tr className='text-center'>
                                 <th scope="col" className="px-6 py-3">
-                                    Student name
+                                    Start time
                                 </th>
                                 <th scope="col" className="px-6 py-3">
-                                    Date
-                                </th>
-                                <th scope="col" className="px-6 py-3">
-                                    Time
+                                    End time
                                 </th>
                                 <th scope="col" className="px-6 py-3">
                                     About
@@ -488,23 +516,37 @@ export function Profile() {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr className="border-b border-blue-400 text-center">
-                                <th scope="row" className="px-6 py-4 font-medium text-black whitespace-pre-line">
-                                    Ahmed darwish
-                                </th>
-                                <td className="px-6 py-4 text-black">
-                                    29/01/2024
-                                </td>
-                                <td className="px-6 py-4 text-black">
-                                    4PM
-                                </td>
-                                <td className="px-6 py-4 text-black">
-                                    machine learning
-                                </td>
-                                <td className="px-6 py-4 text-black">
-                                    <button className='bg-green-400 text-white font-bold py-2 px-4 rounded-full mr-4' disabled>Completed</button>
-                                </td>
-                            </tr>
+                            {meetings.current && meetings.current.map((item) => {
+                                return (
+                                    <tr className="border-b border-blue-400 text-center">
+                                        <th scope="row" className="px-6 py-4 font-medium text-black whitespace-pre-line">
+                                            {new Date(item.start_time).toLocaleDateString() + ' ' + new Date(item.start_time).toLocaleTimeString()}
+                                        </th>
+                                        <td className="px-6 py-4 text-black">
+                                            {new Date(item.end_time).toLocaleDateString() + ' ' + new Date(item.end_time).toLocaleTimeString()}
+                                        </td>
+                                        <td className="px-6 py-4 text-black">
+                                            {item.about || 'No description'}
+                                        </td>
+                                        <td className="px-6 py-4 text-black">
+                                            {item.status === 'pending' ? (
+                                                <div className='grid grid-cols-2 gap-2'>
+                                                    <button onClick={handleApprove} className='border border-green-500 duration-150 hover:bg-green-700 focus:ring-2 focus:ring-green-500 hover:text-white font-medium rounded-lg text-sm px-6 py-1'>
+                                                        Accept
+                                                    </button>
+                                                    <button onClick={handleReject} className='border border-red-500 duration-150 hover:bg-red-700 focus:ring-2 focus:ring-red-500 hover:text-white font-medium rounded-lg text-sm px-6 py-1'>
+                                                        Reject
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <button onClick={() => location.href()} className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-1 w-full' disabled={(new Date() > new Date(item.end_time)) || (new Date() < new Date(item.start_time))}>
+                                                    Join
+                                                </button>
+                                            )}
+                                        </td>
+                                    </tr>
+                                )
+                            })}
                         </tbody>
                     </table>
                 </div>
@@ -545,7 +587,7 @@ export function Profile() {
                                                 {item.title}
                                             </td>
                                             <td className="px-6 py-4 text-black whitespace-pre-line">
-                                                <button onClick={() => handleJoinWebinar(item.meeting_link)} target='_blank' className='text-white bg-blue-500 py-2 px-4 rounded-full font-bold hover:text-blue-700 hover:underline'>Join</button>
+                                                <button onClick={() => handleJoinWebinar(item.meeting_link)} target='_blank' className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-1 w-full'>Join</button>
                                             </td>
                                         </tr>
                                     )
@@ -555,29 +597,31 @@ export function Profile() {
                     </table>
                 </div>
             </div>
-            <div className='flex w-full mb-8 mt-2 px-14 justify-end'>
-                <button onClick={handleWebinarCreateBtn} className='bg-blue-500 text-white font-bold py-2 px-4 rounded-full'>{webinarDetailsShow}</button>
+            <div className='flex w-full mb-8 mt-4 px-14 justify-end'>
+                <button onClick={handleWebinarCreateBtn} className='border-[0.1rem] bg-[#fdc113] focus:ring-2 focus:ring-black text-black font-medium rounded-lg text-sm px-8 py-1 w-full'>{webinarDetailsShow}</button>
             </div>
 
             {
                 (webinarDetailsShow === 'Cancel creation') ? (
-                    <div className='w-full mb-8'>
-                        <div className='grid grid-cols-3 gap-2 mx-14'>
-                            <div className='w-full flex flex-col'>
-                                <h1 className='font-bold my-4'>Title</h1>
-                                <input id='title' name='title' type='text' onChange={handleWebinarDetails} className='w-full p-2 border-2 border-blue-400 rounded-md' />
+                    <div className="w-full mb-8">
+                        <div className="mx-16 bg-blue-50 rounded-lg p-4 border-[0.01rem] border-black">
+                            <div className="grid grid-cols-3 gap-4">
+                                <div className="flex flex-col">
+                                    <label htmlFor="title" className="font-bold mb-2">Title</label>
+                                    <input id="title" name="title" type="text" onChange={handleWebinarDetails} className="w-full p-2 border border-blue-400 rounded-md" />
+                                </div>
+                                <div className="flex flex-col">
+                                    <label htmlFor="start" className="font-bold mb-2">Start time</label>
+                                    <input id="start" name="start" type="datetime-local" onChange={handleWebinarDetails} className="w-full p-2 border border-blue-400 rounded-md" />
+                                </div>
+                                <div className="flex flex-col">
+                                    <label htmlFor="end" className="font-bold mb-2">End time</label>
+                                    <input id="end" name="end" type="datetime-local" onChange={handleWebinarDetails} className="w-full p-2 border border-blue-400 rounded-md" />
+                                </div>
                             </div>
-                            <div className='w-full flex flex-col'>
-                                <h1 className='font-bold my-4'>Start time</h1>
-                                <input id='start' name='start' type='datetime-local' onChange={handleWebinarDetails} className='w-full p-2 border-2 border-blue-400 rounded-md' />
+                            <div className="flex justify-end mt-4">
+                                <button onClick={handleCreateWebinar} className="border border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-6 py-2">Schedule</button>
                             </div>
-                            <div className='w-full flex flex-col'>
-                                <h1 className='font-bold my-4'>End time</h1>
-                                <input id='end' name='end' type='datetime-local' onChange={handleWebinarDetails} className='w-full p-2 border-2 border-blue-400 rounded-md' />
-                            </div>
-                        </div>
-                        <div className='flex w-full mb-8 mt-2 px-14 justify-end'>
-                            <button onClick={handleCreateWebinar} className='bg-blue-500 text-white font-bold py-2 px-4 rounded-full'>Schedule</button>
                         </div>
                     </div>
                 ) : null
@@ -626,37 +670,39 @@ export function Profile() {
                     </table>
                 </div>
             </div>
-            <div className='flex w-full mb-8 mt-2 px-14 justify-end'>
-                <button onClick={handleCreateBlogBtn} className='bg-blue-500 text-white font-bold py-2 px-4 rounded-full'>{blogCreate}</button>
+            <div className='flex w-full mb-8 mt-4 px-14 justify-end'>
+                <button onClick={handleCreateBlogBtn} className='border-[0.1rem] bg-[#fdc113] focus:ring-2 focus:ring-black text-black font-medium rounded-lg text-sm px-8 py-1 w-full'>{blogCreate}</button>
             </div>
 
             {
                 (blogCreate === 'Cancel creation') ? (
-                    <div className='w-full flex flex-col px-14 mb-8'>
-                        <div className='w-1/2'>
-                            <h1 className='font-bold my-4'>Title</h1>
-                            <input id='blogTitle' name='blogTitle' type='text' className='w-full p-2 border-2 border-blue-400 rounded-md mb-4' />
+                    <div className='w-full mb-8'>
+                        <div className='flex flex-col mx-16 p-4 rounded-lg border-[0.01rem] border-black bg-blue-50'>
+                            <div className='w-1/2'>
+                                <h1 className='font-bold my-4'>Title</h1>
+                                <input id='blogTitle' name='blogTitle' type='text' className='w-full p-2 border border-blue-400 rounded-md mb-4' />
+                            </div>
+                            <Editor
+                                apiKey={TINY_MCE_API_KEY}
+                                onInit={(evt, editor) => editorRef.current = editor}
+                                initialValue="<p>This is the initial content of the editor.</p>"
+                                init={{
+                                    height: 500,
+                                    menubar: false,
+                                    plugins: [
+                                        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                                        'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                                        'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
+                                    ],
+                                    toolbar: 'undo redo | blocks | ' +
+                                        'bold italic forecolor | alignleft aligncenter ' +
+                                        'alignright alignjustify | bullist numlist outdent indent | ' +
+                                        'removeformat | help',
+                                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                                }}
+                            />
+                            <button onClick={handlePublishBlog} className='border border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-6 py-2 my-4 place-self-end w-1/7'>Publish</button>
                         </div>
-                        <Editor
-                            apiKey={TINY_MCE_API_KEY}
-                            onInit={(evt, editor) => editorRef.current = editor}
-                            initialValue="<p>This is the initial content of the editor.</p>"
-                            init={{
-                                height: 500,
-                                menubar: false,
-                                plugins: [
-                                    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                                    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                                    'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-                                ],
-                                toolbar: 'undo redo | blocks | ' +
-                                    'bold italic forecolor | alignleft aligncenter ' +
-                                    'alignright alignjustify | bullist numlist outdent indent | ' +
-                                    'removeformat | help',
-                                content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-                            }}
-                        />
-                        <button onClick={handlePublishBlog} className='bg-blue-500 text-white font-bold py-2 px-4 rounded-full w-32 self-end mt-4'>Publish</button>
                     </div>
                 ) : null
             }
