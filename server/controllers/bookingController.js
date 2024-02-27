@@ -130,7 +130,7 @@ const approveMeeting = async (req, res) => {
     const { id } = req.query
     const { data, error } = await supabase
         .from('schedule_mentors')
-        .update({ status: 'pending' })
+        .update({ status: 'payment pending' })
         .eq('uniq_id', id)
     if (error) {
         return res.json({ error: error.message })

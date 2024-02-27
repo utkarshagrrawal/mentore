@@ -597,6 +597,10 @@ export function Profile() {
                                         </td>
                                         <td className="px-6 py-4 text-black">
                                             {item.status === 'payment pending' ? (
+                                                <button disabled className='border-[0.1rem] bg-[#fdc113] focus:ring-2 focus:ring-blue-500 font-medium rounded-lg text-sm px-8 py-1 w-full'>
+                                                    Payment pending
+                                                </button>
+                                            ) : item.status === 'pending' ? (
                                                 <div className='grid grid-cols-2 gap-2'>
                                                     <button onClick={() => handleApprove(item.uniq_id)} className='border border-green-500 duration-150 hover:bg-green-700 focus:ring-2 focus:ring-green-500 hover:text-white font-medium rounded-lg text-sm px-6 py-1'>
                                                         Accept
@@ -605,10 +609,6 @@ export function Profile() {
                                                         Reject
                                                     </button>
                                                 </div>
-                                            ) : item.status === 'pending' ? (
-                                                <button disabled className='border-[0.1rem] bg-[#fdc113] focus:ring-2 focus:ring-blue-500 font-medium rounded-lg text-sm px-8 py-1 w-full'>
-                                                    Payment pending
-                                                </button>
                                             ) : (
                                                 <button onClick={() => handleJoinMeeting(item.meeting_link)} className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-1 w-full' disabled={(new Date() > new Date(item.end_time)) || (new Date() < new Date(item.start_time) ? 'true' : 'false')}>
                                                     Join
