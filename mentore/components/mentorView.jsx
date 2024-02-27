@@ -173,6 +173,9 @@ export function MentorView() {
             headers: {
                 'Content-Type': 'application/json',
             },
+            body: JSON.stringify({
+                'title': 'Payment_for_mentor_session_for_' + id,
+            })
         }
 
         const pay = await fetch('http://localhost:3000/pay/' + id, options);
@@ -237,6 +240,29 @@ export function MentorView() {
                 )
             })
             rzp.open();
+        }
+    }
+
+    const handleJoinMeeting = async (link) => {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                meeting_id: link
+            })
+        }
+        const join = await fetch('http://localhost:3000/joinmeetingparticipant', options);
+        const response = await join.json();
+        if (response.error) {
+            Swal.fire(
+                'Error',
+                response.error,
+                'error'
+            )
+        } else {
+            window.open(response.success, '_blank');
         }
     }
 
@@ -325,14 +351,14 @@ export function MentorView() {
                                                 {getMeetingStatus(item)}
                                             </td>
                                             <td scope="row" className='px-6 py-3'>
-                                                {(item.status === 'payment pending') && (
-                                                    <button onClick={() => handlePay(item.uniq_id)} className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-1 w-full'>Pay</button>
-                                                )}
                                                 {(item.status === 'pending') && (
                                                     <button disabled className='border-[0.1rem] bg-[#fdc113] focus:ring-2 focus:ring-blue-500 font-medium rounded-lg text-sm px-8 py-1 w-full'>Pending</button>
                                                 )}
+                                                {(item.status === 'payment pending') && (
+                                                    <button onClick={() => handlePay(item.uniq_id)} className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-1 w-full'>Pay</button>
+                                                )}
                                                 {(item.status === 'approved') && (
-                                                    <Link to="" className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-1 w-full'>Join</Link>
+                                                    <button disabled={(new Date() > new Date(item.end_time)) || (new Date() < new Date(item.start_time) ? 'true' : 'false')} onClick={() => handleJoinMeeting(item.meeting_link)} className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-1 w-full'>Join</button>
                                                 )}
                                             </td>
                                         </tr>

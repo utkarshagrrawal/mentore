@@ -136,8 +136,10 @@ export function Profile() {
             }
             setMeetingsLoading(false);
         }
-        getMeetings()
-    }, [])
+        if (meetingsLoading) {
+            getMeetings()
+        }
+    }, [meetingsLoading])
 
     const handleLogout = async () => {
         const sendLogoutRequest = await fetch('http://localhost:3000/logout', {
@@ -158,6 +160,7 @@ export function Profile() {
     }
 
     const handleApprove = async (id) => {
+        setMeetingsLoading(true);
         const approveRequest = await fetch('http://localhost:3000/approvemeetings?id=' + id, {
             method: 'POST',
             headers: {
@@ -178,10 +181,12 @@ export function Profile() {
                 'success'
             )
         }
+        setMeetingsLoading(false);
         return;
     }
 
     const handleReject = async (id) => {
+        setMeetingsLoading(true);
         const rejectRequest = await fetch('http://localhost:3000/rejectmeetings?id=' + id, {
             method: 'POST',
             headers: {
@@ -202,6 +207,7 @@ export function Profile() {
                 'success'
             )
         }
+        setMeetingsLoading(false);
         return;
     }
 
@@ -347,6 +353,31 @@ export function Profile() {
             getBlogs();
         }
     }, [blogCreateLoading])
+
+    const handleJoinMeeting = async (link) => {
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                meeting_id: link
+            })
+        }
+        const response = await fetch('http://localhost:3000/joinmeetinghost', options);
+        const result = await response.json();
+
+        if (result.error) {
+            Swal.fire(
+                'Error',
+                result.error,
+                'error'
+            )
+        } else {
+            window.open(result.success, '_blank');
+        }
+        return;
+    }
 
     // creates a blog
     const handlePublishBlog = async () => {
@@ -554,7 +585,7 @@ export function Profile() {
                         <tbody>
                             {meetings.current && meetings.current.map((item) => {
                                 return (
-                                    <tr className="border-b border-blue-400 text-center">
+                                    <tr key={item.uniq_id} className="border-b border-blue-400 text-center">
                                         <th scope="row" className="px-6 py-4 font-medium text-black whitespace-pre-line">
                                             {new Date(item.start_time).toLocaleDateString() + ' ' + new Date(item.start_time).toLocaleTimeString()}
                                         </th>
@@ -565,7 +596,7 @@ export function Profile() {
                                             {item.about || 'No description'}
                                         </td>
                                         <td className="px-6 py-4 text-black">
-                                            {item.status === 'pending' ? (
+                                            {item.status === 'payment pending' ? (
                                                 <div className='grid grid-cols-2 gap-2'>
                                                     <button onClick={() => handleApprove(item.uniq_id)} className='border border-green-500 duration-150 hover:bg-green-700 focus:ring-2 focus:ring-green-500 hover:text-white font-medium rounded-lg text-sm px-6 py-1'>
                                                         Accept
@@ -574,8 +605,12 @@ export function Profile() {
                                                         Reject
                                                     </button>
                                                 </div>
+                                            ) : item.status === 'pending' ? (
+                                                <button disabled className='border-[0.1rem] bg-[#fdc113] focus:ring-2 focus:ring-blue-500 font-medium rounded-lg text-sm px-8 py-1 w-full'>
+                                                    Payment pending
+                                                </button>
                                             ) : (
-                                                <button onClick={() => location.href()} className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-1 w-full' disabled={(new Date() > new Date(item.end_time)) || (new Date() < new Date(item.start_time))}>
+                                                <button onClick={() => handleJoinMeeting(item.meeting_link)} className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-1 w-full' disabled={(new Date() > new Date(item.end_time)) || (new Date() < new Date(item.start_time) ? 'true' : 'false')}>
                                                     Join
                                                 </button>
                                             )}
