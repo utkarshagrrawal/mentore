@@ -3,7 +3,7 @@ const cors = require('cors');
 const { registerUser, loginUser, forgotPassword, getcurrentuser, verifyOtp, resendOtp, changepassword, logout } = require('./controllers/userController');
 const { authentication } = require('./utility/passportUtility');
 const { getAllSkills, getMentorDetails, getAllMentors, getMentorProfile } = require('./controllers/mentorController');
-const { createWebinar, getWebinars, getAllWebinars, addParticipant, addHost } = require('./controllers/dyteController');
+const { createWebinar, getWebinars, getAllWebinars, addParticipant, addHost, createMeeting, joinMeetingParticipant, joinMeetingHost } = require('./controllers/dyteController');
 const { getBlogs, createBlog, getCurrentBlog, getAllBlogs, deleteBlog, addLike } = require('./controllers/blogController');
 const { linkRedis } = require('./utility/redisConnection');
 const { getMentorAvailability, getMentorBookings, mentorAllBookings, pay, paymentsuccess, approveMeeting, rejectMeeting } = require('./controllers/bookingController');
@@ -65,13 +65,17 @@ app.get("/getwithmentormeetings/:id", authentication, getMentorBookings)
 
 app.get("/getmentorallmeetings", authentication, mentorAllBookings)
 
-app.post("/pay/:id", authentication, pay)
+app.post("/pay/:id", authentication, pay, createMeeting)
 
 app.post('/paymentsuccess/:id', authentication, paymentsuccess)
 
-app.post("/approve", authentication, approveMeeting);
+app.post("/approvemeetings", authentication, approveMeeting);
 
-app.post("/reject", authentication, rejectMeeting);
+app.post("/rejectmeetings", authentication, rejectMeeting);
+
+app.post("/joinmeetingparticipant", authentication, joinMeetingParticipant);
+
+app.post("/joinmeetinghost", authentication, joinMeetingHost);
 
 app.post("/like", addLike);
 

@@ -1,6 +1,7 @@
 const { supabase } = require("../utility/dbConnection");
 const { razorpayOrderCreate } = require("../utility/razorpayConnection");
-const { razorpay } = require('razorpay')
+const { razorpay } = require('razorpay');
+const { createMeeting } = require("./dyteController");
 
 const getMentorAvailability = async (req, res) => {
     const startDateTime = new Date(req.body.startDateTime).toISOString();
@@ -33,15 +34,13 @@ const getMentorAvailability = async (req, res) => {
     let response = await fetch('https://mentore-api.onrender.com/schedule', options);
     let data = await response.json();
 
-    console.log(data)
-
     if (data.error) {
         return res.json({ error: data.error })
     } else {
-        if (data.availability) {
+        if (data.response) {
             const { error } = await supabase
                 .from('schedule_mentors')
-                .insert({ 'mentee_email': req.user.email, 'mentor_email': mentorEmail, 'start_date': startDateTime, 'end_date': endDateTime, 'about': req.body.about, status: 'payment pending' })
+                .insert({ 'mentee_email': req.user.email, 'mentor_email': mentorEmail, 'start_time': startDateTime, 'end_time': endDateTime, 'about': req.body.about, status: 'pending' })
 
             if (error) {
                 return res.json({ error: error.message })
@@ -87,7 +86,7 @@ const mentorAllBookings = async (req, res) => {
         .from('schedule_mentors')
         .select()
         .eq('mentor_email', req.user.email)
-        .in('status', ['pending', 'approved'])
+        .in('status', ['pending', 'approved', 'payment pending'])
 
     if (error) {
         return res.json({ error: error.message })
@@ -95,7 +94,7 @@ const mentorAllBookings = async (req, res) => {
     return res.json({ result: data })
 }
 
-const pay = async (req, res) => {
+const pay = async (req, res, next) => {
     const { id } = req.params;
     const { data, error } = await supabase
         .from('schedule_mentors')
@@ -110,29 +109,28 @@ const pay = async (req, res) => {
         return res.json({ error: 'No meeting found' })
     }
 
-    const response = await razorpayOrderCreate();
+    req.body.uniq_id = id;
 
-    return res.json({ result: response });
+    next();
 }
 
 const paymentsuccess = async (req, res) => {
     const { id } = req.params
     const { data, error } = await supabase
         .from('schedule_mentors')
-        .update({ status: 'pending' })
+        .update({ status: 'approved' })
         .eq('uniq_id', id)
-
     if (error) {
         return res.json({ error: error.message })
     }
-    return res.json({ success: 'Payment successful' })
+    return res.json({ success: 'Payment successful and meeting booked' })
 }
 
 const approveMeeting = async (req, res) => {
     const { id } = req.query
     const { data, error } = await supabase
         .from('schedule_mentors')
-        .update({ status: 'approved' })
+        .update({ status: 'pending' })
         .eq('uniq_id', id)
     if (error) {
         return res.json({ error: error.message })
