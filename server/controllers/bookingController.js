@@ -59,6 +59,7 @@ const getMentorBookings = async (req, res) => {
     const { data, error } = await supabase
         .from('mentors')
         .select('')
+        .eq('uniq_id', id)
 
     if (error) {
         return res.json({ error: error.message })
