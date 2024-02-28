@@ -95,8 +95,11 @@ export function MentorView() {
             setDataLoading(false)
         }
 
-        getAllMeetings();
-    }, [])
+        if (dataLoading) {
+            getAllMeetings();
+        }
+
+    }, [dataLoading])
 
     const handleSchedulingDetails = (e) => {
         setSchedulingDetails({ ...schedulingDetails, [e.target.id]: e.target.value })
@@ -146,6 +149,7 @@ export function MentorView() {
                 'error'
             )
         } else {
+            setDataLoading(true)
             Swal.fire(
                 'Success',
                 result.result,
