@@ -218,18 +218,18 @@ export function Home() {
                     {data.slice(currentIndex, currentIndex + 3).map((data) => (
                         <div
                             key={data.id}
-                            className="card border-dark-500 h-608px mx-8 mb-8 flex w-96 flex-col justify-center rounded-lg border-2 border-solid p-5 pt-9 shadow-2xl"
+                            className="card border-dark-500 h-608px mx-8 mb-8 flex w-96 flex-col justify-center rounded-lg border-2 border-solid p-5 pt-9 shadow-sm hover:shadow-2xl hover:duration-300 duration-300"
                         >
                             <img
                                 src={data.img}
-                                className="mb-7 flex h-80 w-72 self-center rounded-lg object-contain"
+                                className="mb-7 flex h-80 w-full self-center rounded-lg object-cover aspect-auto"
                                 alt="author photo"
                             />
                             <p className="mb-5 flex self-center text-xl font-medium">
                                 {data.name}
                             </p>
                             <hr />
-                            <p className="flex self-center text-lg font-normal">
+                            <p className="flex self-center text-sm font-normal text-slate-600 text-center mt-4">
                                 {data.review}
                             </p>
                         </div>
