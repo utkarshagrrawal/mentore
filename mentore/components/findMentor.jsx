@@ -98,11 +98,11 @@ export function FindMentor() {
             {/* Mentor Grid */}
             <div className='w-full my-10'>
                 {!detailsLoading && (
-                    <div className='grid lg:grid-cols-3 gap-2 md:grid-cols-2 grid-cols-1 place-content-center place-items-center'>
+                    <div className='grid lg:grid-cols-3 gap-2 md:grid-cols-2 grid-cols-1 place-content-center place-items-center drop-shadow-xl'>
                         {currentMentors.map((mentor, index) => (
                             <div
                                 key={index}
-                                className='max-w-sm w-full mx-16 px-4 pt-8 pb-3 bg-gray-100 mb-8 border border-gray-200 rounded-2xl shadow'
+                                className='max-w-sm w-full mx-16 px-4 pt-8 pb-8 bg-gray-100 mb-8 border border-gray-200 rounded-2xl shadow'
                             >
                                 <img
                                     className='rounded-t-lg h-48 object-contain w-full mix-blend-multiply'
@@ -117,7 +117,7 @@ export function FindMentor() {
                                     <h5 className='mb-2 text-2xl mb-4 font-bold tracking-tight text-gray-900 text-center'>
                                         {mentor && mentor.name}
                                     </h5>
-                                    <p className='font-normal text-gray-700 text-center'>
+                                    <p className='font-normal text-gray-700 text-center font-semibold'>
                                         {mentor && mentor.profession}
                                     </p>
                                     <p className='font-normal text-gray-700 text-center'>
@@ -129,7 +129,7 @@ export function FindMentor() {
                                     </p>
                                     <Link
                                         to={`/mentor/${mentor.uniq_id}`}
-                                        className='flex justify-center w-[19.1rem] items-center bottom-0 absolute px-3 py-3 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300'
+                                        className='flex justify-center w-[19.1rem] items-center bottom-0 absolute px-3 py-2 text-sm font-medium hover:text-white border-[0.1rem] border-black hover:duration-150 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300'
                                     >
                                         View details
                                     </Link>
