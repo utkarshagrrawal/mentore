@@ -158,91 +158,52 @@ export function Home() {
             </nav>
             <hr />
 
-            <div className="mx-4 my-10 flex h-96 flex-col items-center justify-center rounded-lg bg-gradient-to-r from-blue-300 via-gray-300 to-yellow-300 p-4 lg:mx-20">
+            <div className="mx-4 lg:mx-20 my-10 p-4 flex h-[42rem] flex-col items-center justify-center rounded-lg bg-gradient-to-r from-blue-300 via-gray-300 to-yellow-300">
                 <div className="flex flex-col items-center">
                     <h1 className="mb-4 font-sans text-4xl font-semibold">
                         1:1 Long Term Mentorship for
                     </h1>
                     <h1
-                        className="font-sans text-3xl font-semibold transition-opacity duration-500 hover:opacity-50"
+                        className="font-sans text-3xl font-semibold"
                         id="welcomeText"
                     >
                         {welcomeMessages[index % welcomeMessages.length]}
                     </h1>
                 </div>
-                <form className="m-10" onSubmit={handleSearch}>
-                    <label
-                        htmlFor="default-search"
-                        className="sr-only mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                        Search
-                    </label>
-                    <div className="relative">
-                        <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
-                            <svg
-                                className="h-4 w-4 text-gray-500 dark:text-gray-400"
-                                aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 20 20"
-                            >
-                                <path
-                                    stroke="currentColor"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                                />
-                            </svg>
-                        </div>
-                        <input
-                            type="search"
-                            id="default-search"
-                            className="block w-64 rounded-lg border border-gray-300 bg-gray-50 p-4 ps-10 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 md:w-80 lg:w-96"
-                            placeholder="Search domains, mentors..."
-                            required
-                        />
-                        <button
-                            type="submit"
-                            className="absolute bottom-2.5 end-2.5 rounded-lg bg-blue-700 px-4 py-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                        >
+                <form class="m-10 flex items-center justify-center" onSubmit={handleSearch}>
+                    <div class="relative">
+                        <input type="search" id="default-search" class="w-64 md:w-80 lg:w-96 lg:focus:w-[36rem] h-12 px-4 py-2 text-sm text-gray-700 placeholder-gray-500 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 duration-300" placeholder="Search domains, mentors..." required />
+                        <button type="submit" class="absolute inset-y-0 right-0 px-4 py-2 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-700 rounded-r-md duration-300">
                             Search
                         </button>
                     </div>
                 </form>
             </div>
 
-            <div className="mt-10 flex flex-col items-center justify-center">
-                <p className="mb-12 text-2xl font-bold md:text-6xl">Our Testimonials</p>
+            <div className="my-10 flex flex-col items-center justify-center">
+                <p className="mb-10 text-2xl font-bold md:text-6xl">Our Testimonials</p>
                 <div className="duration-5000 flex w-full flex-wrap justify-center transition-all">
                     {data.slice(currentIndex, currentIndex + 3).map((data) => (
-                        <div
-                            key={data.id}
-                            className="card border-dark-500 h-608px mx-8 mb-8 flex w-96 flex-col justify-center rounded-lg border-2 border-solid p-5 pt-9 shadow-sm hover:shadow-2xl hover:duration-300 duration-300"
-                        >
-                            <img
-                                src={data.img}
-                                className="mb-7 flex h-80 w-full self-center rounded-lg object-cover aspect-auto"
-                                alt="author photo"
-                            />
-                            <p className="mb-5 flex self-center text-xl font-medium">
-                                {data.name}
-                            </p>
-                            <hr />
-                            <p className="flex self-center text-sm font-normal text-slate-600 text-center mt-4">
-                                {data.review}
-                            </p>
+                        <div key={data.id} className="mx-8 max-w-sm shadow-lg hover:shadow-2xl duration-200 rounded-xl overflow-hidden border-2 border-solid">
+                            <div className="aspect-[3/4]">
+                                <img src={data.img} className="object-cover w-full h-full" alt="author photo" />
+                            </div>
+                            <div className="p-4">
+                                <p className="text-xl font-semibold text-gray-900 mb-2">{data.name}</p>
+                                <hr className="my-2 border-t border-gray-300" />
+                                <p className="text-sm text-gray-700">{data.review}</p>
+                            </div>
                         </div>
                     ))}
                 </div>
             </div>
 
-            <div className="mx-auto mt-12 mb-10 flex flex-col items-center justify-center gap-4">
+            <div className="mx-auto my-10 flex flex-col items-center justify-center gap-4">
                 <p className="text-2xl font-bold md:text-6xl">No need to struggle</p>
                 <p className="text-2xl font-bold md:text-6xl">alone anymore</p>
             </div>
 
-            <div className="mx-auto mb-20 grid w-3/4 grid-cols-1 md:gap-2 lg:grid-cols-2">
+            <div className="mx-auto grid w-3/4 grid-cols-1 md:gap-2 lg:grid-cols-2">
                 <div className="border-dark-500 flex flex-col items-center justify-center rounded-lg border-2 border-solid p-10 md:flex-row">
                     <div className="flex w-64 flex-col p-1 ">
                         <p className="mb-8 text-sm">1:1 SESSION</p>
@@ -334,7 +295,7 @@ export function Home() {
                 </div>
             </div>
 
-            <div className="mx-auto mt-12 mb-10 flex flex-col items-center justify-center gap-4">
+            <div className="mx-auto my-10 flex flex-col items-center justify-center gap-4">
                 <p className="text-2xl font-bold md:text-6xl">Frequently Asked</p>
                 <p className="text-2xl font-bold md:text-6xl">Questions</p>
             </div>
