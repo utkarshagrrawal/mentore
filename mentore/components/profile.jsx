@@ -278,7 +278,6 @@ export function Profile() {
             return;
         }
         setLoading(true);
-        setWebinarDetailsLoading(true);
         const createMeeting = await fetch('http://localhost:3000/createwebinar', {
             method: 'POST',
             headers: {
@@ -300,6 +299,7 @@ export function Profile() {
                 'success'
             )
         }
+        setWebinarDetailsLoading(true);
         setLoading(false)
     }
 

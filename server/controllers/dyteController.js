@@ -21,7 +21,7 @@ const createWebinar = async (req, res) => {
     } else {
         const { error } = await supabase
             .from('webinar')
-            .insert({ title: req.body.title, meeting_link: 'https://api.dyte.io/v2/meetings/' + response.data.id, start_time: req.body.start, end_time: req.body.end, mentor_email: req.user.email })
+            .insert({ title: req.body.title, meeting_link: 'https://api.dyte.io/v2/meetings/' + response.data.id, start_time: req.body.start, end_time: req.body.end, mentor_email: req.user.email, mentor_name: req.user.name })
         if (error) {
             return res.json({ error: error.message })
         }
