@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { data } from "../src/assets/stories";
 import { questions } from "../src/assets/question_ans";
 import parse from "html-react-parser";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 export function Home() {
     const [visible, setVisible] = useState(false);
@@ -56,20 +59,18 @@ export function Home() {
         e.preventDefault();
     };
 
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentIndex((prevIndex) =>
-                prevIndex + 3 >= data.length ? 0 : prevIndex + 3,
-            );
-        }, 5000);
-
-        return () => clearInterval(interval);
-    }, []);
-
     const handleQuestionClick = (id) => {
         setSelectedQuestion(id === selectedQuestion ? null : id);
+    };
+
+    const settings = {
+        dots: false,
+        infinite: true,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        pauseOnHover: true
     };
 
     return (
@@ -182,21 +183,23 @@ export function Home() {
 
             <div className="my-10 flex flex-col items-center justify-center">
                 <p className="mb-10 text-2xl font-bold md:text-6xl">Our Testimonials</p>
-                <div className="duration-5000 flex w-full flex-wrap justify-center transition-all">
-                    {data.slice(currentIndex, currentIndex + 3).map((data) => (
-                        <div key={data.id} className="mx-8 max-w-sm shadow-lg hover:shadow-2xl duration-200 rounded-xl overflow-hidden border-2 border-solid">
-                            <div className="aspect-[3/4]">
-                                <img src={data.img} className="object-cover w-full h-full" alt="author photo" />
+                <div className="container">
+                    <Slider {...settings}>
+                        {data.map((data) => (
+                            <div key={data.id} className="mx-8 max-w-sm min-h-[42rem] shadow-lg hover:shadow-2xl duration-200 rounded-xl overflow-hidden border-2 border-solid">
+                                <div className="aspect-[3/4]">
+                                    <img src={data.img} className="object-cover w-full h-full" alt="author photo" />
+                                </div>
+                                <div className="p-4">
+                                    <p className="text-xl font-semibold text-gray-900 mb-2">{data.name}</p>
+                                    <hr className="my-2 border-t border-gray-300" />
+                                    <p className="text-sm text-gray-700">{data.review}</p>
+                                </div>
                             </div>
-                            <div className="p-4">
-                                <p className="text-xl font-semibold text-gray-900 mb-2">{data.name}</p>
-                                <hr className="my-2 border-t border-gray-300" />
-                                <p className="text-sm text-gray-700">{data.review}</p>
-                            </div>
-                        </div>
-                    ))}
+                        ))}
+                    </Slider>
                 </div>
-            </div>
+            </div >
 
             <div className="mx-auto my-10 flex flex-col items-center justify-center gap-4">
                 <p className="text-2xl font-bold md:text-6xl">No need to struggle</p>
