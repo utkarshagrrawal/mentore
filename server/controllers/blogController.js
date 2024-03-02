@@ -71,10 +71,11 @@ const getComments = async (req, res) => {
 }
 
 const postComment = async (req, res) => {
-    const { blogID, comment } = req.body;
+    const { comment } = req.body;
+    const { id } = req.params;
     const { error } = await supabase
         .from("blog_comments")
-        .insert({ blog_id: blogID, comment: comment, user_email: req.user.email, user_name: req.user.name, time: new Date().toISOString(), gender: req.user.male });
+        .insert({ blog_id: id, comment: comment, user_email: req.user.email, user_name: req.user.name, time: new Date().toISOString(), gender: req.user.male });
 
     if (error) {
         return res.json({ error: error.message });

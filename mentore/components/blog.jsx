@@ -128,7 +128,6 @@ export function Blog() {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                "blogID": id,
                 "comment": comments.value
             })
         };
@@ -226,7 +225,7 @@ export function Blog() {
                         <textarea id="newComments" className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none p-3 resize-none duration-200" placeholder="Enter your thoughts here..."></textarea>
                     </div>
                     <div className="col-span-12 md:col-span-1 w-full mt-4 md:mt-0">
-                        <button className="bg-blue-500 hover:bg-blue-600 flex items-center text-white font-semibold py-2 px-4 border border-blue-500 rounded-lg transition duration-200" onClick={() => handlePost(item.id)}>
+                        <button className="bg-blue-500 hover:bg-blue-600 flex items-center text-white font-semibold py-2 px-4 border border-blue-500 rounded-lg transition duration-200" onClick={handlePost}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6 inline-block mr-2">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
                             </svg>
