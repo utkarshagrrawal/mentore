@@ -73,7 +73,7 @@ const postComment = async (req, res) => {
     const { id } = req.params;
     const { error } = await supabase
         .from("blog_comments")
-        .insert({ blog_id: id, comment: comment, user_email: req.user.email, user_name: req.user.name, time: new Date().toISOString(), gender: req.user.male });
+        .insert({ blog_id: id, comment: comment, user_email: req.user.email, user_name: req.user.name, time: new Date().toISOString(), gender: req.user.gender });
 
     if (error) {
         return res.json({ error: error.message });
