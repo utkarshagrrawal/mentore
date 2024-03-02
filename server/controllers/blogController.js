@@ -57,6 +57,117 @@ const deleteBlog = async (req, res) => {
     }
 };
 
+const getComments = async (req, res) => {
+    const { id } = req.params;
+    const { data, error } = await supabase
+        .from("blog_comments")
+        .select("")
+        .eq("blog_id", id)
+
+    if (error) {
+        return res.json({ error: error.message });
+    }
+    return res.json({ result: data })
+}
+
+const postComment = async (req, res) => {
+    const { blogID, comment } = req.body;
+    const { error } = await supabase
+        .from("blog_comments")
+        .insert({ blog_id: blogID, comment: comment, user_email: req.user.email, user_name: req.user.name, time: new Date().toISOString(), gender: req.user.male });
+
+    if (error) {
+        return res.json({ error: error.message });
+    }
+    return res.json({ success: "Comment added successfully!" });
+}
+
+const addCommentLike = async (req, res) => {
+    const { commentID } = req.body;
+
+    const { error: newError } = await supabase
+        .from("blog_comment_dislikes")
+        .delete()
+        .eq("comment_id", commentID)
+        .eq("user_email", req.user.email);
+
+    if (newError) {
+        return res.json({ error: newError.message });
+    }
+
+    const { data, error } = await supabase
+        .from("blog_comment_likes")
+        .select("")
+        .eq("comment_id", commentID)
+        .eq("user_email", req.user.email);
+
+    if (error) {
+        return res.json({ error: error.message });
+    }
+    if (data && data.length === 0) {
+        const { error } = await supabase
+            .from("blog_comment_likes")
+            .insert({ comment_id: commentID, user_email: req.user.email })
+        if (error) {
+            return res.json({ error: error.message });
+        }
+        return res.json({ success: "Like added successfully!" });
+    } else if (data && data.length > 0) {
+        const { error } = await supabase
+            .from("blog_comment_likes")
+            .delete()
+            .eq("comment_id", commentID)
+            .eq("user_email", req.user.email);
+        if (error) {
+            return res.json({ error: error.message });
+        }
+        return res.json({ success: "Like removed successfully!" });
+    }
+}
+
+const addCommentDislike = async (req, res) => {
+    const { commentID } = req.body;
+
+    const { error: newError } = await supabase
+        .from("blog_comment_dislikes")
+        .delete()
+        .eq("comment_id", commentID)
+        .eq("user_email", req.user.email);
+
+    if (newError) {
+        return res.json({ error: newError.message });
+    }
+
+    const { data, error } = await supabase
+        .from("blog_comment_dislikes")
+        .select("")
+        .eq("comment_id", commentID)
+        .eq("user_email", req.user.email);
+
+    if (error) {
+        return res.json({ error: error.message });
+    }
+    if (data && data.length === 0) {
+        const { error } = await supabase
+            .from("blog_comment_dislikes")
+            .insert({ comment_id: commentID, user_email: req.user.email })
+        if (error) {
+            return res.json({ error: error.message });
+        }
+        return res.json({ success: "Dislike added successfully!" });
+    } else if (data && data.length > 0) {
+        const { error } = await supabase
+            .from("blog_comment_dislikes")
+            .delete()
+            .eq("comment_id", commentID)
+            .eq("user_email", req.user.email);
+        if (error) {
+            return res.json({ error: error.message });
+        }
+        return res.json({ success: "Dislike removed successfully!" });
+    }
+}
+
 const addLike = async (req, res) => {
     const { blogID } = req.body;
     const { data, error } = await supabase
@@ -79,20 +190,6 @@ const addLike = async (req, res) => {
     return res.json({ error: newError.message });
 };
 
-const addComment = async (req, res) => {
-    const { blogID, comment } = req.body;
-    const { error } = await supabase
-        .from("blogs")
-        .update({ comments: supabase.sql`comments || ${[comment]}` })
-        .eq("id", blogID);
-
-    if (!error) {
-        return res.json({ success: "Comment added successfully!" });
-    }
-
-    return res.json({ error: error.message });
-};
-
 module.exports = {
     getBlogs,
     getAllBlogs,
@@ -100,5 +197,8 @@ module.exports = {
     getCurrentBlog,
     deleteBlog,
     addLike,
-    addComment,
+    getComments,
+    postComment,
+    addCommentLike,
+    addCommentDislike
 };

@@ -174,7 +174,7 @@ export function Insights() {
 
             {/* Main Content Section */}
             <div className="w-full">
-                <div className="mx-16 my-3 flex w-full flex-wrap items-center justify-center">
+                <div className="mx-16 my-3 flex flex-wrap items-center justify-center">
                     <h1 className="mr-16 text-4xl font-bold">Insights</h1>
                 </div>
                 <div className="my-3 flex w-full flex-wrap items-center justify-center">
