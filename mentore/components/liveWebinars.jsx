@@ -95,8 +95,8 @@ export function LiveWebinars() {
             </div>
             <hr className='w-full' />
             <div className="w-full">
-                <div className="flex w-full flex-wrap justify-center items-center mx-16 mt-3 mb-14">
-                    <h1 className="text-4xl font-bold mr-16">Live webinars</h1>
+                <div className="flex flex-wrap justify-center items-center mx-16 mt-3 mb-14">
+                    <h1 className="text-4xl font-bold mr-16 text-center">Live webinars</h1>
                 </div>
                 <div className="flex w-full flex-wrap justify-center items-center my-3">
                     <div className="w-full mx-16 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">

@@ -4,7 +4,7 @@ const { registerUser, loginUser, forgotPassword, getcurrentuser, verifyOtp, rese
 const { authentication } = require('./utility/passportUtility');
 const { getAllSkills, getMentorDetails, getAllMentors, getMentorProfile } = require('./controllers/mentorController');
 const { createWebinar, getWebinars, getAllWebinars, addParticipant, addHost, createMeeting, joinMeetingParticipant, joinMeetingHost } = require('./controllers/dyteController');
-const { getBlogs, createBlog, getCurrentBlog, getAllBlogs, deleteBlog, addLike } = require('./controllers/blogController');
+const { getBlogs, createBlog, getCurrentBlog, getAllBlogs, deleteBlog, addLike, getComments, postComment, addCommentLike, addCommentDislike } = require('./controllers/blogController');
 const { linkRedis } = require('./utility/redisConnection');
 const { getMentorAvailability, getMentorBookings, mentorAllBookings, pay, paymentsuccess, approveMeeting, rejectMeeting } = require('./controllers/bookingController');
 require('dotenv').config();
@@ -57,6 +57,14 @@ app.get("/getallblogs", getAllBlogs);
 
 app.post("/deleteblog", authentication, deleteBlog);
 
+app.get("/getcomments/:id", authentication, getComments);
+
+app.post("/postcomment/:id", authentication, postComment)
+
+app.post("/addliketocomment", authentication, addCommentLike)
+
+app.post("/adddisliketocomment", authentication, addCommentDislike)
+
 app.get("/getmentorprofile", authentication, getMentorProfile);
 
 app.post("/schedulemeet", authentication, getMentorAvailability)
@@ -78,8 +86,6 @@ app.post("/joinmeetingparticipant", authentication, joinMeetingParticipant);
 app.post("/joinmeetinghost", authentication, joinMeetingHost);
 
 app.post("/like", addLike);
-
-/* app.post("/comment", addComment); */
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
