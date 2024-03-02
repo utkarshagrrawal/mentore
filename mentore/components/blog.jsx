@@ -4,6 +4,7 @@ import Swal from "sweetalert2";
 import parse from 'html-react-parser';
 
 export function Blog() {
+    const user = useRef([]);
     const [loggedIn, setLoggedIn] = useState(false);
     const [loading, setLoading] = useState({ loading: true, blogLoading: true });
     const [commentsLoading, setCommentsLoading] = useState(true);
@@ -27,6 +28,7 @@ export function Blog() {
                 navigate('/login');
                 setLoggedIn(false);
             } else {
+                user.current = result.result;
                 setLoggedIn(true);
             }
         };
@@ -186,8 +188,8 @@ export function Blog() {
             })
         }
 
-        const resposne = await fetch("http://localhost:3000/adddisliketocomment", options);
-        const result = await respone.json();
+        const response = await fetch("http://localhost:3000/adddisliketocomment", options);
+        const result = await response.json();
 
         if (result.error) {
             Swal.fire(
@@ -251,16 +253,34 @@ export function Blog() {
                                         </div>
                                         <div className="flex items-center gap-2">
                                             <div className="flex items-center">
-                                                <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" onClick={() => handleLike(item.comment_id)}>
-                                                    <path fill="currentColor" d="M12.781 2.375c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625zM15 12h-1v8h-4v-8H6.081L12 4.601L17.919 12z"></path>
-                                                </svg>
-                                                <span className="ml-1 text-sm text-gray-600">{item.likes || 0}</span>
+                                                {
+                                                    item.liked_by && item.liked_by.includes(user.current.email) ?
+                                                        (
+                                                            <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" onClick={() => handleLike(item.comment_id)}>
+                                                                <path fill="currentColor" d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
+                                                            </svg>
+                                                        ) : (
+                                                            <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" onClick={() => handleLike(item.comment_id)}>
+                                                                <path fill="currentColor" d="M12.781 2.375c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625zM15 12h-1v8h-4v-8H6.081L12 4.601L17.919 12z"></path>
+                                                            </svg>
+                                                        )
+                                                }
+                                                <span className="ml-1 text-sm text-gray-600">{item.liked_by && item.liked_by.length}</span>
                                             </div>
                                             <div className="flex items-center">
-                                                <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" onClick={() => handleDislike(item.comment_id)}>
-                                                    <path fill="currentColor" d="M20.901 10.566A1.001 1.001 0 0 0 20 10h-4V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v7H4a1.001 1.001 0 0 0-.781 1.625l8 10a1 1 0 0 0 1.562 0l8-10c.24-.301.286-.712.12-1.059M12 19.399L6.081 12H10V4h4v8h3.919z"></path>
-                                                </svg>
-                                                <span className="ml-1 text-sm text-gray-600">{item.likes || 0}</span>
+                                                {
+                                                    item.disliked_by && item.disliked_by.includes(user.current.email) ?
+                                                        (
+                                                            <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" onClick={() => handleDislike(item.comment_id)}>
+                                                                <path fill="currentColor" d="M20.901 10.566A1.001 1.001 0 0 0 20 10h-4V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v7H4a1.001 1.001 0 0 0-.781 1.625l8 10a1 1 0 0 0 1.562 0l8-10c.24-.301.286-.712.12-1.059"></path>
+                                                            </svg>
+                                                        ) : (
+                                                            <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" onClick={() => handleDislike(item.comment_id)}>
+                                                                <path fill="currentColor" d="M20.901 10.566A1.001 1.001 0 0 0 20 10h-4V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v7H4a1.001 1.001 0 0 0-.781 1.625l8 10a1 1 0 0 0 1.562 0l8-10c.24-.301.286-.712.12-1.059M12 19.399L6.081 12H10V4h4v8h3.919z"></path>
+                                                            </svg>
+                                                        )
+                                                }
+                                                <span className="ml-1 text-sm text-gray-600">{item.disliked_by && item.disliked_by.length}</span>
                                             </div>
                                         </div>
                                     </div>
