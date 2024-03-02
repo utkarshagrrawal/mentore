@@ -43,8 +43,8 @@ const loginUser = async (req, res) => {
     if (hashedPassword !== data[0].password) {
         return res.json({ error: 'Invalid credentials' })
     } else {
-        let username = await supabase.from('users').select('name').eq('email', email);
-        const sign = GenerateSignature({ email: email, name: username.data[0].name });
+        const { data, error } = await supabase.from('users').select('').eq('email', email);
+        const sign = GenerateSignature({ email: email, name: data[0].name, gender: data[0].male });
         await storeInRedis("token", sign);
         return res.json({ success: 'User logged in successfully' })
     }
