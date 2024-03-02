@@ -60,9 +60,7 @@ const deleteBlog = async (req, res) => {
 const getComments = async (req, res) => {
     const { id } = req.params;
     const { data, error } = await supabase
-        .from("blog_comments")
-        .select("")
-        .eq("blog_id", id)
+        .rpc('get_comments_with_likes_dislikes', { blog_id: id })
 
     if (error) {
         return res.json({ error: error.message });
@@ -130,7 +128,7 @@ const addCommentDislike = async (req, res) => {
     const { commentID } = req.body;
 
     const { error: newError } = await supabase
-        .from("blog_comment_dislikes")
+        .from("blog_comment_likes")
         .delete()
         .eq("comment_id", commentID)
         .eq("user_email", req.user.email);
