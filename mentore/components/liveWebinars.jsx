@@ -106,9 +106,9 @@ export function LiveWebinars() {
                                     <div key={index} className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-2xl duration-300 relative">
                                         {new Date(webinar.start_time).toISOString() < new Date().toISOString() && (
                                             <div className="absolute right-0">
-                                                <div class="inline-block relative px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-r-sm rounded-l-lg">
+                                                <div className="inline-block relative px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-r-sm rounded-l-lg">
                                                     Live
-                                                    <span class="absolute top-1 right-1 w-2 h-2 bg-white rounded-full shadow-md animate-ping"></span>
+                                                    <span className="absolute top-1 right-1 w-2 h-2 bg-white rounded-full shadow-md animate-ping"></span>
                                                 </div>
                                             </div>
                                         )}
