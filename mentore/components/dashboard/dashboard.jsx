@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { Loader } from '../loader';
+import { Loader } from '../global/loader';
 
 import BookingsManagement, { MeetingsManagement } from './meetingsManagement';
 import BlogManagement from './blogManagement';
