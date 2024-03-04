@@ -9,7 +9,7 @@ import { FindMentor } from '../components/findMentor'
 import { MentorView } from '../components/mentorView'
 import { ChangePassword } from '../components/auth/changePassword'
 import { LiveWebinars } from '../components/liveWebinars'
-import { Blog } from '../components/blog'
+import { Blog } from '../components/blogs/blog'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 

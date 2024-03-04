@@ -1,73 +1,17 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
-import parse from 'html-react-parser';
+import React, { useState, useEffect, useRef } from 'react';
+import Swal from 'sweetalert2';
 
-export function Blog() {
+
+export default function Comments({ blogId, user }) {
     const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
 
-    const user = useRef([]);
-    const [loggedIn, setLoggedIn] = useState(false);
-    const [loading, setLoading] = useState({ loading: true, blogLoading: true });
-    const [commentsLoading, setCommentsLoading] = useState(true);
-    const blog = useRef({});
+    const [loading, setLoading] = useState(true);
     const comments = useRef([]);
-    const { id } = useParams();
-    const navigate = useNavigate();
 
-    // checks if the user is logged in
-    useEffect(() => {
-        const getUser = async () => {
-            let options = {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            };
-            let users = await fetch("http://localhost:3000/getcurrentuser", options);
-            const result = await users.json();
-            if (result.error) {
-                navigate('/login');
-                setLoggedIn(false);
-            } else {
-                user.current = result.result;
-                setLoggedIn(true);
-            }
-        };
-        getUser();
-    }, []);
-
-    useEffect(() => {
-        setLoading({ ...loading, blogLoading: true })
-        const getBlog = async () => {
-            let options = {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    "blogID": id
-                })
-            };
-            let users = await fetch("http://localhost:3000/getcurrentblog", options);
-            const result = await users.json();
-            if (result.error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: result.error
-                })
-            } else {
-                blog.current = result.result;
-            }
-            setLoading({ ...loading, blogLoading: false });
-        };
-        getBlog();
-    }, [])
 
     useEffect(() => {
         const getComments = async () => {
-            setCommentsLoading(true);
+            setLoading(true);
             const options = {
                 method: "GET",
                 headers: {
@@ -75,7 +19,7 @@ export function Blog() {
                 },
             }
 
-            const response = await fetch("http://localhost:3000/getcomments/" + id, options);
+            const response = await fetch("http://localhost:3000/getcomments/" + blogId, options);
             const result = await response.json();
 
             if (result.error) {
@@ -86,20 +30,13 @@ export function Blog() {
                 )
             } else {
                 comments.current = result.result;
-                setCommentsLoading(false);
+                setLoading(false);
             }
         }
-        if (commentsLoading) {
+        if (loading) {
             getComments();
         }
-    }, [commentsLoading])
-
-    const handleLoginBtn = () => {
-        if (loggedIn) {
-            return navigate('/dashboard')
-        }
-        navigate('/login')
-    }
+    }, [loading])
 
     const handlePost = async () => {
         const comments = document.getElementById('newComments');
@@ -136,7 +73,7 @@ export function Blog() {
             })
         };
 
-        const response = await fetch("http://localhost:3000/postcomment/" + id, options);
+        const response = await fetch("http://localhost:3000/postcomment/" + blogId, options);
         const result = await response.json();
         if (result.error) {
             Swal.fire(
@@ -150,8 +87,8 @@ export function Blog() {
                 result.result,
                 'success'
             )
-            setCommentsLoading(true);
         }
+        setLoading(true);
     }
 
     const handleLike = async (comment_id) => {
@@ -175,7 +112,7 @@ export function Blog() {
                 'error'
             )
         }
-        setCommentsLoading(true);
+        setLoading(true);
     }
 
     const handleDislike = async (comment_id) => {
@@ -199,29 +136,11 @@ export function Blog() {
                 'error'
             )
         }
-        setCommentsLoading(true);
+        setLoading(true);
     }
 
     return (
         <>
-            <div className='w-full bg-[#d2d2d217]'>
-                <div className='flex flex-wrap justify-center items-center md:justify-between lg:justify-between lg:mx-16 md:mx-16 my-3'>
-                    <Link to='/'><img src="../static/logo.png" className="h-8 mix-blend-multiply" alt="Mentore" /></Link>
-                    <input type='search' placeholder='Search for mentors' className='lg:w-[40rem] md:w-[26rem] w-[16rem] border-2 border-blue-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-4 focus:ring-blue-300' />
-                    <button onClick={handleLoginBtn} className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-3'>{loggedIn ? 'Dashboard' : 'Login'}</button>
-                </div>
-            </div>
-            <hr className='w-full' />
-            {!loading.blogLoading ? (
-                <div className="w-full">
-                    <div className="mb-10 mx-16 flex flex-col items-center justify-center">
-                        <h1 className="text-4xl font-semibold my-8 text-center text-gray-800">Title: {blog.current.title}</h1>
-                        <div className="w-full bg-white rounded-lg border border-gray-200 p-6">
-                            {parse(blog.current.content)}
-                        </div>
-                    </div>
-                </div>
-            ) : null}
             <div className="w-full text-center my-10">
                 <span className="text-3xl font-bold">Discussion</span>
                 <div className="mx-16 mt-4 gap-2 grid grid-cols-12 place-items-center">
@@ -238,8 +157,8 @@ export function Blog() {
                     </div>
                 </div>
             </div>
-            {!commentsLoading && (
-                comments.current && comments.current.map((item, id) => {
+            {!loading && (
+                comments?.current?.map((item, id) => {
                     return (
                         <div className="w-full my-4" key={id}>
                             <div className="mx-16 grid grid-cols-12 gap-4">
@@ -291,7 +210,6 @@ export function Blog() {
                                 </div>
                             </div>
                         </div>
-
                     )
                 })
             )}
