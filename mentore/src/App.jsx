@@ -4,7 +4,7 @@ import { Register } from '../components/register'
 import { ForgotPassword } from '../components/forgotPassword'
 import { NotFound } from '../components/notfound'
 import { Home } from '../components/home'
-import { Profile } from '../components/profile'
+import { Dashboard } from '../components/dashboard/dashboard'
 import { Insights } from '../components/insights'
 import { FindMentor } from '../components/findMentor'
 import { MentorView } from '../components/mentorView'
@@ -24,7 +24,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
-        <Route path='/profile' element={<Profile />} />
+        <Route path='/dashboard' element={<Dashboard />} />
         <Route path='/insights' element={<Insights />} />
         <Route path='/find-mentor' element={<FindMentor />} />
         <Route path='/mentor/:id?' element={<MentorView />} />

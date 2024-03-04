@@ -40,7 +40,7 @@ export function FindMentor() {
     // handles the navbar top right button
     const handleLogButton = () => {
         if (loggedIn) {
-            navigate('/profile');
+            navigate('/dashboard');
         } else {
             navigate('/login');
         }

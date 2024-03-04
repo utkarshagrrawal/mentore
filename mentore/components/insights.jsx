@@ -139,7 +139,7 @@ export function Insights() {
 
     const handleLogButton = () => {
         if (loggedIn) {
-            navigate("/profile");
+            navigate("/dashboard");
         } else {
             navigate("/login");
         }

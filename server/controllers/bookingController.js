@@ -40,7 +40,7 @@ const getMentorAvailability = async (req, res) => {
         if (data.response) {
             const { error } = await supabase
                 .from('schedule_mentors')
-                .insert({ 'mentee_email': req.user.email, 'mentor_email': mentorEmail, 'start_time': startDateTime, 'end_time': endDateTime, 'about': req.body.about, status: 'pending' })
+                .insert({ 'mentee_email': req.user.email, 'mentor_email': mentorEmail, 'start_time': startDateTime, 'end_time': endDateTime, 'about': req.body.about, status: 'pending', mentor_name: mentorData[0].name })
 
             if (error) {
                 return res.json({ error: error.message })

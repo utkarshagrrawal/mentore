@@ -105,7 +105,7 @@ export function ChangePassword() {
                 'Password changed successfully',
                 'success'
             )
-            navigate('/profile');
+            navigate('/dashboard');
         }
         setLoading(false);
     }
@@ -180,7 +180,7 @@ export function ChangePassword() {
                     </div>
                 </form>
                 <div className="mt-6 text-center">
-                    Go back to <Link to="/profile" className="font-medium text-indigo-600 hover:text-indigo-500 underline">dashboard</Link>
+                    Go back to <Link to="/dashboard" className="font-medium text-indigo-600 hover:text-indigo-500 underline">dashboard</Link>
                 </div>
             </div>
         </div>

@@ -4,6 +4,8 @@ import Swal from "sweetalert2";
 import parse from 'html-react-parser';
 
 export function Blog() {
+    const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
+
     const user = useRef([]);
     const [loggedIn, setLoggedIn] = useState(false);
     const [loading, setLoading] = useState({ loading: true, blogLoading: true });
@@ -84,7 +86,6 @@ export function Blog() {
                 )
             } else {
                 comments.current = result.result;
-                console.log(result.result)
                 setCommentsLoading(false);
             }
         }
@@ -93,9 +94,9 @@ export function Blog() {
         }
     }, [commentsLoading])
 
-    const handleLogButton = () => {
+    const handleLoginBtn = () => {
         if (loggedIn) {
-            return navigate('/profile')
+            return navigate('/dashboard')
         }
         navigate('/login')
     }
@@ -207,7 +208,7 @@ export function Blog() {
                 <div className='flex flex-wrap justify-center items-center md:justify-between lg:justify-between lg:mx-16 md:mx-16 my-3'>
                     <Link to='/'><img src="../static/logo.png" className="h-8 mix-blend-multiply" alt="Mentore" /></Link>
                     <input type='search' placeholder='Search for mentors' className='lg:w-[40rem] md:w-[26rem] w-[16rem] border-2 border-blue-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-4 focus:ring-blue-300' />
-                    <button onClick={handleLogButton} className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-3'>{loggedIn ? 'Dashboard' : 'Login'}</button>
+                    <button onClick={handleLoginBtn} className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-3'>{loggedIn ? 'Dashboard' : 'Login'}</button>
                 </div>
             </div>
             <hr className='w-full' />
@@ -248,7 +249,7 @@ export function Blog() {
                                             <img src={item.gender ? "../static/male-avatar.png" : "../static/female-avatar.png"} className="w-8 h-8 rounded-full" alt="User Avatar" />
                                             <div className="ml-2 text-sm text-gray-600">
                                                 <p className="font-semibold text-blue-800">{item.user_name}</p>
-                                                <p>on {new Date(item.time).toLocaleDateString() + " " + new Date(item.time).toLocaleTimeString()}</p>
+                                                <p>on {dateFormatter.format(new Date(item.time))}</p>
                                             </div>
                                         </div>
                                         <div className="flex items-center gap-2">
