@@ -12,7 +12,8 @@ const getBlogs = async (req, res) => {
 };
 
 const getAllBlogs = async (req, res) => {
-    const { data, error } = await supabase.from("blogs").select();
+    const { data, error } = await supabase
+        .rpc('get_blogs_with_likes');
     if (!error) {
         return res.json({ result: data });
     }
@@ -168,25 +169,37 @@ const addCommentDislike = async (req, res) => {
 
 const addLike = async (req, res) => {
     const { blogID } = req.body;
+
     const { data, error } = await supabase
-        .from("blogs")
-        .select("likes")
-        .eq("id", blogID);
+        .from("blog_likes")
+        .select("")
+        .eq("blog_id", blogID)
+        .eq("user_email", req.user.email);
 
     if (error) {
         return res.json({ error: error.message });
     }
-
-    const { error: newError } = await supabase
-        .from("blogs")
-        .update({ likes: data[0].likes + 1 })
-        .eq("id", blogID);
-
-    if (!newError) {
+    else if (data && data.length > 0) {
+        const { error } = await supabase
+            .from("blog_likes")
+            .delete()
+            .eq("blog_id", blogID)
+            .eq("user_email", req.user.email);
+        if (error) {
+            return res.json({ error: error.message });
+        }
+        return res.json({ success: "Like removed successfully!" });
+    }  
+    else if (data && data.length === 0) {  
+        const { error } = await supabase
+            .from("blog_likes")
+            .insert({ blog_id: blogID, user_email: req.user.email });
+        if (error) {
+            return res.json({ error: error.message });
+        }
         return res.json({ success: "Like added successfully!" });
     }
-    return res.json({ error: newError.message });
-};
+}
 
 module.exports = {
     getBlogs,
