@@ -1,7 +1,7 @@
 import { Login } from '../components/auth/login'
 import { Register } from '../components/auth/register'
 import { ForgotPassword } from '../components/auth/forgotPassword'
-import { NotFound } from '../components/notfound'
+import { NotFound } from '../components/errorPages/notfound'
 import { Home } from '../components/landing/home'
 import { Dashboard } from '../components/dashboard/dashboard'
 import { Insights } from '../components/insights'
@@ -9,7 +9,7 @@ import { FindMentor } from '../components/findMentor'
 import { MentorView } from '../components/mentorView'
 import { ChangePassword } from '../components/auth/changePassword'
 import { LiveWebinars } from '../components/liveWebinars'
-import { Blog } from '../components/blog'
+import { Blog } from '../components/blogs/blog'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
 

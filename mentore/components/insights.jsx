@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import Header from "./global/header";
 
 export function Insights() {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -8,7 +9,6 @@ export function Insights() {
     const [currentPage, setCurrentPage] = useState(1);
     const [blogsPerPage] = useState(10);
     const allBlogs = useRef([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         const getUser = async () => {
@@ -137,40 +137,10 @@ export function Insights() {
         indexOfLastBlog,
     );
 
-    const handleLogButton = () => {
-        if (loggedIn) {
-            navigate("/dashboard");
-        } else {
-            navigate("/login");
-        }
-    };
-
     return (
         <div className="flex min-h-screen w-full flex-col items-center">
             {/* Header Section */}
-            <div className="w-full bg-[#d2d2d217]">
-                <div className="my-3 flex flex-wrap items-center justify-center md:mx-16 md:justify-between lg:mx-16 lg:justify-between">
-                    <Link to="/">
-                        <img
-                            src="../static/logo.png"
-                            className="h-8 mix-blend-multiply"
-                            alt="Mentore"
-                        />
-                    </Link>
-                    <input
-                        type="search"
-                        placeholder="Search for mentors"
-                        className="w-[16rem] rounded-lg border-2 border-blue-700 px-4 py-2 focus:outline-none focus:ring-4 focus:ring-blue-300 md:w-[26rem] lg:w-[40rem]"
-                    />
-                    <button
-                        onClick={handleLogButton}
-                        className="rounded-lg bg-blue-700 px-8 py-3 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                    >
-                        {loggedIn ? "Dashboard" : "Login"}
-                    </button>
-                </div>
-            </div>
-            <hr className="w-full" />
+            <Header loggedIn={loggedIn} />
 
             {/* Main Content Section */}
             <div className="w-full">

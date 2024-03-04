@@ -1,13 +1,13 @@
 import React, { useRef } from "react";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Swal from 'sweetalert2'
+import Header from "./global/header";
 
 export function LiveWebinars() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [loading, setLoading] = useState({ loading: true, webinarsLoading: true });
     const allWebinars = useRef([])
-    const navigate = useNavigate();
 
     useEffect(() => {
         const getUser = async () => {
@@ -53,14 +53,6 @@ export function LiveWebinars() {
         webinars();
     }, [])
 
-    const handleLogButton = () => {
-        if (loggedIn) {
-            navigate("/dashboard");
-        } else {
-            navigate("/login");
-        }
-    }
-
     const handleJoinWebinar = async (meeting_id) => {
         let options = {
             method: "POST",
@@ -86,14 +78,8 @@ export function LiveWebinars() {
 
     return (
         <div className='min-h-screen items-center flex flex-col w-full'>
-            <div className='w-full bg-[#d2d2d217]'>
-                <div className='flex flex-wrap justify-center items-center md:justify-between lg:justify-between lg:mx-16 md:mx-16 my-3'>
-                    <Link to='/'><img src="../static/logo.png" className="h-8 mix-blend-multiply" alt="Mentore" /></Link>
-                    <input type='search' placeholder='Search for mentors' className='lg:w-[40rem] md:w-[26rem] w-[16rem] border-2 border-blue-700 rounded-lg px-4 py-2 focus:outline-none focus:ring-4 focus:ring-blue-300' />
-                    <button onClick={handleLogButton} className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-8 py-3'>{loggedIn ? 'Dashboard' : 'Login'}</button>
-                </div>
-            </div>
-            <hr className='w-full' />
+            <Header loggedIn={loggedIn} />
+
             <div className="w-full">
                 <div className="flex flex-wrap justify-center items-center mx-16 mt-3 mb-14">
                     <h1 className="text-4xl font-bold mr-16 text-center">Live webinars</h1>
