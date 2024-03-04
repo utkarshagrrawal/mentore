@@ -88,7 +88,7 @@ app.post("/joinmeetingparticipant", authentication, joinMeetingParticipant);
 
 app.post("/joinmeetinghost", authentication, joinMeetingHost);
 
-app.post("/like", addLike);
+app.post("/like",authentication, addLike);
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
