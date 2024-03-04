@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { Loader } from './loader';
+import { Loader } from './global/loader';
 import Swal from 'sweetalert2';
 import { RAZORPAY_KEY_ID } from '../src/assets/credentials';
 

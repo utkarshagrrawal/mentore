@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
-import { Loader } from './loader';
+import { Loader } from '../global/loader';
 import { FaCheck } from "react-icons/fa";
 
 export function ChangePassword() {

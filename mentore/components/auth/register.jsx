@@ -1,7 +1,7 @@
 import { React, useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import { Loader } from './loader';
+import { Loader } from '../global/loader';
 import swal from 'sweetalert2';
 
 export function Register() {
@@ -218,13 +218,13 @@ export function Register() {
     }, [isMentor])
 
     const registerPage = (
-        <div className='border-2 border-black mt-3 px-6 py-4 w-full md:w-1/2 lg:w-1/3 flex flex-col bg-white rounded-xl'>
+        <div className='border-2 border-black mt-3 px-12 py-4 w-full md:w-[75%] lg:w-1/3 flex flex-col bg-white rounded-xl'>
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                     Register for an account
                 </h2>
             </div>
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <div className="mt-10 sm:mx-auto sm:w-full">
                 <form className="space-y-6" onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
