@@ -7,6 +7,7 @@ const { createWebinar, getWebinars, getAllWebinars, addParticipant, addHost, cre
 const { getBlogs, createBlog, getCurrentBlog, getAllBlogs, deleteBlog, addLike, getComments, postComment, addCommentLike, addCommentDislike } = require('./controllers/blogController');
 const { linkRedis } = require('./utility/redisConnection');
 const { getMentorAvailability, getMentorBookings, mentorAllBookings, pay, paymentsuccess, approveMeeting, rejectMeeting } = require('./controllers/bookingController');
+const { getSelfBookings } = require('./controllers/menteeController');
 require('dotenv').config();
 
 const app = express();
@@ -42,6 +43,8 @@ app.post("/createwebinar", authentication, createWebinar);
 app.get("/getwebinars", authentication, getWebinars);
 
 app.get("/allwebinars", getAllWebinars);
+
+app.get("/allmenteemeetings", authentication, getSelfBookings)
 
 app.post("/joinwebinarparticipant", authentication, addParticipant);
 

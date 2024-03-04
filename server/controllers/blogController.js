@@ -27,7 +27,6 @@ const createBlog = async (req, res) => {
         email: req.user.email,
         name: req.user.name,
         likes: 0,
-        comments: [],
     });
     if (!error) {
         return res.json({ success: "Blog created successfully!" });

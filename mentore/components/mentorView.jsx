@@ -63,7 +63,7 @@ export function MentorView() {
 
     const handleLoginButton = () => {
         if (loggedIn) {
-            navigate('/profile')
+            navigate('/dashboard')
         } else {
             navigate('/login')
         }
