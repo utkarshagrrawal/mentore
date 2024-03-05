@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ErrorNotify, SuccessNotify } from "../global/toast";
+import { DismissToast, ErrorNotify, Loading, SuccessNotify } from "../global/toast";
 
 export default function WebinarManagement() {
     const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
@@ -37,6 +37,7 @@ export default function WebinarManagement() {
                 "meeting_id": link
             })
         };
+        const toastId = Loading();
         let webinars = await fetch('http://localhost:3000/joinwebinarhost', options);
         const result = await webinars.json();
         if (!result.success) {
@@ -44,6 +45,7 @@ export default function WebinarManagement() {
         } else {
             location.href = result.success;
         }
+        DismissToast(toastId);
     }
 
     // handles creating webinar
@@ -80,7 +82,7 @@ export default function WebinarManagement() {
         if (response.error) {
             ErrorNotify(response.error);
         } else {
-            SuccessNotify(response.result)
+            SuccessNotify("Webinar created successfully");
         }
         setWebinarDetailsLoading(true);
     }
