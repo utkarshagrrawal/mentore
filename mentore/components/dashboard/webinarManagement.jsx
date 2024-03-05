@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
+import { ErrorNotify, SuccessNotify } from "../global/toast";
 
 export default function WebinarManagement() {
     const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
@@ -41,11 +40,7 @@ export default function WebinarManagement() {
         let webinars = await fetch('http://localhost:3000/joinwebinarhost', options);
         const result = await webinars.json();
         if (!result.success) {
-            Swal.fire(
-                "Error",
-                "Some error occurred while joining webinar",
-                "error"
-            )
+            ErrorNotify("Some error occurred while joining the webinar")
         } else {
             location.href = result.success;
         }
@@ -54,46 +49,22 @@ export default function WebinarManagement() {
     // handles creating webinar
     const handleCreate = async () => {
         if (newWebinarDetails.title === '') {
-            Swal.fire(
-                'Error',
-                'Please enter a title for the webinar',
-                'error'
-            )
+            ErrorNotify('Please enter a valid title for the webinar');
             return;
         } else if (newWebinarDetails.title.trim() === '') {
-            Swal.fire(
-                'Error',
-                'Please enter a valid title for the webinar',
-                'error'
-            )
+            ErrorNotify('Please enter a valid title for the webinar');
             return;
         } else if (!newWebinarDetails.title.trim().match('^[a-zA-Z0-9-_]*$')) {
-            Swal.fire(
-                'Error',
-                'The title can only contain letters, numbers, hyphens and underscores',
-                'error'
-            )
+            ErrorNotify('The title can only contain letters, numbers, hyphens and underscores')
             return;
         } else if (newWebinarDetails.start === '') {
-            Swal.fire(
-                'Error',
-                'Please enter a start date and time for the webinar',
-                'error'
-            )
+            ErrorNotify('Please enter a start date and time for the webinar')
             return;
         } else if (newWebinarDetails.end === '') {
-            Swal.fire(
-                'Error',
-                'Please enter an end date and time for the webinar',
-                'error'
-            )
+            ErrorNotify('Please enter an end date and time for the webinar')
             return;
         } else if (new Date(newWebinarDetails.start).toISOString() > new Date(newWebinarDetails.end).toISOString()) {
-            Swal.fire(
-                'Error',
-                'The start date and time cannot be greater than the end date and time',
-                'error'
-            )
+            ErrorNotify('The start date and time cannot be greater than the end date and time')
             return;
         }
 
@@ -107,17 +78,9 @@ export default function WebinarManagement() {
         const response = await createMeeting.json();
 
         if (response.error) {
-            Swal.fire(
-                'Error',
-                response.error,
-                'error'
-            )
+            ErrorNotify(response.error);
         } else {
-            Swal.fire(
-                'Success',
-                response.result,
-                'success'
-            )
+            SuccessNotify(response.result)
         }
         setWebinarDetailsLoading(true);
     }

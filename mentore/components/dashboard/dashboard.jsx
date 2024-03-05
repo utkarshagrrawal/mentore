@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 import { Loader } from '../global/loader';
 
-import BookingsManagement, { MeetingsManagement } from './meetingsManagement';
+
 import BlogManagement from './blogManagement';
 import WebinarManagement from './webinarManagement';
 import Profile from './profile';
 import DashboardHeader from '../global/dashboardHeader';
+import MentorBookings from './mentorBookings';
+import YourBookings from './yourBookings';
+import { ErrorNotify } from '../global/toast';
 
 export function Dashboard() {
     const user = useRef({});
@@ -26,11 +28,7 @@ export function Dashboard() {
             let users = await fetch('http://localhost:3000/getcurrentuser', options);
             let result = await users.json();
             if (result.error) {
-                Swal.fire(
-                    'Error',
-                    result.error,
-                    'error'
-                )
+                ErrorNotify(result.error)
                 return navigate('/login');
             } else {
                 user.current = result.result;
@@ -49,9 +47,9 @@ export function Dashboard() {
 
             <Profile user={user} isMentor={isMentor} />
 
-            <BookingsManagement />
+            <YourBookings />
 
-            {isMentor && <MeetingsManagement />}
+            {isMentor && <MentorBookings />}
 
             {isMentor && <WebinarManagement />}
 
