@@ -8,7 +8,7 @@ import { Insights } from '../components/insights/insights'
 import SearchResults from '../components/search/searchResults'
 import { BookMentor } from '../components/booking/bookMentor'
 import { ChangePassword } from '../components/auth/changePassword'
-import { LiveWebinars } from '../components/liveWebinars'
+import { WebinarsPage } from '../components/webinars/webinarsPage'
 import { Blog } from '../components/blogs/blog'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 
@@ -31,7 +31,7 @@ function App() {
           <Route path='/insights' element={<Insights />} />
           <Route path='/search' element={<SearchResults />} />
           <Route path='/mentor/:id?' element={<BookMentor />} />
-          <Route path='/live-webinars' element={<LiveWebinars />} />
+          <Route path='/live-webinars' element={<WebinarsPage />} />
           <Route path='/change-password' element={<ChangePassword />} />
           <Route path='/blog/:id' element={<Blog />} />
           <Route path='*' element={<NotFound />} />
