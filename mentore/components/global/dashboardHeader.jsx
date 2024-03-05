@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ErrorNotify } from "./toast";
 
 export default function DashboardHeader() {
     const navigate = useNavigate();
@@ -13,11 +14,7 @@ export default function DashboardHeader() {
         })
         const response = await sendLogoutRequest.json();
         if (response.error) {
-            return Swal.fire(
-                'Error',
-                response.error,
-                'error'
-            )
+            return ErrorNotify(response.error)
         }
         navigate('/login');
     }

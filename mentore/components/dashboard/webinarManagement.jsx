@@ -37,7 +37,7 @@ export default function WebinarManagement() {
                 "meeting_id": link
             })
         };
-        const toastId = Loading();
+        const toastId = Loading('Joining the webinar');
         let webinars = await fetch('http://localhost:3000/joinwebinarhost', options);
         const result = await webinars.json();
         if (!result.success) {

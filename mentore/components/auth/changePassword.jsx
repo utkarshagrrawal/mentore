@@ -1,9 +1,9 @@
 import React from 'react';
 import { useState } from 'react';
-import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router-dom';
 import { Loader } from '../global/loader';
 import { FaCheck } from "react-icons/fa";
+import { ErrorNotify, SuccessNotify } from '../global/toast';
 
 export function ChangePassword() {
     const [loading, setLoading] = useState(false);
@@ -77,12 +77,7 @@ export function ChangePassword() {
     const handleChangePassword = async (e) => {
         e.preventDefault();
         if (password.password !== password.confirmPassword) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Passwords do not match',
-            })
-            return;
+            return ErrorNotify("Passwords do not match");
         }
         setLoading(true);
         let changePassword = await fetch('http://localhost:3000/changepassword', {
@@ -94,17 +89,9 @@ export function ChangePassword() {
         })
         let response = await changePassword.json();
         if (response.error) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: response.error,
-            })
+            ErrorNotify(response.error);
         } else {
-            Swal.fire(
-                'Success',
-                'Password changed successfully',
-                'success'
-            )
+            SuccessNotify("Password changed successfully")
             navigate('/dashboard');
         }
         setLoading(false);

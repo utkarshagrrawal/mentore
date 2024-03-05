@@ -2,7 +2,7 @@ import { React } from 'react';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Loader } from '../global/loader';
-import Swal from 'sweetalert2';
+import { ErrorNotify, SuccessNotify } from '../global/toast';
 
 export function ForgotPassword() {
     const [forgotPassword, setForgotPassword] = useState({ email: '', otp: 0 });
@@ -43,18 +43,10 @@ export function ForgotPassword() {
         })
         let result = await forgotPasswordUser.json();
         if (result.success) {
-            Swal.fire(
-                'Success',
-                result.success,
-                'success'
-            )
+            SuccessNotify(result.success);
             setEmailSent(true);
         } else {
-            Swal.fire(
-                'Error',
-                result.error,
-                'error'
-            )
+            ErrorNotify(result.error);
         }
         setLoading(false);
     }
@@ -71,18 +63,10 @@ export function ForgotPassword() {
         })
         let response = await verifyOtp.json();
         if (response.success) {
-            Swal.fire(
-                'Success',
-                response.success,
-                'success'
-            )
+            SuccessNotify(response.success);
             navigate('/login');
         } else {
-            Swal.fire(
-                'Error',
-                response.error,
-                'error'
-            )
+            ErrorNotify(response.error);
         }
         setLoading(false)
     }
@@ -99,17 +83,9 @@ export function ForgotPassword() {
         })
         let response = await resendOtp.json();
         if (response.success) {
-            Swal.fire(
-                'Success',
-                response.success,
-                'success'
-            )
+            SuccessNotify(response.success);
         } else {
-            Swal.fire(
-                'Error',
-                response.error,
-                'error'
-            )
+            ErrorNotify(response.error);
         }
         setLoading(false)
     }

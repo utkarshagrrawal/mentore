@@ -97,7 +97,7 @@ export default function BlogManagement() {
             return;
         }
 
-        const toastId = Loading();
+        const toastId = Loading('Creating blog...');
         const createBlog = await fetch('http://localhost:3000/createblog', {
             method: 'POST',
             headers: {

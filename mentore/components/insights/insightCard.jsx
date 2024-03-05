@@ -13,7 +13,7 @@ export default function BlogCard({ index, blog, user, setBlogsLoading }) {
             body: JSON.stringify({ blogID: blogId }),
         };
 
-        const toastId = Loading();
+        const toastId = Loading('Liking the blog...');
         let response = await fetch("http://localhost:3000/like", options);
         let result = await response.json();
 

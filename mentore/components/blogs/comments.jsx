@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Swal from 'sweetalert2';
+import { ErrorNotify, SuccessNotify } from '../global/toast';
 
 
 export default function Comments({ blogId, user }) {
@@ -23,11 +23,7 @@ export default function Comments({ blogId, user }) {
             const result = await response.json();
 
             if (result.error) {
-                Swal.fire(
-                    'Error',
-                    result.error,
-                    'error'
-                )
+                ErrorNotify(result.error)
             } else {
                 comments.current = result.result;
                 setLoading(false);
@@ -42,25 +38,13 @@ export default function Comments({ blogId, user }) {
         const comments = document.getElementById('newComments');
         if (comments.value === '') {
             comments.focus();
-            return Swal.fire(
-                'Error',
-                'Please enter a comment',
-                'error'
-            )
+            return ErrorNotify("Comment cannot be empty")
         } else if (comments.value.trim() === '') {
             comments.focus();
-            return Swal.fire(
-                'Error',
-                'Please enter a comment',
-                'error'
-            )
+            return ErrorNotify("Comment cannot be empty")
         } else if (comments.value.length > 1000) {
             comments.focus();
-            return Swal.fire(
-                'Error',
-                'Comment too long',
-                'error'
-            )
+            return ErrorNotify("Comment should be less than 1000 characters")
         }
 
         const options = {
@@ -76,17 +60,9 @@ export default function Comments({ blogId, user }) {
         const response = await fetch("http://localhost:3000/postcomment/" + blogId, options);
         const result = await response.json();
         if (result.error) {
-            Swal.fire(
-                'Error',
-                result.error,
-                'error'
-            )
+            ErrorNotify(result.error)
         } else {
-            Swal.fire(
-                'Success',
-                result.result,
-                'success'
-            )
+            SuccessNotify(result.result)
         }
         setLoading(true);
     }
@@ -106,11 +82,7 @@ export default function Comments({ blogId, user }) {
         const result = await response.json();
 
         if (result.error) {
-            Swal.fire(
-                'Error',
-                result.error,
-                'error'
-            )
+            ErrorNotify(result.error)
         }
         setLoading(true);
     }
@@ -130,11 +102,7 @@ export default function Comments({ blogId, user }) {
         const result = await response.json();
 
         if (result.error) {
-            Swal.fire(
-                'Error',
-                result.error,
-                'error'
-            )
+            ErrorNotify(result.error)
         }
         setLoading(true);
     }

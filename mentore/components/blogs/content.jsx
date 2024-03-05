@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import parse from 'html-react-parser';
-import Swal from 'sweetalert2';
+import { ErrorNotify } from '../global/toast';
 
 
 export default function Content({ blogId }) {
@@ -21,11 +21,7 @@ export default function Content({ blogId }) {
             let users = await fetch("http://localhost:3000/getcurrentblog", options);
             const result = await users.json();
             if (result.error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: result.error
-                })
+                ErrorNotify(result.error)
             } else {
                 blog.current = result.result;
             }

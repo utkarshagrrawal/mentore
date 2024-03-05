@@ -14,8 +14,8 @@ export function ErrorNotify(message) {
     });
 }
 
-export function Loading() {
-    toast.loading('Waiting...');
+export function Loading(message) {
+    toast.loading(message);
 }
 
 export function DismissToast(toastId) {
