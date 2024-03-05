@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Select from 'react-select';
-import Swal from "sweetalert2";
+import { ErrorNotify } from "../global/toast";
 
 
 export default function MentorProfile() {
@@ -20,11 +20,7 @@ export default function MentorProfile() {
             let skills = await fetch('http://localhost:3000/getallskills', options)
             let result = await skills.json();
             if (result.error) {
-                Swal.fire(
-                    'Error',
-                    result.error,
-                    'error'
-                )
+                ErrorNotify(result.error)
             } else {
                 allSkills.current = result.result;
             }
@@ -44,11 +40,7 @@ export default function MentorProfile() {
             let mentorDetailsResponse = await fetch('http://localhost:3000/getmentordetails', options)
             let result = await mentorDetailsResponse.json();
             if (result.error) {
-                Swal.fire(
-                    'Error',
-                    result.error,
-                    'error'
-                )
+                ErrorNotify(result.error)
             } else {
                 mentorDetails.current = result.result;
             }

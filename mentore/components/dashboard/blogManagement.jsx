@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Editor } from '@tinymce/tinymce-react';
 import { TINY_MCE_API_KEY } from '../../src/assets/credentials';
-import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import { DismissToast, ErrorNotify, Loading, SuccessNotify } from "../global/toast";
+import Swal from "sweetalert2";
 
 const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
 
@@ -24,11 +25,7 @@ export default function BlogManagement() {
             const response = await fetch('http://localhost:3000/getblogs', options);
             const data = await response.json();
             if (data.error) {
-                Swal.fire(
-                    'Error',
-                    data.error,
-                    'error'
-                )
+                ErrorNotify(data.error)
             } else {
                 allBlogs.current = data.result;
             }
@@ -69,11 +66,7 @@ export default function BlogManagement() {
         })
         const result = await deleteBlog.json();
         if (result.error) {
-            Swal.fire(
-                'Error',
-                result.error,
-                'error'
-            )
+            ErrorNotify(result.error)
         }
 
         setBlogsLoading(true);
@@ -92,30 +85,19 @@ export default function BlogManagement() {
         const content = editorRef.current && editorRef.current.getContent();
         const title = document.getElementById('blogTitle').value;
         if (content === '') {
-            Swal.fire(
-                'Error',
-                'Please enter some content for the blog',
-                'error'
-            )
+            ErrorNotify('Please enter content for the blog');
             return;
         }
         if (title === '') {
-            Swal.fire(
-                'Error',
-                'Please enter a title for the blog',
-                'error'
-            )
+            ErrorNotify('Please enter a valid title for the blog');
             return;
         }
         if (title.trim() === '') {
-            Swal.fire(
-                'Error',
-                'Please enter a valid title for the blog',
-                'error'
-            )
+            ErrorNotify('Please enter a valid title for the blog');
             return;
         }
 
+        const toastId = Loading();
         const createBlog = await fetch('http://localhost:3000/createblog', {
             method: 'POST',
             headers: {
@@ -128,19 +110,11 @@ export default function BlogManagement() {
         })
         const response = await createBlog.json();
         if (response.error) {
-            Swal.fire(
-                'Error',
-                response.error,
-                'error'
-            )
+            ErrorNotify(response.error);
         } else {
-            Swal.fire(
-                'Success',
-                response.success,
-                'success'
-            )
+            SuccessNotify(response.success);
         }
-
+        DismissToast(toastId);
         setBlogsLoading(true);
     }
 
