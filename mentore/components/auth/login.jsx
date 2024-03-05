@@ -1,8 +1,8 @@
 import { React } from 'react';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
 import { Loader } from '../global/loader';
+import { ErrorNotify, SuccessNotify } from '../global/toast';
 
 export function Login() {
     const [login, setLogin] = useState({ email: '', password: '' });
@@ -26,19 +26,10 @@ export function Login() {
         })
         let result = await loginUser.json();
         if (result.success) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Logged in successfully',
-                showConfirmButton: false,
-                timer: 1500
-            })
+            SuccessNotify("Logged in successfully")
             navigate('/');
         } else {
-            Swal.fire(
-                'Error',
-                result.error,
-                'error'
-            )
+            ErrorNotify(result.error);
         }
         setLoading(false);
     }

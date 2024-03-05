@@ -30,7 +30,7 @@ export default function BookingRequest({ mentorId, setDataLoading, mentorDetails
             },
             body: JSON.stringify({ mentorId: mentorId, startDateTime: schedulingDetails.startDateTime, duration: schedulingDetails.duration, about: schedulingDetails.about })
         }
-        const toastId = Loading();
+        const toastId = Loading('Scheduling the meeting');
         let schedule = await fetch('http://localhost:3000/schedulemeet', options);
         const result = await schedule.json();
         DismissToast(toastId);

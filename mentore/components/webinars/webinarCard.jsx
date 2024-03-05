@@ -16,7 +16,7 @@ export default function WebinarCard({ webinar }) {
                 "meeting_id": meeting_id
             })
         };
-        const toastId = Loading();
+        const toastId = Loading('Joining the webinar');
         let webinars = await fetch('http://localhost:3000/joinwebinarparticipant', options);
         const result = await webinars.json();
         if (!result.success) {

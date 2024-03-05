@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Swal from 'sweetalert2';
+import { ErrorNotify } from '../global/toast';
 
 export default function MentorDetails({ id, mentorDetails }) {
     const [loading, setLoading] = useState(true);
@@ -16,11 +16,7 @@ export default function MentorDetails({ id, mentorDetails }) {
             let mentors = await fetch(`http://localhost:3000/getmentorprofile?id=${id}`, options);
             const result = await mentors.json();
             if (result.error) {
-                Swal.fire(
-                    'Error',
-                    result.error,
-                    'error'
-                )
+                ErrorNotify(result.error)
             } else {
                 mentorDetails.current = result.result;
             }
