@@ -29,11 +29,11 @@ export default function Search() {
     return (
         <div className="mx-4 lg:mx-20 my-10 p-4 flex h-[42rem] flex-col items-center justify-center rounded-lg bg-gradient-to-r from-blue-300 via-gray-300 to-yellow-300">
             <div className="flex flex-col items-center">
-                <h1 className="mb-4 text-6xl font-semibold">
+                <h1 className="mb-4 text-6xl font-semibold text-center">
                     1:1 Long Term Mentorship for
                 </h1>
                 <h1
-                    className="text-3xl font-semibold"
+                    className="text-3xl font-semibold text-center"
                     id="welcomeText"
                 >
                     {messages[index % messages.length]}
