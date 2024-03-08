@@ -29,7 +29,7 @@ function App() {
           <Route path='/forgot-password' element={<ForgotPassword />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/insights' element={<Insights />} />
-          <Route path='/search' element={<SearchResults />} />
+          <Route path='/results' element={<SearchResults />} />
           <Route path='/mentor/:id?' element={<BookMentor />} />
           <Route path='/live-webinars' element={<WebinarsPage />} />
           <Route path='/change-password' element={<ChangePassword />} />

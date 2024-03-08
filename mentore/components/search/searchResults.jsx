@@ -3,8 +3,12 @@ import MentorCard from './mentorCard';
 import Paginate from '../global/paginate';
 import Header from '../global/header';
 import { ErrorNotify } from '../global/toast';
+import { useSearchParams } from "react-router-dom"
 
 export default function SearchResults() {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchQuery, setSearchQuery] = useState(searchParams.get('search_query') || '');
+
     const [loggedIn, setLoggedIn] = useState(false);
     const [detailsLoading, setDetailsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0); // Track current page
@@ -65,7 +69,7 @@ export default function SearchResults() {
 
     return (
         <div className='min-h-screen items-center flex flex-col w-full'>
-            <Header loggedIn={loggedIn} />
+            <Header loggedIn={loggedIn} searchQuery={searchQuery} />
 
             {/* Mentor Grid */}
             <div className='w-full my-10'>

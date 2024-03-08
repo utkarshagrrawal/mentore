@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ErrorNotify, SuccessNotify } from '../global/toast';
+import { FaReply } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
 
 
 export default function Comments({ blogId, user }) {
     const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
 
     const [loading, setLoading] = useState(true);
+    const [replyFields, setReplyFields] = useState({});
     const comments = useRef([]);
 
 
@@ -62,7 +66,7 @@ export default function Comments({ blogId, user }) {
         if (result.error) {
             ErrorNotify(result.error)
         } else {
-            SuccessNotify(result.result)
+            SuccessNotify("Comment added successfully!")
         }
         setLoading(true);
     }
@@ -107,6 +111,39 @@ export default function Comments({ blogId, user }) {
         setLoading(true);
     }
 
+    const handleDelete = async (commentId) => {
+        const resp = confirm('Are you sure you want to delete this comment?');
+        if (!resp) {
+            return ErrorNotify("Comment not deleted");
+        }
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        }
+        const response = await fetch("http://localhost:3000/deletecomment/" + commentId, options);
+        const result = await response.json();
+        if (result.error) {
+            ErrorNotify(result.error)
+        } else {
+            SuccessNotify("Comment deleted successfully")
+        }
+        setLoading(true);
+    }
+
+    const handleReply = (id) => {
+        setReplyFields(prevFields => {
+            return {
+                ...prevFields, [id]: {
+                    ...prevFields[id],
+                    showReplyInput: !prevFields[id]?.showReplyInput,
+                    replyText: ''
+                }
+            }
+        })
+    }
+
     return (
         <>
             <div className="w-full text-center my-10">
@@ -139,42 +176,67 @@ export default function Comments({ blogId, user }) {
                                                 <p>on {dateFormatter.format(new Date(item.time))}</p>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-2">
-                                            <div className="flex items-center">
-                                                {
-                                                    item.liked_by && item.liked_by.includes(user.current.email) ?
-                                                        (
-                                                            <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" onClick={() => handleLike(item.comment_id)}>
-                                                                <path fill="currentColor" d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
-                                                            </svg>
-                                                        ) : (
-                                                            <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" onClick={() => handleLike(item.comment_id)}>
-                                                                <path fill="currentColor" d="M12.781 2.375c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625zM15 12h-1v8h-4v-8H6.081L12 4.601L17.919 12z"></path>
-                                                            </svg>
-                                                        )
-                                                }
-                                                <span className="ml-1 text-sm text-gray-600">{item.liked_by && item.liked_by.length}</span>
+                                        <div className="flex items-center gap-6">
+                                            <div className='flex items-center gap-2'>
+                                                <div className='flex items-center hover:cursor-pointer'>
+                                                    <FaReply className="text-blue-600" />
+                                                    <span className="ml-1 text-sm text-blue-600">Reply</span>
+                                                </div>
+                                                {user.current.email === item.user_email && (
+                                                    <>
+                                                        <div className='flex items-center' onClick={() => handleDelete(item.comment_id)}>
+                                                            <MdDelete className="hover:cursor-pointer text-red-600" />
+                                                            <span className="hover:cursor-pointer text-sm text-red-600">Delete</span>
+                                                        </div>
+                                                        <div className='flex items-center'>
+                                                            <FaEdit className="hover:cursor-pointer text-slate-700" />
+                                                            <span className="ml-1 text-sm text-slate-700">Edit</span>
+                                                        </div>
+                                                    </>
+                                                )}
                                             </div>
-                                            <div className="flex items-center">
-                                                {
-                                                    item.disliked_by && item.disliked_by.includes(user.current.email) ?
-                                                        (
-                                                            <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" onClick={() => handleDislike(item.comment_id)}>
-                                                                <path fill="currentColor" d="M20.901 10.566A1.001 1.001 0 0 0 20 10h-4V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v7H4a1.001 1.001 0 0 0-.781 1.625l8 10a1 1 0 0 0 1.562 0l8-10c.24-.301.286-.712.12-1.059"></path>
-                                                            </svg>
-                                                        ) : (
-                                                            <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" onClick={() => handleDislike(item.comment_id)}>
-                                                                <path fill="currentColor" d="M20.901 10.566A1.001 1.001 0 0 0 20 10h-4V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v7H4a1.001 1.001 0 0 0-.781 1.625l8 10a1 1 0 0 0 1.562 0l8-10c.24-.301.286-.712.12-1.059M12 19.399L6.081 12H10V4h4v8h3.919z"></path>
-                                                            </svg>
-                                                        )
-                                                }
-                                                <span className="ml-1 text-sm text-gray-600">{item.disliked_by && item.disliked_by.length}</span>
+                                            <div className='flex items-center'>
+                                                <div className="flex items-center">
+                                                    {
+                                                        item.liked_by && item.liked_by.includes(user.current.email) ?
+                                                            (
+                                                                <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" onClick={() => handleLike(item.comment_id)}>
+                                                                    <path fill="currentColor" d="M4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625l-8-10c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14"></path>
+                                                                </svg>
+                                                            ) : (
+                                                                <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" onClick={() => handleLike(item.comment_id)}>
+                                                                    <path fill="currentColor" d="M12.781 2.375c-.381-.475-1.181-.475-1.562 0l-8 10A1.001 1.001 0 0 0 4 14h4v7a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-7h4a1.001 1.001 0 0 0 .781-1.625zM15 12h-1v8h-4v-8H6.081L12 4.601L17.919 12z"></path>
+                                                                </svg>
+                                                            )
+                                                    }
+                                                    <span className="text-sm text-gray-600">{item.liked_by && item.liked_by.length}</span>
+                                                </div>
+                                                <div className="flex items-center">
+                                                    {
+                                                        item.disliked_by && item.disliked_by.includes(user.current.email) ?
+                                                            (
+                                                                <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" onClick={() => handleDislike(item.comment_id)}>
+                                                                    <path fill="currentColor" d="M20.901 10.566A1.001 1.001 0 0 0 20 10h-4V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v7H4a1.001 1.001 0 0 0-.781 1.625l8 10a1 1 0 0 0 1.562 0l8-10c.24-.301.286-.712.12-1.059"></path>
+                                                                </svg>
+                                                            ) : (
+                                                                <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" onClick={() => handleDislike(item.comment_id)}>
+                                                                    <path fill="currentColor" d="M20.901 10.566A1.001 1.001 0 0 0 20 10h-4V3a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v7H4a1.001 1.001 0 0 0-.781 1.625l8 10a1 1 0 0 0 1.562 0l8-10c.24-.301.286-.712.12-1.059M12 19.399L6.081 12H10V4h4v8h3.919z"></path>
+                                                                </svg>
+                                                            )
+                                                    }
+                                                    <span className="text-sm text-gray-600">{item.disliked_by && item.disliked_by.length}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="p-4">
                                         <p className="text-base">{item.comment}</p>
                                     </div>
+                                    {/* {(replyFields?.comment_id?.showReplyInput && item.comment_id === replyFields?.comment_id) && (
+                                        <div className='flex items-center p-4'>
+                                            HI sir
+                                        </div>
+                                    )} */}
                                 </div>
                             </div>
                         </div>

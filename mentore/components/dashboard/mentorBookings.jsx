@@ -58,7 +58,7 @@ export default function MentorBookings() {
         if (response.error) {
             ErrorNotify(response.error)
         } else {
-            SuccessNotify(response.result)
+            SuccessNotify("Meeting rejected successfully!")
         }
         setMeetingsLoading(true);
         return;

@@ -4,7 +4,7 @@ const { registerUser, loginUser, forgotPassword, getcurrentuser, verifyOtp, rese
 const { authentication } = require('./utility/passportUtility');
 const { getAllSkills, getMentorDetails, getAllMentors, getMentorProfile } = require('./controllers/mentorController');
 const { createWebinar, getWebinars, getAllWebinars, addParticipant, addHost, createMeeting, joinMeetingParticipant, joinMeetingHost } = require('./controllers/dyteController');
-const { getBlogs, createBlog, getCurrentBlog, getAllBlogs, deleteBlog, addLike, getComments, postComment, addCommentLike, addCommentDislike } = require('./controllers/blogController');
+const { getBlogs, createBlog, getCurrentBlog, getAllBlogs, deleteBlog, addLike, getComments, postComment, addCommentLike, addCommentDislike, deleteComment } = require('./controllers/blogController');
 const { linkRedis } = require('./utility/redisConnection');
 const { getMentorAvailability, getMentorBookings, mentorAllBookings, pay, paymentsuccess, approveMeeting, rejectMeeting } = require('./controllers/bookingController');
 const { getSelfBookings } = require('./controllers/menteeController');
@@ -88,7 +88,9 @@ app.post("/joinmeetingparticipant", authentication, joinMeetingParticipant);
 
 app.post("/joinmeetinghost", authentication, joinMeetingHost);
 
-app.post("/like",authentication, addLike);
+app.post("/like", authentication, addLike);
+
+app.post("/deletecomment/:commentId", authentication, deleteComment);
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
