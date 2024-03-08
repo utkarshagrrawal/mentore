@@ -189,8 +189,8 @@ const addLike = async (req, res) => {
             return res.json({ error: error.message });
         }
         return res.json({ success: "Like removed successfully!" });
-    }  
-    else if (data && data.length === 0) {  
+    }
+    else if (data && data.length === 0) {
         const { error } = await supabase
             .from("blog_likes")
             .insert({ blog_id: blogID, user_email: req.user.email });
@@ -199,6 +199,19 @@ const addLike = async (req, res) => {
         }
         return res.json({ success: "Like added successfully!" });
     }
+}
+
+const deleteComment = async (req, res) => {
+    const { commentId } = req.params;
+    console.log(commentId)
+    const { error } = await supabase
+        .from("blog_comments")
+        .delete()
+        .eq("comment_id", commentId);
+    if (error) {
+        return res.json({ error: error.message });
+    }
+    return res.json({ success: "Comment deleted successfully!" });
 }
 
 module.exports = {
@@ -211,5 +224,6 @@ module.exports = {
     getComments,
     postComment,
     addCommentLike,
-    addCommentDislike
+    addCommentDislike,
+    deleteComment
 };

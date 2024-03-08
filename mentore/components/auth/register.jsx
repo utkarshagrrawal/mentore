@@ -2,7 +2,7 @@ import { React, useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { Loader } from '../global/loader';
-import swal from 'sweetalert2';
+import { ErrorNotify, SuccessNotify } from '../global/toast';
 
 export function Register() {
     const [register, setRegister] = useState({ name: '', email: '', password: '', age: '', registerFor: '', profession: '', company: '', experience: 0 });
@@ -98,32 +98,16 @@ export function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (new Date().getFullYear() - new Date(register.age).getFullYear() < 18) {
-            return swal.fire(
-                'Error',
-                'You must be at least 18 years old to register',
-                'error'
-            );
+            return ErrorNotify('You must be at least 18 years old to register');
         }
         if (conditions.length > 0) {
-            return swal.fire(
-                'Error',
-                'Password is not strong enough',
-                'error'
-            );
+            return ErrorNotify('Please enter a strong password');
         }
         if (isMentor && mentorSkills.length === 0) {
-            return swal.fire(
-                'Error',
-                'Please select at least one skill',
-                'error'
-            );
+            return ErrorNotify('Please select at least one skill');
         }
         if (isMentor && register.experience < 1) {
-            return swal.fire(
-                'Error',
-                'Please enter your experience greater than 0 years',
-                'error'
-            );
+            return ErrorNotify('Please enter a valid experience');
         }
 
         setLoading({ ...loading, webLoading: true });
@@ -148,17 +132,9 @@ export function Register() {
 
         let resp = await sendData.json();
         if (resp.error) {
-            swal.fire(
-                'Error',
-                resp.error,
-                'error'
-            );
+            ErrorNotify(resp.error);
         } else {
-            swal.fire(
-                'Success',
-                'You have been registered successfully',
-                'success'
-            );
+            SuccessNotify('You have been registered successfully');
             navigate('/login');
         }
         setLoading({ ...loading, webLoading: false });
@@ -202,11 +178,7 @@ export function Register() {
             let skills = await fetch('http://localhost:3000/getallskills', options);
             let response = await skills.json();
             if (response.error) {
-                swal.fire(
-                    'Error',
-                    response.error,
-                    'error'
-                );
+                ErrorNotify(response.error);
             } else {
                 allSkills.current = response.result;
             }

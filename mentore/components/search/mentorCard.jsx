@@ -5,7 +5,7 @@ export default function MentorCard({ index, mentor }) {
     return (
         <div
             key={index}
-            className='max-w-sm w-full mx-16 px-4 pt-8 pb-8 bg-gray-100 mb-8 border border-gray-200 rounded-2xl shadow'
+            className='max-w-sm w-full mx-16 px-4 pt-8 pb-8 bg-gray-100 mb-8 border border-gray-200 rounded-2xl shadow hover:shadow-2xl duration-200'
         >
             <img
                 className='rounded-t-lg h-48 object-contain w-full mix-blend-multiply'
