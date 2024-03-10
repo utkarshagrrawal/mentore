@@ -151,30 +151,32 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
                         </thead>
                         <tbody>
                             {meetings.current && meetings.current.map(item => {
-                                return (
-                                    <tr key={item.uniq_id} className='text-center text-black'>
-                                        <td scope="row" className='px-6 py-3'>
-                                            {dateFormatter.format(new Date(item.start_time))}
-                                        </td>
-                                        <td scope="row" className='px-6 py-3'>
-                                            {dateFormatter.format(new Date(item.end_time))}
-                                        </td>
-                                        <td scope="row" className='px-6 py-3'>
-                                            {getMeetingStatus(item.status)}
-                                        </td>
-                                        <td scope="row" className='px-6 py-3'>
-                                            {(item.status === 'pending') && (
-                                                <button disabled className='border-[0.1rem] bg-[#fdc113] focus:ring-2 focus:ring-blue-500 font-medium rounded-lg text-sm px-8 py-1 w-full'>Pending</button>
-                                            )}
-                                            {(item.status === 'payment pending') && (
-                                                <button onClick={() => handlePay(item.uniq_id)} className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-1 w-full'>Pay</button>
-                                            )}
-                                            {(item.status === 'approved') && (
-                                                <button disabled={(new Date() > new Date(item.end_time)) || (new Date() < new Date(item.start_time) ? 'true' : 'false')} onClick={() => handleJoinMeeting(item.meeting_link)} className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-1 w-full'>Join</button>
-                                            )}
-                                        </td>
-                                    </tr>
-                                )
+                                if (new Date(item.end_time).toISOString() > new Date().toISOString()) {
+                                    return (
+                                        <tr key={item.uniq_id} className='text-center text-black'>
+                                            <td scope="row" className='px-6 py-3'>
+                                                {dateFormatter.format(new Date(item.start_time))}
+                                            </td>
+                                            <td scope="row" className='px-6 py-3'>
+                                                {dateFormatter.format(new Date(item.end_time))}
+                                            </td>
+                                            <td scope="row" className='px-6 py-3'>
+                                                {getMeetingStatus(item.status)}
+                                            </td>
+                                            <td scope="row" className='px-6 py-3'>
+                                                {(item.status === 'pending') && (
+                                                    <button disabled className='border-[0.1rem] bg-[#fdc113] focus:ring-2 focus:ring-blue-500 font-medium rounded-lg text-sm px-8 py-1 w-full'>Pending</button>
+                                                )}
+                                                {(item.status === 'payment pending') && (
+                                                    <button onClick={() => handlePay(item.uniq_id)} className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-1 w-full'>Pay</button>
+                                                )}
+                                                {(item.status === 'approved') && (
+                                                    <button disabled={(new Date() > new Date(item.end_time)) || (new Date() < new Date(item.start_time) ? 'true' : 'false')} onClick={() => handleJoinMeeting(item.meeting_link)} className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-1 w-full'>Join</button>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    )
+                                }
                             })}
                         </tbody>
                     </table>
