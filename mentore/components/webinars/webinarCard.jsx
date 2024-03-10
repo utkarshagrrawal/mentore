@@ -1,10 +1,10 @@
 import React from "react";
-import { DismissToast, ErrorNotify, Loading } from "../global/toast";
+import { DismissToast, ErrorNotify, Loading, SuccessNotify } from "../global/toast";
 import { Link } from "react-router-dom";
 
 
-export default function WebinarCard({ webinar }) {
-    const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "full" })
+export default function WebinarCard({ user, webinar, setLoading }) {
+    const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "full" });
 
     const handleJoinWebinar = async (meeting_id) => {
         let options = {
@@ -27,8 +27,41 @@ export default function WebinarCard({ webinar }) {
         DismissToast(toastId);
     }
 
+    const handleRegister = async (id) => {
+        if (user.current?.email === undefined) {
+            return ErrorNotify("Please login to register for the webinar")
+        }
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                webinar_id: id
+            }),
+        };
+        const toastId = Loading('Registering for the webinar');
+        const response = await fetch('http://localhost:3000/registerforwebinar', options);
+        const result = await response.json();
+        if (result.error) {
+            ErrorNotify(result.error);
+        } else {
+            SuccessNotify("Registered for the webinar successfully");
+            setLoading(true);
+        }
+        DismissToast(toastId);
+    }
+
+    const checkRegistered = (item) => {
+        if (item.registered_users?.includes(user.current?.email) && new Date().toISOString() > new Date(item.start_time).toISOString() && new Date().toISOString() < new Date(item.end_time).toISOString()) {
+            return "Join webinar"
+        } else {
+            return "Pending"
+        }
+    }
+
     return (
-        <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-2xl duration-300 relative">
+        <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-2xl duration-200 relative">
             {new Date(webinar.start_time).toISOString() < new Date().toISOString() && (
                 <div className="absolute right-0">
                     <div className="inline-block relative px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-r-sm rounded-l-lg">
@@ -59,9 +92,14 @@ export default function WebinarCard({ webinar }) {
                     </svg>
                     <span>{'Till: ' + dateFormatter.format(new Date(webinar.end_time))}</span>
                 </div>
-                <button disabled={new Date(webinar.start_time).toISOString() < new Date().toISOString() ? false : true} onClick={() => handleJoinWebinar(webinar.meeting_link)} target="_blank" className={new Date(webinar.start_time).toISOString() < new Date().toISOString() ? "inline-flex mt-4 w-full items-center px-3 py-2 text-sm font-medium border border-blue-700 duration-200 hover:text-white rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300" : "inline-flex mt-4 w-full items-center px-3 py-2 text-sm font-medium border border-yellow-700 bg-[#fdc113] duration-200 rounded-lg"}>
-                    {new Date(webinar.start_time).toISOString() < new Date().toISOString() ? 'Join webinar' : 'Webinar not started yet'}
-                </button>
+                <div className="flex justify-between items-center w-full mt-4">
+                    <button onClick={() => handleRegister(webinar.id)} disabled={webinar.registered_users?.includes(user.current?.email) && true} className={webinar.registered_users?.includes(user.current?.email) ? "inline-flex items-center px-3 py-2 text-sm font-medium border duration-200 text-white rounded-lg bg-green-600" : "inline-flex items-center px-3 py-2 text-sm font-medium border border-blue-700 duration-200 hover:text-white rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"}>
+                        {webinar.registered_users?.includes(user.current?.email) ? 'Registered' : 'Register'}
+                    </button>
+                    <button disabled={checkRegistered(webinar) === 'Join webinar' ? false : true} onClick={() => handleJoinWebinar(webinar.meeting_link)} target="_blank" className={checkRegistered(webinar) === 'Join webinar' ? "inline-flex items-center px-3 py-2 text-sm font-medium border border-blue-700 duration-200 hover:text-white rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300" : "inline-flex items-center px-3 py-2 text-sm font-medium border border-yellow-700 bg-[#fdc113] duration-200 rounded-lg"}>
+                        {checkRegistered(webinar)}
+                    </button>
+                </div>
             </div>
         </div>
     )

@@ -227,6 +227,32 @@ const logout = async (req, res) => {
     return res.json({ success: 'User logged out successfully' })
 }
 
+const registerForWebinar = async (req, res) => {
+    const { webinar_id } = req.body;
+    const { email } = req.user;
+
+    const { data, error: newError } = await supabase
+        .from("webinar")
+        .select("")
+        .eq("id", webinar_id)
+
+    if (newError) {
+        return res.json({ error: newError.message })
+    }
+
+    let new_participants = data[0].registered_users;
+    new_participants ? new_participants.push(email) : new_participants = [email];
+
+    const { error } = await supabase
+        .from('webinar')
+        .update({ registered_users: new_participants })
+        .eq('id', webinar_id)
+
+    if (error) {
+        return res.json({ error: error.message })
+    }
+    return res.json({ success: 'User registered for webinar successfully' })
+}
 
 module.exports = {
     registerUser,
@@ -236,5 +262,6 @@ module.exports = {
     getcurrentuser,
     verifyOtp,
     resendOtp,
-    logout
+    logout,
+    registerForWebinar
 }
