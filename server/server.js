@@ -1,9 +1,9 @@
 const express = require('express')
 const cors = require('cors');
-const { registerUser, loginUser, forgotPassword, getcurrentuser, verifyOtp, resendOtp, changepassword, logout } = require('./controllers/userController');
+const { registerUser, loginUser, forgotPassword, getcurrentuser, verifyOtp, resendOtp, changepassword, logout, registerForWebinar } = require('./controllers/userController');
 const { authentication } = require('./utility/passportUtility');
 const { getAllSkills, getMentorDetails, getAllMentors, getMentorProfile } = require('./controllers/mentorController');
-const { createWebinar, getWebinars, getAllWebinars, addParticipant, addHost, createMeeting, joinMeetingParticipant, joinMeetingHost } = require('./controllers/dyteController');
+const { createWebinar, getWebinars, getAllWebinars, addParticipant, addHost, createMeeting, joinMeetingParticipant, joinMeetingHost, removeOldWebinars } = require('./controllers/dyteController');
 const { getBlogs, createBlog, getCurrentBlog, getAllBlogs, deleteBlog, addLike, getComments, postComment, addCommentLike, addCommentDislike, deleteComment } = require('./controllers/blogController');
 const { linkRedis } = require('./utility/redisConnection');
 const { getMentorAvailability, getMentorBookings, mentorAllBookings, pay, paymentsuccess, approveMeeting, rejectMeeting } = require('./controllers/bookingController');
@@ -38,11 +38,13 @@ app.post("/verifyotp", verifyOtp);
 
 app.post("/resendotp", resendOtp);
 
-app.post("/createwebinar", authentication, createWebinar);
+app.post("/createwebinar", authentication, removeOldWebinars, createWebinar);
 
-app.get("/getwebinars", authentication, getWebinars);
+app.get("/getwebinars", authentication, removeOldWebinars, getWebinars);
 
-app.get("/allwebinars", getAllWebinars);
+app.get("/allwebinars", removeOldWebinars, getAllWebinars);
+
+app.post("/registerforwebinar", authentication, removeOldWebinars, registerForWebinar);
 
 app.get("/allmenteemeetings", authentication, getSelfBookings)
 

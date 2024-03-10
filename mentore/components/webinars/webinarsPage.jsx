@@ -6,6 +6,7 @@ import WebinarCard from "./webinarCard";
 export function WebinarsPage() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [loading, setLoading] = useState(true)
+    const user = useRef({});
     const allWebinars = useRef([])
 
     useEffect(() => {
@@ -21,6 +22,7 @@ export function WebinarsPage() {
             if (result.error) {
                 setLoggedIn(false);
             } else {
+                user.current = result.result;
                 setLoggedIn(true);
             }
         };
@@ -29,7 +31,6 @@ export function WebinarsPage() {
 
     useEffect(() => {
         const webinars = async () => {
-            setLoading(true)
             let options = {
                 method: "GET",
                 headers: {
@@ -45,8 +46,10 @@ export function WebinarsPage() {
                 setLoading(false)
             }
         }
-        webinars();
-    }, [])
+        if (loading) {
+            webinars();
+        }
+    }, [loading])
 
     return (
         <div className='min-h-screen items-center flex flex-col w-full'>
@@ -54,13 +57,13 @@ export function WebinarsPage() {
 
             <div className="w-full">
                 <div className="flex flex-wrap justify-center items-center mx-16 mt-3 mb-14">
-                    <h1 className="text-4xl font-bold mr-16 text-center">Live webinars</h1>
+                    <h1 className="text-4xl font-bold text-center">Live webinars</h1>
                 </div>
                 <div className="flex w-full flex-wrap justify-center items-center my-3">
-                    <div className="w-full mx-16 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6">
+                    <div className="w-full mx-16 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 place-items-center place-content-center">
                         {!loading && allWebinars.current.map((webinar, index) => {
                             if (new Date().toISOString() < new Date(webinar.end_time).toISOString()) {
-                                return <WebinarCard webinar={webinar} key={index} />
+                                return <WebinarCard user={user} webinar={webinar} key={index} setLoading={setLoading} />
                             }
                         })
                         }
