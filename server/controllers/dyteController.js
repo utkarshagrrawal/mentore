@@ -146,6 +146,18 @@ const createMeeting = async (req, res) => {
     }
 }
 
+const removeOldMeetings = async (req, res, next) => {
+    const { error } = await supabase
+        .from('schedule_mentors')
+        .delete()
+        .lte('end_time', new Date().toISOString().split('.')[0])
+
+    if (error) {
+        return res.json({ error: error.message })
+    }
+    next();
+}
+
 const joinMeetingParticipant = async (req, res) => {
     const concatenatedString = process.env.DYTE_ORG_ID + ':' + process.env.DYTE_API_KEY
     const webinar = await fetch(req.body.meeting_id + '/participants', {
@@ -204,5 +216,6 @@ module.exports = {
     createMeeting,
     joinMeetingParticipant,
     joinMeetingHost,
-    removeOldWebinars
+    removeOldWebinars,
+    removeOldMeetings
 }

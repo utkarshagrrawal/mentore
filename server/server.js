@@ -3,7 +3,7 @@ const cors = require('cors');
 const { registerUser, loginUser, forgotPassword, getcurrentuser, verifyOtp, resendOtp, changepassword, logout, registerForWebinar } = require('./controllers/userController');
 const { authentication } = require('./utility/passportUtility');
 const { getAllSkills, getMentorDetails, getAllMentors, getMentorProfile } = require('./controllers/mentorController');
-const { createWebinar, getWebinars, getAllWebinars, addParticipant, addHost, createMeeting, joinMeetingParticipant, joinMeetingHost, removeOldWebinars } = require('./controllers/dyteController');
+const { createWebinar, getWebinars, getAllWebinars, addParticipant, addHost, createMeeting, joinMeetingParticipant, joinMeetingHost, removeOldWebinars, removeOldMeetings } = require('./controllers/dyteController');
 const { getBlogs, createBlog, getCurrentBlog, getAllBlogs, deleteBlog, addLike, getComments, postComment, addCommentLike, addCommentDislike, deleteComment } = require('./controllers/blogController');
 const { linkRedis } = require('./utility/redisConnection');
 const { getMentorAvailability, getMentorBookings, mentorAllBookings, pay, paymentsuccess, approveMeeting, rejectMeeting } = require('./controllers/bookingController');
@@ -46,7 +46,7 @@ app.get("/allwebinars", removeOldWebinars, getAllWebinars);
 
 app.post("/registerforwebinar", authentication, removeOldWebinars, registerForWebinar);
 
-app.get("/allmenteemeetings", authentication, getSelfBookings)
+app.get("/allmenteemeetings", authentication, removeOldMeetings, getSelfBookings)
 
 app.post("/joinwebinarparticipant", authentication, addParticipant);
 
@@ -74,9 +74,9 @@ app.get("/getmentorprofile", authentication, getMentorProfile);
 
 app.post("/schedulemeet", authentication, getMentorAvailability)
 
-app.get("/getwithmentormeetings/:id", authentication, getMentorBookings)
+app.get("/getwithmentormeetings/:id", authentication, removeOldMeetings, getMentorBookings)
 
-app.get("/getmentorallmeetings", authentication, mentorAllBookings)
+app.get("/getmentorallmeetings", authentication, removeOldMeetings, mentorAllBookings)
 
 app.post("/pay/:id", authentication, pay, createMeeting)
 
