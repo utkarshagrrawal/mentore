@@ -16,7 +16,7 @@ export default function MentorBookings() {
         }
 
         const getMeetings = async () => {
-            const response = await fetch('http://localhost:3000/getmentorallmeetings', options);
+            const response = await fetch('http://localhost:3000/mentor/meetings', options);
             const result = await response.json();
             if (result.error) {
                 ErrorNotify(result.error)
@@ -31,8 +31,8 @@ export default function MentorBookings() {
     }, [meetingsLoading])
 
     const handleApprove = async (id) => {
-        const approveRequest = await fetch('http://localhost:3000/approvemeetings?id=' + id, {
-            method: 'POST',
+        const approveRequest = await fetch('http://localhost:3000/mentor/meeting/approve?id=' + id, {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -48,7 +48,7 @@ export default function MentorBookings() {
     }
 
     const handleReject = async (id) => {
-        const rejectRequest = await fetch('http://localhost:3000/rejectmeetings?id=' + id, {
+        const rejectRequest = await fetch('http://localhost:3000/mentor/meeting/reject?id=' + id, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ export default function MentorBookings() {
                 meeting_id: link
             })
         }
-        const response = await fetch('http://localhost:3000/joinmeetinghost', options);
+        const response = await fetch('http://localhost:3000/meeting/join/host', options);
         const result = await response.json();
 
         if (result.error) {
@@ -90,7 +90,7 @@ export default function MentorBookings() {
             <div className='w-full mb-8'>
                 <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
                     <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
-                        <thead className="text-xs text-white uppercase bg-blue-600">
+                        <thead className="text-xs text-slate-600 uppercase bg-blue-100">
                             <tr className='text-center'>
                                 <th scope="col" className="px-6 py-3">
                                     Start time
@@ -107,9 +107,9 @@ export default function MentorBookings() {
                             </tr>
                         </thead>
                         <tbody>
-                            {!meetingsLoading && meetings.current && meetings.current.map((item) => {
+                            {!meetingsLoading && meetings.current && meetings.current.length > 0 ? meetings.current.map((item) => {
                                 return (
-                                    <tr key={item.uniq_id} className="border-b border-blue-400 text-center">
+                                    <tr key={item.uniq_id} className="text-center">
                                         <th scope="row" className="px-6 py-4 font-medium text-black whitespace-pre-line">
                                             {dateFormatter.format(new Date(item.start_time))}
                                         </th>
@@ -141,7 +141,13 @@ export default function MentorBookings() {
                                         </td>
                                     </tr>
                                 )
-                            })}
+                            }) : (
+                                <tr className="text-center">
+                                    <td className="px-6 py-4 text-black" colSpan='4'>
+                                        No meetings
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>

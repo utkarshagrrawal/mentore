@@ -19,7 +19,7 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
         const getAllMeetings = async () => {
             setDataLoading(true)
 
-            const allMeetings = await fetch('http://localhost:3000/getwithmentormeetings/' + id + '/', options)
+            const allMeetings = await fetch('http://localhost:3000/user/bookings/mentor/' + id, options)
             const response = await allMeetings.json();
 
             if (response.error) {
@@ -133,7 +133,7 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
                 <h1 className='text-center text-3xl font-bold text-black'>Current bookings</h1>
                 <div className='relative overflow-x-auto mt-4 border-[0.1rem] border-black sm:rounded-lg'>
                     <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
-                        <thead className="text-xs text-white bg-blue-600">
+                        <thead className="text-xs text-slate-600 uppercase bg-blue-100">
                             <tr className='text-center uppercase'>
                                 <th scope="col" className="px-6 py-3">
                                     Start time
@@ -150,7 +150,7 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {meetings.current && meetings.current.map(item => {
+                            {meetings.current && meetings.current?.length > 0 ? meetings.current.map(item => {
                                 if (new Date(item.end_time).toISOString() > new Date().toISOString()) {
                                     return (
                                         <tr key={item.uniq_id} className='text-center text-black'>
@@ -177,7 +177,13 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
                                         </tr>
                                     )
                                 }
-                            })}
+                            }) : (
+                                <tr className='text-center text-black'>
+                                    <td scope="row" className='px-6 py-3' colSpan='4'>
+                                        No bookings
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>

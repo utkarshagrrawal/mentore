@@ -13,7 +13,7 @@ export default function MentorDetails({ id, mentorDetails }) {
                     'Content-Type': 'application/json',
                 }
             }
-            let mentors = await fetch(`http://localhost:3000/getmentorprofile?id=${id}`, options);
+            let mentors = await fetch(`http://localhost:3000/mentor/profile?id=${id}`, options);
             const result = await mentors.json();
             if (result.error) {
                 ErrorNotify(result.error)

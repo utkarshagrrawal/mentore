@@ -17,7 +17,7 @@ export default function WebinarCard({ user, webinar, setLoading }) {
             })
         };
         const toastId = Loading('Joining the webinar');
-        let webinars = await fetch('http://localhost:3000/joinwebinarparticipant', options);
+        let webinars = await fetch('http://localhost:3000/webinar/join/participant', options);
         const result = await webinars.json();
         if (!result.success) {
             ErrorNotify("Some error occurred while joining the webinar")

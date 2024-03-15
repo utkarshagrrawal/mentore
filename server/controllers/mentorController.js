@@ -1,54 +1,101 @@
-const { supabase } = require("../utility/dbConnection")
+const { fetchBookingsForMentorLogic, approveMeetingRequestLogic, rejectMeetingRequestLogic, fetchWebinarsByMentorLogic, fetchMentorDetailsLogic, fetchMentorSkillOptionsLogic, fetchAllMentorsLogic, fetchMentorProfileLogic, fetchBlogsByMentorLogic, fetchMentorAvailabilityLogic } = require("../businessLogic/mentorLogic")
 
-const getAllSkills = async (req, res) => {
-    const { data, error } = await supabase
-        .from('domains')
-        .select('')
-    if (error) {
-        return res.json({ error: error.message })
-    } else {
-        return res.json({ result: data })
+const fetchBookingsForMentor = async (req, res) => {
+    const response = await fetchBookingsForMentorLogic(req.user);
+    if (response.error) {
+        return res.json({ error: response.error })
     }
+    return res.json({ result: response.success })
 }
 
-const getMentorDetails = async (req, res) => {
-    const { data, error } = await supabase
-        .from('mentors')
-        .select()
-        .eq('email', req.user.email)
-    if (error) {
+
+const approveMeetingRequest = async (req, res) => {
+    const response = await approveMeetingRequestLogic(req.query);
+    if (response.error) {
         return res.json({ error: error.message })
-    } else {
-        return res.json({ result: data[0] })
     }
+    return res.json({ success: response.success })
 }
 
-const getAllMentors = async (req, res) => {
-    const { data, error } = await supabase
-        .from('mentors')
-        .select()
-    if (error) {
+
+const rejectMeetingRequest = async (req, res) => {
+    const response = await rejectMeetingRequestLogic(req.query);
+    if (response.error) {
         return res.json({ error: error.message })
-    } else {
-        return res.json({ result: data })
     }
+    return res.json({ success: response.success })
 }
 
-const getMentorProfile = async (req, res) => {
-    const { data, error } = await supabase
-        .from('mentors')
-        .select()
-        .eq('uniq_id', req.query.id)
-    if (error) {
-        return res.json({ error: error.message })
-    } else {
-        return res.json({ result: data[0] })
+
+const fetchWebinarsByMentor = async (req, res) => {
+    const response = await fetchWebinarsByMentorLogic(req.user);
+    if (response.error) {
+        return res.json({ error: response.error })
     }
+    return res.json({ result: response.success })
 }
+
+
+const fetchMentorSkillOptions = async (req, res) => {
+    const response = await fetchMentorSkillOptionsLogic();
+    if (response.error) {
+        return res.json({ error: response.error })
+    }
+    return res.json({ result: response.success })
+}
+
+const fetchMentorDetails = async (req, res) => {
+    const response = await fetchMentorDetailsLogic(req.user);
+    if (response.error) {
+        return res.json({ error: response.error })
+    }
+    return res.json({ result: response.success })
+}
+
+const fetchAllMentors = async (req, res) => {
+    const response = await fetchAllMentorsLogic();
+    if (response.error) {
+        return res.json({ error: response.error })
+    }
+    return res.json({ result: response.success })
+}
+
+const fetchMentorProfile = async (req, res) => {
+    const response = await fetchMentorProfileLogic(req.query);
+    if (response.error) {
+        return res.json({ error: response.error })
+    }
+    return res.json({ result: response.success })
+}
+
+
+const fetchBlogsByMentor = async (req, res) => {
+    const response = await fetchBlogsByMentorLogic(req.user);
+    if (response.error) {
+        return res.json({ error: response.error })
+    }
+    return res.json({ result: response.success })
+}
+
+
+const fetchMentorAvailability = async (req, res) => {
+    const response = await fetchMentorAvailabilityLogic(req.body, req.user);
+    if (response.error) {
+        return res.json({ error: response.error })
+    }
+    return res.json({ result: response.success })
+}
+
 
 module.exports = {
-    getAllSkills,
-    getMentorDetails,
-    getAllMentors,
-    getMentorProfile
+    fetchMentorSkillOptions,
+    fetchMentorDetails,
+    fetchAllMentors,
+    fetchMentorProfile,
+    fetchBookingsForMentor,
+    approveMeetingRequest,
+    rejectMeetingRequest,
+    fetchWebinarsByMentor,
+    fetchBlogsByMentor,
+    fetchMentorAvailability
 }

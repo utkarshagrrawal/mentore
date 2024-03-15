@@ -10,7 +10,7 @@ export default function YourBookings() {
 
     useEffect(() => {
         const fetchMeetings = async () => {
-            const response = await fetch('http://localhost:3000/allmenteemeetings', {
+            const response = await fetch('http://localhost:3000/user/my-bookings', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ export default function YourBookings() {
             })
         }
 
-        const pay = await fetch('http://localhost:3000/pay/' + id, options);
+        const pay = await fetch('http://localhost:3000/payment/pay/' + id, options);
         const response = await pay.json();
 
         if (response.error) {
@@ -52,7 +52,7 @@ export default function YourBookings() {
                 "description": "Payment for mentor session",
                 "image": "https://images.pexels.com/photos/6325962/pexels-photo-6325962.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
                 "order_id": response.result.id,
-                "handler": async function (response) {
+                "handler": function (response) {
                     const paymentsuccess = async () => {
                         let options = {
                             method: 'POST',
@@ -60,7 +60,7 @@ export default function YourBookings() {
                                 'Content-Type': 'application/json',
                             },
                         }
-                        const payment = await fetch('http://localhost:3000/paymentsuccess/' + id, options);
+                        const payment = await fetch('http://localhost:3000/payment/success/' + id, options);
                         const response = await payment.json();
 
                         if (response.error) {
@@ -70,7 +70,7 @@ export default function YourBookings() {
                             location.reload();
                         }
                     }
-                    await paymentsuccess();
+                    paymentsuccess();
                 },
                 "notes": {
                     "address": "Mentore corporate office"
@@ -97,7 +97,7 @@ export default function YourBookings() {
                 meeting_id: link
             })
         }
-        const join = await fetch('http://localhost:3000/joinmeetingparticipant', options);
+        const join = await fetch('http://localhost:3000/meeting/join/participant', options);
         const response = await join.json();
         if (response.error) {
             return ErrorNotify(response.error);
@@ -112,7 +112,7 @@ export default function YourBookings() {
             <div className='w-full'>
                 <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
                     <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
-                        <thead className="text-xs text-white uppercase bg-blue-600">
+                        <thead className="text-xs text-slate-600 uppercase bg-blue-100">
                             <tr className='text-center'>
                                 <th scope="col" className="px-6 py-3">
                                     Applied on
@@ -129,7 +129,7 @@ export default function YourBookings() {
                             </tr>
                         </thead>
                         <tbody>
-                            {!menteeMeetingsLoading && menteeMeetings.current.map((item, id) => {
+                            {!menteeMeetingsLoading && menteeMeetings.current.length > 0 ? menteeMeetings.current.map((item, id) => {
                                 return (
                                     <tr key={id} className="border-b border-blue-400 text-center">
                                         <td className="px-6 py-4 text-black">
@@ -156,7 +156,13 @@ export default function YourBookings() {
                                         </td>
                                     </tr>
                                 )
-                            })}
+                            }) : (
+                                <tr className="text-center">
+                                    <td colSpan='4' className="px-6 py-4 text-black">
+                                        No bookings found
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>

@@ -1,14 +1,9 @@
-import React from 'react';
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Loader } from '../global/loader';
-import { FaCheck } from "react-icons/fa";
-import { ErrorNotify, SuccessNotify } from '../global/toast';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { DismissToast, ErrorNotify, Loading, SuccessNotify } from "../../global/toast";
 
-export function ChangePassword() {
-    const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
-    const [password, setPassword] = useState({ oldPassword: '', password: '', confirmPassword: '' });
+
+export default function ChangePasswordBlock({ setLoading }) {
     const conditions = {
         '1': 'Password must contain at least one uppercase letter',
         '2': 'Password must contain at least one lowercase letter',
@@ -16,18 +11,15 @@ export function ChangePassword() {
         '4': 'Password must contain at least one special character',
         '5': 'Password must be at least 8 characters long'
     }
-    const [conditionalList, setConditionalList] = useState(conditions);
+    const [conditionsList, setConditionsList] = useState(conditions);
+    const [password, setPassword] = useState({ oldPassword: '', password: '', confirmPassword: '' });
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setPassword({ ...password, [e.target.name]: e.target.value })
         if (e.target.name === 'password') {
             const password = e.target.value;
-
-            if (password.length > 0) {
-                document.getElementById('passwordStrengthPointsDiv').style.display = 'block';
-            } else {
-                document.getElementById('passwordStrengthPointsDiv').style.display = 'none';
-            }
 
             const containsUppercase = /[A-Z]/.test(password);
             const containsLowercase = /[a-z]/.test(password);
@@ -60,52 +52,54 @@ export function ChangePassword() {
             } else {
                 conditions['5'] = 'Password must be at least 8 characters long';
             }
-            setConditionalList(conditions);
+            setConditionsList(conditions);
         }
     }
 
-    let passwordConditions = Object.keys(conditionalList).map((key, index) => {
+    let passwordConditions = Object.keys(conditionsList).map((key, index) => {
         return (
-            <li key={index} className='text-sm font-semibold text-red-600'>{conditionalList[key]}</li>
+            <li key={index} className='text-sm font-semibold text-red-600'>{conditionsList[key]}</li>
         )
     })
 
-    if (passwordConditions.length === 0) {
-        passwordConditions = <h1 className='flex items-center gap-2 text-sm font-semibold text-green-600'><FaCheck />Password is strong</h1>
-    }
+    useEffect(() => {
+        setIsButtonDisabled(Object.keys(conditionsList).length > 0 || password.password.length === 0 || password.confirmPassword.length === 0 || password.oldPassword.length === 0 ? true : false);
+    }, [password])
 
-    const handleChangePassword = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (password.password !== password.confirmPassword) {
             return ErrorNotify("Passwords do not match");
         }
+        const toastId = Loading("Changing password...");
         setLoading(true);
-        let changePassword = await fetch('http://localhost:3000/changepassword', {
-            method: 'POST',
+        let changePassword = await fetch('http://localhost:3000/user/change-password', {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(password)
         })
         let response = await changePassword.json();
+        DismissToast(toastId);
         if (response.error) {
             ErrorNotify(response.error);
         } else {
             SuccessNotify("Password changed successfully")
-            navigate('/dashboard');
+            navigate('/user/dashboard');
         }
         setLoading(false);
     }
 
-    const changePasswordCode = (
-        <div className='border-2 border-black mt-3 py-4 w-1/3 flex flex-col bg-white rounded-xl'>
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+    return (
+        <div className="border-2 border-gray-300 mt-3 px-6 py-8 w-full md:w-[75%] lg:w-1/3 flex flex-col bg-white rounded-xl shadow-2xl">
+            <div className="sm:w-full">
+                <h2 className="mt-4 text-center text-3xl font-bold leading-9 text-gray-900">
                     Change password
                 </h2>
             </div>
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6" onSubmit={handleChangePassword}>
+            <div className="mt-10 sm:w-full">
+                <form className="space-y-6" onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="oldPassword" className="block text-sm font-medium leading-6 text-gray-900">
                             Old password
@@ -138,7 +132,7 @@ export function ChangePassword() {
                             />
                         </div>
                     </div>
-                    <div className='py-2 rounded-md hidden' id='passwordStrengthPointsDiv'>
+                    <div className={`py-2 rounded-md ${password.password.length > 0 && Object.keys(conditionsList).length > 0 ? 'block' : 'hidden'} `}>
                         {passwordConditions}
                     </div>
                     <div>
@@ -159,24 +153,18 @@ export function ChangePassword() {
                     </div>
                     <div>
                         <button
+                            disabled={isButtonDisabled}
                             type="submit"
-                            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${isButtonDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
                         >
                             Change password
                         </button>
                     </div>
                 </form>
                 <div className="mt-6 text-center">
-                    Go back to <Link to="/dashboard" className="font-medium text-indigo-600 hover:text-indigo-500 underline">dashboard</Link>
+                    Go back to <Link to="/user/dashboard" className="font-medium text-indigo-600 hover:text-indigo-500 underline">dashboard</Link>
                 </div>
             </div>
         </div>
     )
-
-    return (
-        <div className="flex min-h-screen flex-1 flex-col items-center justify-center px-6 py-12 lg:px-8 bg-gradient-to-r from-blue-300 via-gray-300 to-yellow-300">
-            <Link to='/' className='relative'><img src="../static/logo.png" className="h-12 mix-blend-multiply" alt="Mentore" /></Link>
-            {loading ? <Loader /> : changePasswordCode}
-        </div>
-    );
 }

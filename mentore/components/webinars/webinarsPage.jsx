@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import Header from "../global/header";
 import { ErrorNotify } from "../global/toast";
-import WebinarCard from "./webinarCard";
+import WebinarsDisplay from "./webinarsDisplay";
+import EmptyWebinarsPage from "./emptyWebinarsPage";
 
 export function WebinarsPage() {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -17,7 +18,7 @@ export function WebinarsPage() {
                     "Content-Type": "application/json",
                 },
             };
-            let users = await fetch("http://localhost:3000/getcurrentuser", options);
+            let users = await fetch("http://localhost:3000/user/details", options);
             const result = await users.json();
             if (result.error) {
                 setLoggedIn(false);
@@ -37,7 +38,7 @@ export function WebinarsPage() {
                     "Content-Type": "application/json",
                 },
             };
-            let webinars = await fetch("http://localhost:3000/allwebinars", options);
+            let webinars = await fetch("http://localhost:3000/webinar/all", options);
             const result = await webinars.json();
             if (result.error) {
                 ErrorNotify("Some error occurred while fetching webinars")
@@ -54,22 +55,7 @@ export function WebinarsPage() {
     return (
         <div className='min-h-screen items-center flex flex-col w-full'>
             <Header loggedIn={loggedIn} />
-
-            <div className="w-full">
-                <div className="flex flex-wrap justify-center items-center mx-16 mt-3 mb-14">
-                    <h1 className="text-4xl font-bold text-center">Live webinars</h1>
-                </div>
-                <div className="flex w-full flex-wrap justify-center items-center my-3">
-                    <div className="w-full mx-16 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 place-items-center place-content-center">
-                        {!loading && allWebinars.current.map((webinar, index) => {
-                            if (new Date().toISOString() < new Date(webinar.end_time).toISOString()) {
-                                return <WebinarCard user={user} webinar={webinar} key={index} setLoading={setLoading} />
-                            }
-                        })
-                        }
-                    </div>
-                </div>
-            </div>
+            {allWebinars.current?.length > 0 ? <WebinarsDisplay allWebinars={allWebinars} loading={loading} setLoading={setLoading} user={user} /> : <EmptyWebinarsPage />}
         </div>
     )
 }

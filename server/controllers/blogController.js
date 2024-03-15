@@ -1,229 +1,94 @@
-const { supabase } = require("../utility/dbConnection");
+const { createBlogLogic, fetchBlogDetailsLogic, deleteBlogLogic, fetchAllBlogsLogic, fetchCommentsOnBlogLogic, postCommentOnBlogLogic, addLikeOnCommentLogic, addDislikeOnCommentLogic, deleteCommentOnBlogLogic, addLikeOnBlogLogic } = require("../businessLogic/blogLogic");
 
-const getBlogs = async (req, res) => {
-    const { data, error } = await supabase
-        .from("blogs")
-        .select()
-        .eq("email", req.user.email);
-    if (!error) {
-        return res.json({ result: data });
+const fetchAllBlogs = async (req, res) => {
+    const response = await fetchAllBlogsLogic();
+    if (response.error) {
+        return res.json({ error: response.error })
     }
-    return res.json({ error: error.message });
-};
-
-const getAllBlogs = async (req, res) => {
-    const { data, error } = await supabase
-        .rpc('get_blogs_with_likes');
-    if (!error) {
-        return res.json({ result: data });
-    }
-    return res.json({ error: error.message });
+    return res.json({ result: response.success })
 };
 
 const createBlog = async (req, res) => {
-    const { title, content } = req.body;
-    const { error } = await supabase.from("blogs").insert({
-        title: title,
-        content: content,
-        email: req.user.email,
-        name: req.user.name,
-        likes: 0,
-    });
-    if (!error) {
-        return res.json({ success: "Blog created successfully!" });
+    const response = await createBlogLogic(req.body, req.user);
+    if (response.error) {
+        return res.json({ error: response.error })
     }
-    return res.json({ error: error.message });
+    return res.json({ success: response.success })
 };
 
-const getCurrentBlog = async (req, res) => {
-    const { blogID } = req.body;
-    const { data, error } = await supabase
-        .from("blogs")
-        .select()
-        .eq("id", blogID);
-    if (!error) {
-        return res.json({ result: data[0] });
+const fetchBlogDetails = async (req, res) => {
+    const response = await fetchBlogDetailsLogic(req.params);
+    if (response.error) {
+        return res.json({ error: response.error })
     }
-    return res.json({ error: error.message });
+    return res.json({ result: response.success })
 };
 
 const deleteBlog = async (req, res) => {
-    const { id } = req.body;
-    const { error } = await supabase.from("blogs").delete().eq("id", id);
-    if (!error) {
-        return res.json({ success: "Blog deleted successfully!" });
-    } else {
-        return res.json({ error: error.message });
+    const response = await deleteBlogLogic(req.params);
+    if (response.error) {
+        return res.json({ error: response.error })
     }
+    return res.json({ success: response.success })
 };
 
-const getComments = async (req, res) => {
-    const { id } = req.params;
-    const { data, error } = await supabase
-        .rpc('get_comments_with_likes_dislikes', { blog_id: id })
-
-    if (error) {
-        return res.json({ error: error.message });
+const fetchCommentsOnBlog = async (req, res) => {
+    const response = await fetchCommentsOnBlogLogic(req.params);
+    if (response.error) {
+        return res.json({ error: response.error })
     }
-    return res.json({ result: data })
+    return res.json({ result: response.success })
 }
 
-const postComment = async (req, res) => {
-    const { comment } = req.body;
-    const { id } = req.params;
-    const { error } = await supabase
-        .from("blog_comments")
-        .insert({ blog_id: id, comment: comment, user_email: req.user.email, user_name: req.user.name, time: new Date().toISOString(), gender: req.user.gender });
-
-    if (error) {
-        return res.json({ error: error.message });
+const postCommentOnBlog = async (req, res) => {
+    const response = await postCommentOnBlogLogic(req.user, req.params, req.body);
+    if (response.error) {
+        return res.json({ error: response.error })
     }
-    return res.json({ success: "Comment added successfully!" });
+    return res.json({ success: response.success })
 }
 
-const addCommentLike = async (req, res) => {
-    const { commentID } = req.body;
-
-    const { error: newError } = await supabase
-        .from("blog_comment_dislikes")
-        .delete()
-        .eq("comment_id", commentID)
-        .eq("user_email", req.user.email);
-
-    if (newError) {
-        return res.json({ error: newError.message });
+const addLikeOnComment = async (req, res) => {
+    const response = await addLikeOnCommentLogic(req.user, req.params);
+    if (response.error) {
+        return res.json({ error: response.error })
     }
-
-    const { data, error } = await supabase
-        .from("blog_comment_likes")
-        .select("")
-        .eq("comment_id", commentID)
-        .eq("user_email", req.user.email);
-
-    if (error) {
-        return res.json({ error: error.message });
-    }
-    if (data && data.length === 0) {
-        const { error } = await supabase
-            .from("blog_comment_likes")
-            .insert({ comment_id: commentID, user_email: req.user.email })
-        if (error) {
-            return res.json({ error: error.message });
-        }
-        return res.json({ success: "Like added successfully!" });
-    } else if (data && data.length > 0) {
-        const { error } = await supabase
-            .from("blog_comment_likes")
-            .delete()
-            .eq("comment_id", commentID)
-            .eq("user_email", req.user.email);
-        if (error) {
-            return res.json({ error: error.message });
-        }
-        return res.json({ success: "Like removed successfully!" });
-    }
+    return res.json({ success: response.success })
 }
 
-const addCommentDislike = async (req, res) => {
-    const { commentID } = req.body;
-
-    const { error: newError } = await supabase
-        .from("blog_comment_likes")
-        .delete()
-        .eq("comment_id", commentID)
-        .eq("user_email", req.user.email);
-
-    if (newError) {
-        return res.json({ error: newError.message });
+const addDislikeOnComment = async (req, res) => {
+    const response = await addDislikeOnCommentLogic(req.user, req.params);
+    if (response.error) {
+        return res.json({ error: response.error })
     }
-
-    const { data, error } = await supabase
-        .from("blog_comment_dislikes")
-        .select("")
-        .eq("comment_id", commentID)
-        .eq("user_email", req.user.email);
-
-    if (error) {
-        return res.json({ error: error.message });
-    }
-    if (data && data.length === 0) {
-        const { error } = await supabase
-            .from("blog_comment_dislikes")
-            .insert({ comment_id: commentID, user_email: req.user.email })
-        if (error) {
-            return res.json({ error: error.message });
-        }
-        return res.json({ success: "Dislike added successfully!" });
-    } else if (data && data.length > 0) {
-        const { error } = await supabase
-            .from("blog_comment_dislikes")
-            .delete()
-            .eq("comment_id", commentID)
-            .eq("user_email", req.user.email);
-        if (error) {
-            return res.json({ error: error.message });
-        }
-        return res.json({ success: "Dislike removed successfully!" });
-    }
+    return res.json({ success: response.success })
 }
 
-const addLike = async (req, res) => {
-    const { blogID } = req.body;
-
-    const { data, error } = await supabase
-        .from("blog_likes")
-        .select("")
-        .eq("blog_id", blogID)
-        .eq("user_email", req.user.email);
-
-    if (error) {
-        return res.json({ error: error.message });
+const addLikeOnBlog = async (req, res) => {
+    const response = await addLikeOnBlogLogic(req.params, req.user);
+    if (response.error) {
+        return res.json({ error: response.error })
     }
-    else if (data && data.length > 0) {
-        const { error } = await supabase
-            .from("blog_likes")
-            .delete()
-            .eq("blog_id", blogID)
-            .eq("user_email", req.user.email);
-        if (error) {
-            return res.json({ error: error.message });
-        }
-        return res.json({ success: "Like removed successfully!" });
-    }
-    else if (data && data.length === 0) {
-        const { error } = await supabase
-            .from("blog_likes")
-            .insert({ blog_id: blogID, user_email: req.user.email });
-        if (error) {
-            return res.json({ error: error.message });
-        }
-        return res.json({ success: "Like added successfully!" });
-    }
+    return res.json({ success: response.success })
 }
 
-const deleteComment = async (req, res) => {
-    const { commentId } = req.params;
-    console.log(commentId)
-    const { error } = await supabase
-        .from("blog_comments")
-        .delete()
-        .eq("comment_id", commentId);
-    if (error) {
-        return res.json({ error: error.message });
+const deleteCommentOnBlog = async (req, res) => {
+    const response = await deleteCommentOnBlogLogic(req.params);
+    if (response.error) {
+        return res.json({ error: response.error })
     }
-    return res.json({ success: "Comment deleted successfully!" });
+    return res.json({ success: response.success })
 }
 
 module.exports = {
-    getBlogs,
-    getAllBlogs,
+    fetchAllBlogs,
     createBlog,
-    getCurrentBlog,
+    fetchBlogDetails,
     deleteBlog,
-    addLike,
-    getComments,
-    postComment,
-    addCommentLike,
-    addCommentDislike,
-    deleteComment
+    addLikeOnBlog,
+    fetchCommentsOnBlog,
+    postCommentOnBlog,
+    addLikeOnComment,
+    addDislikeOnComment,
+    deleteCommentOnBlog
 };
