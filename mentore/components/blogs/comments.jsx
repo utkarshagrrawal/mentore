@@ -23,7 +23,7 @@ export default function Comments({ blogId, user }) {
                 },
             }
 
-            const response = await fetch("http://localhost:3000/getcomments/" + blogId, options);
+            const response = await fetch("http://localhost:3000/blog/" + blogId + "/comments", options);
             const result = await response.json();
 
             if (result.error) {
@@ -61,7 +61,7 @@ export default function Comments({ blogId, user }) {
             })
         };
 
-        const response = await fetch("http://localhost:3000/postcomment/" + blogId, options);
+        const response = await fetch("http://localhost:3000/blog/" + blogId + "/comment", options);
         const result = await response.json();
         if (result.error) {
             ErrorNotify(result.error)
@@ -76,13 +76,10 @@ export default function Comments({ blogId, user }) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                "commentID": comment_id,
-            })
+            }
         }
 
-        const response = await fetch("http://localhost:3000/addliketocomment", options);
+        const response = await fetch("http://localhost:3000/blog/" + blogId + "/comment/" + comment_id + "/like", options);
         const result = await response.json();
 
         if (result.error) {
@@ -96,13 +93,10 @@ export default function Comments({ blogId, user }) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                "commentID": comment_id,
-            })
+            }
         }
 
-        const response = await fetch("http://localhost:3000/adddisliketocomment", options);
+        const response = await fetch("http://localhost:3000/blog/" + blogId + "/comment/" + comment_id + "/dislike", options);
         const result = await response.json();
 
         if (result.error) {
@@ -122,7 +116,7 @@ export default function Comments({ blogId, user }) {
                 "Content-Type": "application/json",
             }
         }
-        const response = await fetch("http://localhost:3000/deletecomment/" + commentId, options);
+        const response = await fetch("http://localhost:3000/blog/" + blogId + "/comment/" + commentId, options);
         const result = await response.json();
         if (result.error) {
             ErrorNotify(result.error)

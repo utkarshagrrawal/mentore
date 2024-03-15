@@ -17,7 +17,7 @@ export default function WebinarManagement() {
                     'Content-Type': 'application/json'
                 },
             }
-            let webinars = await fetch('http://localhost:3000/getwebinars', options);
+            let webinars = await fetch('http://localhost:3000/mentor/webinars', options);
             let response = await webinars.json();
             allWebinars.current = response.success;
             setWebinarDetailsLoading(false);
@@ -38,7 +38,7 @@ export default function WebinarManagement() {
             })
         };
         const toastId = Loading('Joining the webinar');
-        let webinars = await fetch('http://localhost:3000/joinwebinarhost', options);
+        let webinars = await fetch('http://localhost:3000/webinar/join/host', options);
         const result = await webinars.json();
         if (!result.success) {
             ErrorNotify("Some error occurred while joining the webinar")
@@ -70,7 +70,7 @@ export default function WebinarManagement() {
             return;
         }
 
-        const createMeeting = await fetch('http://localhost:3000/createwebinar', {
+        const createMeeting = await fetch('http://localhost:3000/webinar/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ export default function WebinarManagement() {
             <div className='w-full'>
                 <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
                     <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
-                        <thead className="text-xs text-white uppercase bg-blue-600">
+                        <thead className="text-xs text-slate-600 uppercase bg-blue-100">
                             <tr className='text-center'>
                                 <th scope="col" className="px-6 py-3">
                                     Date and time
@@ -123,7 +123,7 @@ export default function WebinarManagement() {
                             </tr>
                         </thead>
                         <tbody>
-                            {!webinarDetailsLoading && allWebinars.current.map((item, id) => {
+                            {!webinarDetailsLoading && allWebinars.current?.length > 0 ? allWebinars.current.map((item, id) => {
                                 if (new Date().toISOString() < new Date(item.end_time).toISOString()) {
                                     return (
                                         <tr key={id} className="border-b border-blue-400 text-center">
@@ -142,7 +142,13 @@ export default function WebinarManagement() {
                                         </tr>
                                     )
                                 }
-                            })}
+                            }) : (
+                                <tr className="text-center">
+                                    <td className="px-6 py-4 text-black" colSpan='4'>
+                                        No webinars
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>

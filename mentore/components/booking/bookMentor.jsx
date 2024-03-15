@@ -23,11 +23,11 @@ export function BookMentor() {
                     "Content-Type": "application/json",
                 },
             };
-            let users = await fetch("http://localhost:3000/getcurrentuser", options);
+            let users = await fetch("http://localhost:3000/user/details", options);
             const result = await users.json();
             if (result.error) {
                 setLoggedIn(false);
-                navigate('/login')
+                navigate('/user/login')
             } else {
                 setLoggedIn(true);
             }

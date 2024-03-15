@@ -22,7 +22,7 @@ export function Insights() {
                     "Content-Type": "application/json",
                 },
             };
-            let users = await fetch("http://localhost:3000/getcurrentuser", options);
+            let users = await fetch("http://localhost:3000/user/details", options);
             const result = await users.json();
             if (result.error) {
                 navigate("/login");
@@ -44,7 +44,7 @@ export function Insights() {
                     "Content-Type": "application/json",
                 },
             };
-            let blogs = await fetch("http://localhost:3000/getallblogs", options);
+            let blogs = await fetch("http://localhost:3000/blog/all", options);
             const response = await blogs.json();
             if (response.error) {
                 ErrorNotify("Some error occurred while fetching blogs")

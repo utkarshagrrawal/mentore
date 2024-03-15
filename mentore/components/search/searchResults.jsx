@@ -5,7 +5,7 @@ import Header from '../global/header';
 import { ErrorNotify } from '../global/toast';
 import { useSearchParams } from "react-router-dom"
 
-export default function SearchResults() {
+export function SearchResults() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [searchQuery, setSearchQuery] = useState(searchParams.get('search_query') || '');
 
@@ -23,7 +23,7 @@ export default function SearchResults() {
                     "Content-Type": "application/json",
                 },
             };
-            let users = await fetch("http://localhost:3000/getcurrentuser", options);
+            let users = await fetch("http://localhost:3000/user/details", options);
             const result = await users.json();
             if (result.error) {
                 setLoggedIn(false);
@@ -42,7 +42,7 @@ export default function SearchResults() {
                     'Content-Type': 'application/json',
                 }
             }
-            let mentorDetail = await fetch('http://localhost:3000/getallmentors', options)
+            let mentorDetail = await fetch('http://localhost:3000/mentor/all', options)
             let result = await mentorDetail.json();
             if (result.error) {
                 ErrorNotify(result.error)

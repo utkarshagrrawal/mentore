@@ -25,11 +25,11 @@ export function Dashboard() {
                     'Content-Type': 'application/json',
                 },
             }
-            let users = await fetch('http://localhost:3000/getcurrentuser', options);
+            let users = await fetch('http://localhost:3000/user/details', options);
             let result = await users.json();
             if (result.error) {
                 ErrorNotify(result.error)
-                return navigate('/login');
+                return navigate('/user/login');
             } else {
                 user.current = result.result;
                 if (user.current.type === 'mentor') {

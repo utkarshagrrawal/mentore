@@ -1,18 +1,12 @@
-import { React, useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React from "react";
+import { useState } from "react";
 import Select from 'react-select';
-import { Loader } from '../global/loader';
-import { ErrorNotify, SuccessNotify } from '../global/toast';
+import { DismissToast, ErrorNotify, Loading, SuccessNotify } from "../../global/toast";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-export function Register() {
-    const [register, setRegister] = useState({ name: '', email: '', password: '', age: '', registerFor: '', profession: '', company: '', experience: 0 });
-    const [mentorSkills, setMentorSkills] = useState([]);
-    const [eyeState, setEyeState] = useState(true);
-    const [loading, setLoading] = useState({ webLoading: false, skillsLoading: true });
-    const [isMentor, setIsMentor] = useState(false);
-    const allSkills = useRef([]);
-    const navigate = useNavigate();
 
+export function RegisterBlock({ register, setRegister, mentorSkills, setMentorSkills, isMentor, setIsMentor, loading, setLoading, allSkills }) {
     const conditions = {
         '1': 'Password must contain at least one uppercase letter',
         '2': 'Password must contain at least one lowercase letter',
@@ -21,7 +15,47 @@ export function Register() {
         '5': 'Password must be at least 8 characters long'
     }
 
-    const [conditionalList, setConditionalList] = useState(conditions);
+    const [eye, setEye] = useState(true);
+    const [conditionsList, setConditionsList] = useState(conditions);
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        setLoading({ ...loading, skillsLoading: true });
+        const getSkills = async () => {
+            const toastId = Loading('Fetching registeration fields for mentor')
+            let options = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+            let skills = await fetch('http://localhost:3000/mentor/skill-options', options);
+            let response = await skills.json();
+            if (response.error) {
+                ErrorNotify(response.error);
+            } else {
+                allSkills.current = response.result;
+            }
+            DismissToast(toastId);
+            setLoading({ ...loading, skillsLoading: false });
+        }
+        if (isMentor) {
+            getSkills();
+        }
+    }, [isMentor])
+
+    useEffect(() => {
+        if (isMentor) {
+            setIsButtonDisabled(register.name && register.email && register.password && register.age && register.registerFor && register.profession && register.company && register.experience && mentorSkills.length > 0 ? false : true);
+        } else {
+            setIsButtonDisabled(register.name && register.email && register.password && register.age && register.registerFor ? false : true);
+        }
+    }, [register])
+
+    const handleEye = () => {
+        setEye(!eye);
+    }
 
     const handleSelectChange = selectedOptions => {
         setMentorSkills(() => {
@@ -42,12 +76,6 @@ export function Register() {
         }
         if (e.target.name === 'password') {
             const password = e.target.value;
-
-            if (password.length > 0) {
-                document.getElementById('passwordStrengthPointsDiv').style.display = 'block';
-            } else {
-                document.getElementById('passwordStrengthPointsDiv').style.display = 'none';
-            }
 
             const containsUppercase = /[A-Z]/.test(password);
             const containsLowercase = /[a-z]/.test(password);
@@ -81,19 +109,15 @@ export function Register() {
                 conditions['5'] = 'Password must be at least 8 characters long';
             }
 
-            setConditionalList(conditions);
+            setConditionsList(conditions);
         }
     }
 
-    let passwordConditions = Object.keys(conditionalList).map((key, index) => {
+    let passwordConditions = Object.keys(conditionsList).map((key, index) => {
         return (
-            <li key={index} className='text-sm font-semibold text-red-500'>{conditionalList[key]}</li>
+            <li key={index} className='text-sm font-semibold text-red-500'>{conditionsList[key]}</li>
         )
     })
-
-    if (passwordConditions.length === 0) {
-        passwordConditions = <li className='text-sm font-semibold text-green-600'>Password is strong</li>
-    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -112,7 +136,7 @@ export function Register() {
 
         setLoading({ ...loading, webLoading: true });
 
-        let sendData = await fetch('http://localhost:3000/register', {
+        let sendData = await fetch('http://localhost:3000/user/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -135,68 +159,20 @@ export function Register() {
             ErrorNotify(resp.error);
         } else {
             SuccessNotify('You have been registered successfully');
-            navigate('/login');
+            navigate('/user/login');
         }
         setLoading({ ...loading, webLoading: false });
     }
 
-    const handleEyeChange = () => {
-        setEyeState(!eyeState);
-        if (eyeState) {
-            document.getElementById('password').type = 'text';
-        } else {
-            document.getElementById('password').type = 'password';
-        }
-    }
 
-    useEffect(() => {
-        const getUser = async () => {
-            let user = await fetch('http://localhost:3000/getcurrentuser', {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-            let result = await user.json();
-            if (result.error) {
-                return
-            } else {
-                navigate('/');
-            }
-        }
-        getUser();
-    }, [])
-
-    useEffect(() => {
-        setLoading({ ...loading, skillsLoading: true });
-        const getSkills = async () => {
-            let options = {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
-            let skills = await fetch('http://localhost:3000/getallskills', options);
-            let response = await skills.json();
-            if (response.error) {
-                ErrorNotify(response.error);
-            } else {
-                allSkills.current = response.result;
-            }
-            setLoading({ ...loading, skillsLoading: false });
-        }
-        if (isMentor) {
-            getSkills();
-        }
-    }, [isMentor])
-
-    const registerPage = (
-        <div className='border-2 border-black mt-3 px-12 py-4 w-full md:w-[75%] lg:w-1/3 flex flex-col bg-white rounded-xl'>
-            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+    return (
+        <div className="border-2 border-gray-300 mt-3 px-6 py-8 w-full md:w-[75%] lg:w-1/3 flex flex-col bg-white rounded-xl shadow-2xl">
+            <div className="sm:w-full">
+                <h2 className="mt-4 text-center text-3xl font-bold leading-9 text-gray-900">
                     Register for an account
                 </h2>
             </div>
-            <div className="mt-10 sm:mx-auto sm:w-full">
+            <div className="mt-8 sm:w-full">
                 <form className="space-y-6" onSubmit={handleSubmit}>
                     <div>
                         <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
@@ -211,6 +187,7 @@ export function Register() {
                                 onChange={handleChange}
                                 value={register.name}
                                 required
+                                autoFocus
                                 className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                             />
                         </div>
@@ -312,6 +289,7 @@ export function Register() {
                                         onChange={handleChange}
                                         value={register.experience}
                                         required
+                                        min={0}
                                         className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     />
                                 </div>
@@ -348,21 +326,21 @@ export function Register() {
                                 <input
                                     id="password"
                                     name="password"
-                                    type="password"
+                                    type={eye ? "password" : "text"}
                                     onChange={handleChange}
                                     value={register.password}
                                     autoComplete="current-password"
                                     required
                                     className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
-                                {eyeState ? (
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 absolute right-3" onClick={handleEyeChange}>
+                                {eye ? (
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 absolute right-3" onClick={handleEye}>
                                         <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
                                         <path fillRule="evenodd" d="M.664 10.59a1.651 1.651 0 0 1 0-1.186A10.004 10.004 0 0 1 10 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0 1 10 17c-4.257 0-7.893-2.66-9.336-6.41ZM14 10a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z" clipRule="evenodd" />
                                     </svg>
                                 ) :
                                     (
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 absolute right-3" onClick={handleEyeChange}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5 absolute right-3" onClick={handleEye}>
                                             <path fillRule="evenodd" d="M3.28 2.22a.75.75 0 0 0-1.06 1.06l14.5 14.5a.75.75 0 1 0 1.06-1.06l-1.745-1.745a10.029 10.029 0 0 0 3.3-4.38 1.651 1.651 0 0 0 0-1.185A10.004 10.004 0 0 0 9.999 3a9.956 9.956 0 0 0-4.744 1.194L3.28 2.22ZM7.752 6.69l1.092 1.092a2.5 2.5 0 0 1 3.374 3.373l1.091 1.092a4 4 0 0 0-5.557-5.557Z" clipRule="evenodd" />
                                             <path d="m10.748 13.93 2.523 2.523a9.987 9.987 0 0 1-3.27.547c-4.258 0-7.894-2.66-9.337-6.41a1.651 1.651 0 0 1 0-1.186A10.007 10.007 0 0 1 2.839 6.02L6.07 9.252a4 4 0 0 0 4.678 4.678Z" />
                                         </svg>
@@ -371,27 +349,20 @@ export function Register() {
                         </div>
                     </div>
 
-                    <div className='py-2 rounded-md hidden' id='passwordStrengthPointsDiv'>
+                    <div className={`py-2 rounded-md ${register.password.length > 0 && conditionsList ? 'block' : 'hidden'}`}>
                         {passwordConditions}
                     </div>
 
                     <div>
-                        <button type="submit" className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <button disabled={isButtonDisabled} type="submit" className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 ${isButtonDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}>
                             Register
                         </button>
                     </div>
                     <p className="text-sm text-center text-gray-600">
-                        Already have an account? <Link to="/login" className="font-semibold text-indigo-600 hover:text-indigo-500 underline">Login</Link>
+                        Already have an account? <Link to="/user/login" className="font-semibold text-indigo-600 hover:text-indigo-500 underline">Login</Link>
                     </p>
                 </form>
             </div >
-        </div >
-    )
-
-    return (
-        <div className="flex min-h-screen flex-col items-center justify-center px-6 py-4 lg:px-8 bg-gradient-to-r from-blue-300 via-gray-300 to-yellow-300">
-            <Link to='/' className='relative'><img src="../static/logo.png" className="h-12 mix-blend-multiply" alt="Mentore" /></Link>
-            {loading.webLoading ? <Loader /> : registerPage}
         </div>
     )
 }

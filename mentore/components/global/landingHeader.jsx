@@ -13,7 +13,7 @@ export default function LandingHeader() {
                     "Content-Type": "application/json",
                 },
             };
-            let users = await fetch("http://localhost:3000/getcurrentuser", options);
+            let users = await fetch("http://localhost:3000/user/details", options);
             const result = await users.json();
             if (result.error) {
                 setLoggedIn(false);
@@ -97,7 +97,7 @@ export default function LandingHeader() {
                             {!loggedIn ? (
                                 <li>
                                     <Link
-                                        to="/login"
+                                        to="/user/login"
                                         className="block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700"
                                     >
                                         Login
@@ -106,7 +106,7 @@ export default function LandingHeader() {
                             ) : (
                                 <li>
                                     <Link
-                                        to="/dashboard"
+                                        to="/user/dashboard"
                                         className="block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700"
                                     >
                                         Dashboard

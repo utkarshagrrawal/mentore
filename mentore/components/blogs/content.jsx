@@ -13,12 +13,9 @@ export default function Content({ blogId }) {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    "blogID": blogId
-                })
+                }
             };
-            let users = await fetch("http://localhost:3000/getcurrentblog", options);
+            let users = await fetch(`http://localhost:3000/blog/${blogId}`, options);
             const result = await users.json();
             if (result.error) {
                 ErrorNotify(result.error)

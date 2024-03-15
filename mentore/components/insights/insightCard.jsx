@@ -12,11 +12,10 @@ export default function BlogCard({ blog, user, setBlogsLoading }) {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ blogID: blogId }),
         };
 
         const toastId = Loading('Loading');
-        let response = await fetch("http://localhost:3000/like", options);
+        let response = await fetch("http://localhost:3000/blog/" + blogId + "/like", options);
         let result = await response.json();
 
         if (result.success) {

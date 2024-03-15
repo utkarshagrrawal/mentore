@@ -11,12 +11,12 @@ const sendForgotPasswordMail = async (to, otp) => {
         html: `<p>Hey, your otp for verification is: <strong>${otp}</strong> </p>`
     };
 
-    const { data, error } = await resend.emails.send(mailOptions)
+    const { error } = await resend.emails.send(mailOptions)
 
     if (error) {
-        return error.message;
+        return { error: error.message }
     }
-    return;
+    return { success: 'Otp sent successfully' };
 }
 
 const sendNewPasswordMail = async (to, password) => {
@@ -27,12 +27,12 @@ const sendNewPasswordMail = async (to, password) => {
         html: `<p>Hey, your new password is: <strong>${password}</strong>. Please change it ASAP. </p>`
     };
 
-    const { data, error } = await resend.emails.send(mailOptions)
+    const { error } = await resend.emails.send(mailOptions)
 
     if (error) {
-        return error.message;
+        return { error: error.message };
     }
-    return;
+    return { success: 'New password sent successfully' };
 }
 
 module.exports = {

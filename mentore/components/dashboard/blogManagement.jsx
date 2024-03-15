@@ -22,7 +22,7 @@ export default function BlogManagement() {
                     'Content-Type': 'application/json',
                 }
             }
-            const response = await fetch('http://localhost:3000/getblogs', options);
+            const response = await fetch('http://localhost:3000/mentor/blogs', options);
             const data = await response.json();
             if (data.error) {
                 ErrorNotify(data.error)
@@ -55,14 +55,11 @@ export default function BlogManagement() {
             })
         }
 
-        const deleteBlog = await fetch('http://localhost:3000/deleteblog', {
-            method: 'POST',
+        const deleteBlog = await fetch('http://localhost:3000/blog/' + id, {
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: id
-            })
+            }
         })
         const result = await deleteBlog.json();
         if (result.error) {
@@ -98,7 +95,7 @@ export default function BlogManagement() {
         }
 
         const toastId = Loading('Creating blog...');
-        const createBlog = await fetch('http://localhost:3000/createblog', {
+        const createBlog = await fetch('http://localhost:3000/blog/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -124,7 +121,7 @@ export default function BlogManagement() {
             <div className='w-full'>
                 <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
                     <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
-                        <thead className="text-xs text-white uppercase bg-blue-600">
+                        <thead className="text-xs text-slate-600 uppercase bg-blue-100">
                             <tr className='text-center'>
                                 <th scope="col" className="px-6 py-3">
                                     Posted on
@@ -141,9 +138,9 @@ export default function BlogManagement() {
                             </tr>
                         </thead>
                         <tbody>
-                            {!blogsLoading && allBlogs.current.map((item, id) => {
+                            {!blogsLoading && allBlogs.current?.length > 0 ? allBlogs.current.map((item, id) => {
                                 return (
-                                    <tr key={id} className="border-b border-blue-400 text-center">
+                                    <tr key={id} className="text-center">
                                         <td className="px-6 py-4 text-black">
                                             {dateFormatter.format(new Date(item.created_at))}
                                         </td>
@@ -158,7 +155,13 @@ export default function BlogManagement() {
                                         </td>
                                     </tr>
                                 )
-                            })}
+                            }) : (
+                                <tr className="text-center">
+                                    <td colSpan='4' className="px-6 py-4 text-black">
+                                        No blogs found
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>

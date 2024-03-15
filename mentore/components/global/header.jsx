@@ -10,9 +10,9 @@ export default function Header(props) {
 
     const handleLogin = () => {
         if (props?.loggedIn) {
-            return navigate('/dashboard');
+            return navigate('/user/dashboard');
         }
-        return navigate('/login');
+        return navigate('/user/login');
     }
 
     useEffect(() => {
