@@ -25,7 +25,7 @@ export function Insights() {
             let users = await fetch("http://localhost:3000/user/details", options);
             const result = await users.json();
             if (result.error) {
-                navigate("/login");
+                navigate("/user/login");
                 setLoggedIn(false);
             } else {
                 user.current = result.result;
