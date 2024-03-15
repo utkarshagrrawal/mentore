@@ -10,6 +10,7 @@ const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: "medium", time
 export default function BlogManagement() {
     const [blogsLoading, setBlogsLoading] = useState(true);
     const [blogBtnText, setBlogBtnText] = useState('Create blog');
+    const [blogTitle, setBlogTitle] = useState('');
     const allBlogs = useRef([]);
     const editorRef = useRef(null);
 
@@ -77,19 +78,22 @@ export default function BlogManagement() {
         }
     }
 
+    const handleChange = (e) => {
+        setBlogTitle(e.target.value);
+    }
+
     // creates a blog
     const handlePublish = async () => {
         const content = editorRef.current && editorRef.current.getContent();
-        const title = document.getElementById('blogTitle').value;
         if (content === '') {
             ErrorNotify('Please enter content for the blog');
             return;
         }
-        if (title === '') {
+        if (blogTitle === '') {
             ErrorNotify('Please enter a valid title for the blog');
             return;
         }
-        if (title.trim() === '') {
+        if (blogTitle.trim() === '') {
             ErrorNotify('Please enter a valid title for the blog');
             return;
         }
@@ -101,7 +105,7 @@ export default function BlogManagement() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                title: title,
+                title: blogTitle,
                 content: content
             })
         })
@@ -176,7 +180,7 @@ export default function BlogManagement() {
                         <div className='flex flex-col mx-16 p-4 rounded-lg border-[0.01rem] border-black bg-blue-50'>
                             <div className='w-1/2'>
                                 <h1 className='font-bold my-4'>Title</h1>
-                                <input id='blogTitle' name='blogTitle' type='text' className='w-full p-2 border border-blue-400 rounded-md mb-4' />
+                                <input onChange={handleChange} value={blogTitle} type='text' className='w-full p-2 border border-blue-400 rounded-md mb-4' />
                             </div>
                             <Editor
                                 apiKey={TINY_MCE_API_KEY}

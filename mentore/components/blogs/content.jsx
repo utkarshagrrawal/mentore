@@ -10,7 +10,7 @@ export default function Content({ blogId }) {
     useEffect(() => {
         const getBlog = async () => {
             let options = {
-                method: "POST",
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                 }
