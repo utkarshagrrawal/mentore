@@ -10,11 +10,6 @@ export function LoginBlock({ login, setLogin, setLoading }) {
 
     const handleEye = () => {
         setEye(!eye);
-        if (eye) {
-            document.getElementById('password').type = 'text';
-        } else {
-            document.getElementById('password').type = 'password';
-        }
     }
 
     const handleChange = (e) => {
@@ -89,7 +84,7 @@ export function LoginBlock({ login, setLogin, setLoading }) {
                                 <input
                                     id="password"
                                     name="password"
-                                    type="password"
+                                    type={eye ? "password" : "text"}
                                     onChange={handleChange}
                                     value={login.password}
                                     autoComplete="current-password"

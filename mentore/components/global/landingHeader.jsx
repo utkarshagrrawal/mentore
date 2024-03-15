@@ -26,11 +26,6 @@ export default function LandingHeader() {
 
     const handleChange = () => {
         setVisible(!visible);
-        if (visible) {
-            document.getElementById("navbar-default").classList.add("hidden");
-        } else {
-            document.getElementById("navbar-default").classList.remove("hidden");
-        }
     };
 
     return (
@@ -68,7 +63,7 @@ export default function LandingHeader() {
                             />
                         </svg>
                     </button>
-                    <div className="hidden w-full md:block md:w-auto" id="navbar-default">
+                    <div className={`${visible && 'hidden'} w-full md:block md:w-auto`} id="navbar-default">
                         <ul className="mt-4 flex flex-col rounded-lg border border-gray-100 bg-gray-50 p-4 font-medium md:mt-0 md:flex-row md:space-x-8 md:border-0 md:bg-white md:p-0 rtl:space-x-reverse">
                             <li>
                                 <Link

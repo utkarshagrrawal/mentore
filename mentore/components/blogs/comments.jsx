@@ -11,7 +11,11 @@ export default function Comments({ blogId, user }) {
     const [loading, setLoading] = useState(true);
     const [replyFields, setReplyFields] = useState({});
     const comments = useRef([]);
+    const [newComment, setNewComment] = useState('');
 
+    const handleChange = (e) => {
+        setNewComment(e.target.value);
+    }
 
     useEffect(() => {
         const getComments = async () => {
@@ -39,15 +43,11 @@ export default function Comments({ blogId, user }) {
     }, [loading])
 
     const handlePost = async () => {
-        const comments = document.getElementById('newComments');
-        if (comments.value === '') {
-            comments.focus();
+        if (newComment === '') {
             return ErrorNotify("Comment cannot be empty")
-        } else if (comments.value.trim() === '') {
-            comments.focus();
+        } else if (newComment.trim() === '') {
             return ErrorNotify("Comment cannot be empty")
-        } else if (comments.value.length > 1000) {
-            comments.focus();
+        } else if (newComment.length > 1000) {
             return ErrorNotify("Comment should be less than 1000 characters")
         }
 
@@ -57,7 +57,7 @@ export default function Comments({ blogId, user }) {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                "comment": comments.value
+                "comment": newComment
             })
         };
 
@@ -144,7 +144,7 @@ export default function Comments({ blogId, user }) {
                 <span className="text-3xl font-bold">Discussion</span>
                 <div className="mx-16 mt-4 gap-2 grid grid-cols-12 place-items-center">
                     <div className="col-span-12 md:col-span-11 w-full">
-                        <textarea id="newComments" className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none p-3 resize-none duration-200" placeholder="Enter your thoughts here..."></textarea>
+                        <textarea onChange={handleChange} value={newComment} className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none p-3 resize-none duration-200" placeholder="Enter your thoughts here..."></textarea>
                     </div>
                     <div className="col-span-12 md:col-span-1 w-full mt-4 md:mt-0">
                         <button className="bg-blue-500 hover:bg-blue-600 flex items-center text-white font-semibold py-2 px-4 border border-blue-500 rounded-lg transition duration-200" onClick={handlePost}>
