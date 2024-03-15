@@ -1,6 +1,6 @@
 import { Login } from '../components/auth/login/loginPage'
 import { Register } from '../components/auth/register/registerPage'
-import { ForgotPassword } from '../components/auth/forgotpassword/forgotPasswordPage'
+import { ForgotPassword } from '../components/auth/forgotPassword/forgotPasswordPage'
 import { NotFound } from '../components/errorPages/notfound'
 import { Home } from '../components/landing/home'
 import { Dashboard } from '../components/dashboard/dashboard'
