@@ -3,13 +3,14 @@ import { ErrorNotify, SuccessNotify } from '../global/toast';
 import { FaReply } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
+import { TbSend } from "react-icons/tb";
 
 
 export default function Comments({ blogId, user }) {
     const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
 
     const [loading, setLoading] = useState(true);
-    const [replyFields, setReplyFields] = useState({});
+    const [replyFields, setReplyFields] = useState([]);
     const comments = useRef([]);
     const [newComment, setNewComment] = useState('');
 
@@ -34,6 +35,14 @@ export default function Comments({ blogId, user }) {
                 ErrorNotify(result.error)
             } else {
                 comments.current = result.result;
+                setReplyFields(comments.current.map(item => {
+                    return {
+                        [item.comment_id]: {
+                            showReplyInput: false,
+                            replyText: ''
+                        }
+                    }
+                }))
                 setLoading(false);
             }
         }
@@ -142,27 +151,20 @@ export default function Comments({ blogId, user }) {
         <>
             <div className="w-full text-center my-10">
                 <span className="text-3xl font-bold">Discussion</span>
-                <div className="mx-16 mt-4 gap-2 grid grid-cols-12 place-items-center">
-                    <div className="col-span-12 md:col-span-11 w-full">
-                        <textarea onChange={handleChange} value={newComment} className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none p-3 resize-none duration-200" placeholder="Enter your thoughts here..."></textarea>
-                    </div>
-                    <div className="col-span-12 md:col-span-1 w-full mt-4 md:mt-0">
-                        <button className="bg-blue-500 hover:bg-blue-600 flex items-center text-white font-semibold py-2 px-4 border border-blue-500 rounded-lg transition duration-200" onClick={handlePost}>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6 inline-block mr-2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
-                            </svg>
-                            Post
-                        </button>
-                    </div>
+                <div className="sm:mx-16 mx-4 mt-4 relative">
+                    <input onChange={handleChange} value={newComment} className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none p-3 pr-[45px] resize-none duration-200" placeholder="Publish your thoughts from here..." />
+                    <button className="flex items-center text-white font-semibold p-3 rounded-lg transition duration-200 absolute top-0 right-0" onClick={handlePost}>
+                        <TbSend className='text-2xl text-black hover:rotate-45 duration-200 hover:text-blue-500' title='Post comment' />
+                    </button>
                 </div>
             </div>
             {!loading && (
                 comments?.current?.map((item, id) => {
                     return (
                         <div className="w-full my-4" key={id}>
-                            <div className="mx-16 grid grid-cols-12 gap-4">
+                            <div className="sm:mx-16 mx-4 grid grid-cols-12 gap-4">
                                 <div className="col-span-12 relative bg-white rounded-lg shadow-md">
-                                    <div className="flex items-center justify-between px-4 py-2">
+                                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 items-center justify-between px-4 py-2">
                                         <div className="flex items-center">
                                             <img src={item.gender ? "../static/male-avatar.png" : "../static/female-avatar.png"} className="w-8 h-8 rounded-full" alt="User Avatar" />
                                             <div className="ml-2 text-sm text-gray-600">

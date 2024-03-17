@@ -30,7 +30,7 @@ export default function Content({ blogId }) {
     return (
         !loading && (
             <div className="w-full">
-                <div className="mb-10 mx-16 flex flex-col items-center justify-center">
+                <div className="mb-10 sm:mx-16 mx-4 flex flex-col items-center justify-center">
                     <h1 className="text-4xl font-semibold my-8 text-center text-gray-800">Title: {blog.current.title}</h1>
                     <div className="w-full bg-white rounded-lg border border-gray-200 p-6">
                         {parse(blog.current.content)}
