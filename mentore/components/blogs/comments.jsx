@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ErrorNotify, SuccessNotify } from '../global/toast';
+import { DismissToast, ErrorNotify, Loading, SuccessNotify } from '../global/toast';
 import { FaReply } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import { TbSend } from "react-icons/tb";
+import { TiCancel } from "react-icons/ti";
 
 
 export default function Comments({ blogId, user }) {
@@ -135,16 +136,57 @@ export default function Comments({ blogId, user }) {
         setLoading(true);
     }
 
-    const handleReply = (id) => {
+    const handleReplyVisibility = (id) => {
         setReplyFields(prevFields => {
             return {
                 ...prevFields, [id]: {
                     ...prevFields[id],
                     showReplyInput: !prevFields[id]?.showReplyInput,
-                    replyText: ''
                 }
             }
         })
+    }
+
+    const handleReplyText = (event, id) => {
+        setReplyFields(prevFields => {
+            return {
+                ...prevFields, [id]: {
+                    ...prevFields[id],
+                    replyText: event.target.value
+                }
+            }
+        })
+    }
+
+    const handleReplyPost = async (id) => {
+        const value = replyFields[id]?.replyText;
+        if (value === '') {
+            return ErrorNotify("Reply cannot be empty")
+        }
+        if (value.trim() === '') {
+            return ErrorNotify("Reply cannot be empty")
+        }
+
+        const toastId = Loading("Adding reply...")
+
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "reply": value
+            })
+        }
+        const response = await fetch("http://localhost:3000/blog/" + blogId + "/comment/" + id + "/reply", options)
+        const result = await response.json();
+        DismissToast(toastId);
+        if (result.error) {
+            ErrorNotify(result.error)
+        } else {
+            SuccessNotify("Reply added successfully")
+            setLoading(true);
+        }
     }
 
     return (
@@ -174,9 +216,9 @@ export default function Comments({ blogId, user }) {
                                         </div>
                                         <div className="flex items-center gap-6">
                                             <div className='flex items-center gap-2'>
-                                                <div className='flex items-center hover:cursor-pointer'>
-                                                    <FaReply className="text-blue-600" />
-                                                    <span className="ml-1 text-sm text-blue-600">Reply</span>
+                                                <div className='flex items-center hover:cursor-pointer' onClick={() => handleReplyVisibility(item.comment_id)}>
+                                                    {replyFields[item.comment_id]?.showReplyInput ? <TiCancel className="text-red-600" /> : <FaReply className="text-blue-600" />}
+                                                    <span className={`ml-1 text-sm ${replyFields[item.comment_id]?.showReplyInput ? 'text-red-600' : 'text-blue-600'}`}>{replyFields[item.comment_id]?.showReplyInput ? 'Cancel reply' : 'Reply'}</span>
                                                 </div>
                                                 {user.current.email === item.user_email && (
                                                     <>
@@ -228,11 +270,14 @@ export default function Comments({ blogId, user }) {
                                     <div className="p-4">
                                         <p className="text-base">{item.comment}</p>
                                     </div>
-                                    {/* {(replyFields?.comment_id?.showReplyInput && item.comment_id === replyFields?.comment_id) && (
-                                        <div className='flex items-center p-4'>
-                                            HI sir
+                                    {(replyFields[item.comment_id]?.showReplyInput) && (
+                                        <div className="mt-2 relative">
+                                            <input onChange={(event) => handleReplyText(event, item.comment_id)} value={replyFields[item.comment_id]?.replyText || ''} className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none p-3 pr-[45px] resize-none duration-200" placeholder="Enter reply here..." />
+                                            <button className="flex items-center text-white font-semibold p-3 rounded-lg transition duration-200 absolute top-0 right-0" onClick={() => handleReplyPost(item.comment_id)}>
+                                                <TbSend className='text-2xl text-black hover:rotate-45 duration-200 hover:text-blue-500' title='Post comment' />
+                                            </button>
                                         </div>
-                                    )} */}
+                                    )}
                                 </div>
                             </div>
                         </div>
