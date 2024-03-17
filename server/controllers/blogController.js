@@ -1,4 +1,4 @@
-const { createBlogLogic, fetchBlogDetailsLogic, deleteBlogLogic, fetchAllBlogsLogic, fetchCommentsOnBlogLogic, postCommentOnBlogLogic, addLikeOnCommentLogic, addDislikeOnCommentLogic, deleteCommentOnBlogLogic, addLikeOnBlogLogic } = require("../businessLogic/blogLogic");
+const { createBlogLogic, fetchBlogDetailsLogic, deleteBlogLogic, fetchAllBlogsLogic, fetchCommentsOnBlogLogic, postCommentOnBlogLogic, addLikeOnCommentLogic, addDislikeOnCommentLogic, deleteCommentOnBlogLogic, addLikeOnBlogLogic, addReplyOnCommentLogic } = require("../businessLogic/blogLogic");
 
 const fetchAllBlogs = async (req, res) => {
     const response = await fetchAllBlogsLogic();
@@ -80,6 +80,14 @@ const deleteCommentOnBlog = async (req, res) => {
     return res.json({ success: response.success })
 }
 
+const addReplyOnComment = async (req, res) => {
+    const response = await addReplyOnCommentLogic(req.params, req.user, req.body);
+    if (response.error) {
+        return res.json({ error: response.error })
+    }
+    return res.json({ success: response.success })
+}
+
 module.exports = {
     fetchAllBlogs,
     createBlog,
@@ -90,5 +98,6 @@ module.exports = {
     postCommentOnBlog,
     addLikeOnComment,
     addDislikeOnComment,
-    deleteCommentOnBlog
+    deleteCommentOnBlog,
+    addReplyOnComment
 };
