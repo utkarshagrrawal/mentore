@@ -7,6 +7,7 @@ const mentorRoute = require('./routes/mentorRoute');
 const blogRoute = require('./routes/blogRoute');
 const paymentRoute = require('./routes/paymentRoute');
 const meetingRoute = require('./routes/meetingRoute');
+const searchRoute = require('./routes/searchRoute');
 
 const { linkRedis } = require('./utility/redisConnection');
 
@@ -19,6 +20,8 @@ app.use(express.json());
 linkRedis();
 
 app.use('/user', userRoute)
+
+app.use('/search', searchRoute)
 
 app.use("/webinar", webinarRoute)
 

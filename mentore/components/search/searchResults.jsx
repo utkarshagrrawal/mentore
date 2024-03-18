@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import MentorCard from './mentorCard';
 import Paginate from '../global/paginate';
 import Header from '../global/header';
-import { ErrorNotify } from '../global/toast';
+import { DismissToast, ErrorNotify, Loading, SuccessNotify } from '../global/toast';
 import { useSearchParams } from "react-router-dom"
 
 export function SearchResults() {
@@ -33,6 +33,35 @@ export function SearchResults() {
         };
         getUser();
     }, [])
+
+    useEffect(() => {
+        const findMentors = async () => {
+            const toastId = Loading("Searching for mentors")
+
+            const options = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }
+
+            const response = await fetch("http://localhost:3000/search/" + searchQuery, options);
+            const result = await response.json();
+
+            DismissToast(toastId);
+
+            if (result.Error) {
+                ErrorNotify(result.error)
+            } else {
+                SuccessNotify("Mentors found")
+                mentors.current = result.response;
+                console.log(mentors.current)
+            }
+        }
+        if (searchQuery !== '') {
+            findMentors();
+        }
+    }, [searchQuery])
 
     useEffect(() => {
         const getAllMentors = async () => {
@@ -69,13 +98,13 @@ export function SearchResults() {
 
     return (
         <div className='min-h-screen items-center flex flex-col w-full'>
-            <Header loggedIn={loggedIn} searchQuery={searchQuery} />
+            <Header loggedIn={loggedIn} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
             {/* Mentor Grid */}
             <div className='w-full my-10'>
                 {!detailsLoading && (
                     <div className='grid lg:grid-cols-3 gap-2 md:grid-cols-2 grid-cols-1 place-content-center place-items-center drop-shadow-xl'>
-                        {currentMentors.map((mentor, index) => <MentorCard key={index} mentor={mentor} />)}
+                        {currentMentors?.map((mentor, index) => <MentorCard key={index} mentor={mentor} />)}
                     </div>
                 )}
             </div>

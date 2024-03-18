@@ -253,13 +253,32 @@ const addReplyOnCommentLogic = async (params, user, body) => {
 
     const { error } = await supabase
         .from("blog_comments")
-        .insert({ parent_comment_id: commentId, comment: reply, user_email: email, user_name: name, blog_id: blogId, gender: gender === 'male' ? 'true' : 'false' });
+        .insert({ parent_comment_id: commentId, comment: reply, user_email: email, user_name: name, blog_id: blogId, gender: gender });
 
     if (error) {
         return { error: error.message }
     }
 
     return { success: "Reply added successfully!" }
+}
+
+
+const updateCommentLogic = async (params, user, body) => {
+    const { commentId } = params;
+    const { email } = user;
+    const { comment } = body;
+
+    const { error } = await supabase
+        .from("blog_comments")
+        .update({ comment: comment })
+        .eq("comment_id", commentId)
+        .eq("user_email", email);
+
+    if (error) {
+        return { error: error.message }
+    }
+
+    return { success: "Comment updated successfully!" }
 }
 
 
@@ -274,5 +293,6 @@ module.exports = {
     addDislikeOnCommentLogic,
     deleteCommentOnBlogLogic,
     addLikeOnBlogLogic,
-    addReplyOnCommentLogic
+    addReplyOnCommentLogic,
+    updateCommentLogic
 }
