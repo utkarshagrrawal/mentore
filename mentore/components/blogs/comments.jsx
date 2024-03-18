@@ -47,8 +47,8 @@ function Comment({ item, replyFields, handleReplyVisibility, handleDelete, handl
                                         <span className="text-sm text-red-600">Delete</span>
                                     </div>
                                     <div className='hover:cursor-pointer flex items-center' onClick={() => handleEditVisibility(item.comment_id)}>
-                                        <FaEdit className="text-slate-700" />
-                                        <span className="ml-1 text-sm text-slate-700">Edit</span>
+                                        {editFields[item.comment_id]?.showEditInput ? <TiCancel className="text-red-600" /> : <FaEdit className="text-slate-700" />}
+                                        <span className={`ml-1 text-sm ${editFields[item.comment_id]?.showEditInput ? 'text-red-600' : 'text-slate-700'}`}>{editFields[item.comment_id]?.showEditInput ? 'Cancel edit' : 'Edit'}</span>
                                     </div>
                                 </>
                             )}
@@ -100,9 +100,9 @@ function Comment({ item, replyFields, handleReplyVisibility, handleDelete, handl
                     )}
                 </div>
                 {(replyFields[item.comment_id]?.showReplyInput) && (
-                    <div className="mt-2 relative">
-                        <input onChange={(event) => handleReplyText(event, item.comment_id)} value={replyFields[item.comment_id]?.replyText || ''} className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none p-3 pr-[45px] resize-none duration-200" placeholder="Enter reply here..." />
-                        <button className="flex items-center text-white font-semibold p-3 rounded-lg transition duration-200 absolute top-0 right-0" onClick={() => handleReplyPost(item.comment_id)}>
+                    <div className="my-2 relative mx-4">
+                        <input onChange={(event) => handleReplyText(event, item.comment_id)} value={replyFields[item.comment_id]?.replyText || ''} className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none p-1 pr-[45px] resize-none duration-200" placeholder="Enter reply here..." />
+                        <button className="flex items-center text-white font-semibold p-1 rounded-lg transition duration-200 absolute top-0 right-0" onClick={() => handleReplyPost(item.comment_id)}>
                             <TbSend className='text-2xl text-black hover:rotate-45 duration-200 hover:text-blue-500' title='Post comment' />
                         </button>
                     </div>
