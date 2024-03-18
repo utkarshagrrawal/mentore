@@ -49,7 +49,7 @@ export default function MentorBookings() {
 
     const handleReject = async (id) => {
         const rejectRequest = await fetch('http://localhost:3000/mentor/meeting/reject?id=' + id, {
-            method: 'POST',
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -126,10 +126,10 @@ export default function MentorBookings() {
                                                 </button>
                                             ) : item.status === 'pending' ? (
                                                 <div className='grid grid-cols-2 gap-2'>
-                                                    <button onClick={() => handleApprove(item.uniq_id)} className='border border-green-500 duration-150 hover:bg-green-700 focus:ring-2 focus:ring-green-500 hover:text-white font-medium rounded-lg text-sm px-6 py-1'>
+                                                    <button onClick={() => handleApprove(item.uniq_id)} className='border border-green-500 duration-150 hover:bg-green-700 focus:ring-2 focus:ring-green-500 hover:text-white font-medium rounded-lg text-sm py-1'>
                                                         Accept
                                                     </button>
-                                                    <button onClick={() => handleReject(item.uniq_id)} className='border border-red-500 duration-150 hover:bg-red-700 focus:ring-2 focus:ring-red-500 hover:text-white font-medium rounded-lg text-sm px-6 py-1'>
+                                                    <button onClick={() => handleReject(item.uniq_id)} className='border border-red-500 duration-150 hover:bg-red-700 focus:ring-2 focus:ring-red-500 hover:text-white font-medium rounded-lg text-sm py-1'>
                                                         Reject
                                                     </button>
                                                 </div>

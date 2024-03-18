@@ -142,23 +142,22 @@ const fetchBlogsByMentorLogic = async (user) => {
 
 
 const fetchMentorAvailabilityLogic = async (body, user) => {
-    const { duration, mentorId, about, startTime, endTime } = body;
+    const { duration, mentorId, about, startDateTime } = body;
     const { email } = user;
 
-    let startDateTime = new Date(startTime);
+    let startTime = new Date(startDateTime);
 
-    let endDateTime = new Date(endTime);
+    let endTime = new Date(startDateTime);
+    endTime.setHours(endTime.getHours() + parseInt(duration));
 
-    endDateTime.setHours(endDateTime.getHours() + parseInt(duration));
+    startTime.setHours(startTime.getHours() + 5);
+    startTime.setMinutes(startTime.getMinutes() + 30);
 
-    startDateTime.setHours(startDateTime.getHours() + 5);
-    startDateTime.setMinutes(startDateTime.getMinutes() + 30);
+    endTime.setHours(endTime.getHours() + 5);
+    endTime.setMinutes(endTime.getMinutes() + 30);
 
-    endDateTime.setHours(endDateTime.getHours() + 5);
-    endDateTime.setMinutes(endDateTime.getMinutes() + 30);
-
-    startDateTime = startDateTime.toISOString().split('.')[0];
-    endDateTime = endDateTime.toISOString().split('.')[0];
+    startTime = startTime.toISOString().split('.')[0];
+    endTime = endTime.toISOString().split('.')[0];
 
 
     const { data: mentorDetails, error } = await supabase
@@ -179,8 +178,8 @@ const fetchMentorAvailabilityLogic = async (body, user) => {
         },
         body: JSON.stringify({
             mentor_email: mentorEmail,
-            req_start_date: startDateTime.split('.')[0],
-            req_end_date: endDateTime.split('.')[0],
+            req_start_date: startTime.split('.')[0],
+            req_end_date: endTime.split('.')[0],
         })
     }
 
@@ -193,7 +192,7 @@ const fetchMentorAvailabilityLogic = async (body, user) => {
         if (data.response) {
             const { error } = await supabase
                 .from('schedule_mentors')
-                .insert({ mentee_email: email, mentor_email: mentorEmail, start_time: startDateTime, end_time: endDateTime, about: about, status: 'pending', mentor_name: mentorDetails[0].name })
+                .insert({ mentee_email: email, mentor_email: mentorEmail, start_time: startTime, end_time: endTime, about: about, status: 'pending', mentor_name: mentorDetails[0].name })
 
             if (error) {
                 return { error: error.message }

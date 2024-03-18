@@ -24,6 +24,7 @@ export default function Header(props) {
     const handleSearch = (e) => {
         clearTimeout(clearId.current);
         clearId.current = setTimeout(() => {
+            props?.setSearchQuery(e.target.value);
             navigate('/results?search_query=' + e.target.value);
         }, 500)
         setSearchBoxValue(e.target.value)

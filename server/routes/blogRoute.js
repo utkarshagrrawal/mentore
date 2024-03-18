@@ -1,6 +1,6 @@
 const express = require("express")
 const { authentication } = require("../middlewares/authMiddleware")
-const { createBlog, fetchBlogDetails, deleteBlog, fetchAllBlogs, fetchCommentsOnBlog, postCommentOnBlog, addLikeOnComment, addDislikeOnComment, deleteCommentOnBlog, addReplyOnComment } = require("../controllers/blogController")
+const { createBlog, fetchBlogDetails, deleteBlog, fetchAllBlogs, fetchCommentsOnBlog, postCommentOnBlog, addLikeOnComment, addDislikeOnComment, deleteCommentOnBlog, addReplyOnComment, addLikeOnBlog, updateComment } = require("../controllers/blogController")
 
 const router = express.Router()
 
@@ -10,7 +10,7 @@ router.post("/create", authentication, createBlog)
 
 router.get("/:id", authentication, fetchBlogDetails)
 
-router.post("/:id/like", authentication)
+router.post("/:id/like", authentication, addLikeOnBlog)
 
 router.delete("/:id", authentication, deleteBlog)
 
@@ -23,6 +23,8 @@ router.post("/:blogId/comment/:commentId/like", authentication, addLikeOnComment
 router.post("/:blogId/comment/:commentId/dislike", authentication, addDislikeOnComment)
 
 router.delete("/:blogId/comment/:commentId", authentication, deleteCommentOnBlog)
+
+router.put("/:blogId/comment/:commentId", authentication, updateComment)
 
 router.post("/:blogId/comment/:commentId/reply", authentication, addReplyOnComment)
 
