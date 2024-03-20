@@ -80,7 +80,7 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
                                 'Content-Type': 'application/json',
                             },
                         }
-                        const payment = await fetch('https://mentore-ten.vercel.app/paymentsuccess/' + id, options);
+                        const payment = await fetch('https://mentore-ten.vercel.app/payment/success/' + id, options);
                         const response = await payment.json();
 
                         if (response.error) {
