@@ -7,7 +7,7 @@ const pay = async (req, res, next) => {
         return res.json({ error: response.error })
     }
 
-    req.body.mentor_id = response.success;
+    req.body.meeting_uuid = response.success;
 
     next();
 }

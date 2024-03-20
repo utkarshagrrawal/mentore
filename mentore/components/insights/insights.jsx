@@ -4,6 +4,8 @@ import { ErrorNotify } from "../global/toast";
 import Header from "../global/header";
 import BlogCard from "./insightCard";
 
+import EmptyInsightsPage from "./emptyInsightsPage";
+
 export function Insights() {
     const user = useRef([]);
     const [loggedIn, setLoggedIn] = useState(false);
@@ -83,9 +85,17 @@ export function Insights() {
                     </div>
 
                     {/* Right 3/4 for blog cards */}
-                    <div className="mx-16 w-full grid grid-cols-2">
-                        {!blogsLoading && currentBlogs.map((blog, index) => <BlogCard key={index} blog={blog} user={user} setBlogsLoading={setBlogsLoading} />)}
-                    </div>
+
+                    {!blogsLoading && currentBlogs?.length > 0 ? (
+                        <div className="mx-16 w-full grid grid-cols-2">
+                            {currentBlogs.map((blog, index) => {
+                                <BlogCard key={index} blog={blog} user={user} setBlogsLoading={setBlogsLoading} />
+                            })}
+                        </div>
+                    ) : (
+                        <EmptyInsightsPage />
+                    )}
+
                 </div>
             </div>
         </div>

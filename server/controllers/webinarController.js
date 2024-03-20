@@ -41,7 +41,7 @@ const fetchAllWebinars = async (req, res) => {
     if (response.error) {
         return res.json({ error: response.error })
     }
-    return res.json({ result: response.success })
+    return res.json({ success: response.success })
 }
 
 

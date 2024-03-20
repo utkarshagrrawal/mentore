@@ -133,7 +133,7 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
                 <h1 className='text-center text-3xl font-bold text-black'>Current bookings</h1>
                 <div className='relative overflow-x-auto mt-4 border-[0.1rem] border-black sm:rounded-lg'>
                     <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
-                        <thead className="text-xs text-slate-600 uppercase bg-blue-100">
+                        <thead className="text-xs text-white uppercase bg-[#6c92df]">
                             <tr className='text-center uppercase'>
                                 <th scope="col" className="px-6 py-3">
                                     Start time
@@ -165,7 +165,7 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
                                             </td>
                                             <td scope="row" className='px-6 py-3'>
                                                 {(item.status === 'pending') && (
-                                                    <button disabled className='border-[0.1rem] bg-[#fdc113] focus:ring-2 focus:ring-blue-500 font-medium rounded-lg text-sm py-1 w-full'>Pending</button>
+                                                    <button disabled={true} className='border-[0.1rem] bg-[#fdc113] focus:ring-2 focus:ring-blue-500 font-medium rounded-lg text-sm py-1 w-full'>Pending</button>
                                                 )}
                                                 {(item.status === 'payment pending') && (
                                                     <button onClick={() => handlePay(item.uniq_id)} className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm py-1 w-full'>Pay</button>
