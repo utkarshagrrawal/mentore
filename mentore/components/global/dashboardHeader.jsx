@@ -8,7 +8,7 @@ export default function DashboardHeader() {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
-        const sendLogoutRequest = await fetch('http://localhost:3000/user/logout', {
+        const sendLogoutRequest = await fetch('https://mentore-ten.vercel.app/user/logout', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

@@ -17,7 +17,7 @@ export default function MentorProfile() {
                     'Content-Type': 'application/json',
                 }
             }
-            let skills = await fetch('http://localhost:3000/mentor/skill-options', options)
+            let skills = await fetch('https://mentore-ten.vercel.app/mentor/skill-options', options)
             let result = await skills.json();
             if (result.error) {
                 ErrorNotify(result.error)
@@ -37,7 +37,7 @@ export default function MentorProfile() {
                     'Content-Type': 'application/json'
                 }
             }
-            let mentorDetailsResponse = await fetch('http://localhost:3000/mentor/details', options)
+            let mentorDetailsResponse = await fetch('https://mentore-ten.vercel.app/mentor/details', options)
             let result = await mentorDetailsResponse.json();
             if (result.error) {
                 ErrorNotify(result.error)

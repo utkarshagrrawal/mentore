@@ -16,7 +16,7 @@ export default function BlogManagement({ blogsLoading, setBlogsLoading }) {
                     'Content-Type': 'application/json',
                 }
             }
-            const response = await fetch('http://localhost:3000/mentor/blogs', options);
+            const response = await fetch('https://mentore-ten.vercel.app/mentor/blogs', options);
             const data = await response.json();
             if (data.error) {
                 ErrorNotify(data.error)
@@ -37,7 +37,7 @@ export default function BlogManagement({ blogsLoading, setBlogsLoading }) {
             return ErrorNotify("Blog not deleted");
         }
 
-        const deleteBlog = await fetch('http://localhost:3000/blog/' + id, {
+        const deleteBlog = await fetch('https://mentore-ten.vercel.app/blog/' + id, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

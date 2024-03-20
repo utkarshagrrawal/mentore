@@ -13,7 +13,7 @@ export function ForgotPassword() {
 
     useEffect(() => {
         const getUser = async () => {
-            let user = await fetch('http://localhost:3000/user/details', {
+            let user = await fetch('https://mentore-ten.vercel.app/user/details', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -30,9 +30,9 @@ export function ForgotPassword() {
     }, [])
 
     const handleChange = (e) => {
-        if(e.target.name === 'email'){
+        if (e.target.name === 'email') {
             setForgotPassword({ ...forgotPassword, [e.target.name]: e.target.value });
-        } else{
+        } else {
             const regex = /^[0-9\b]+$/;
             if (e.target.value === '' || regex.test(e.target.value) && e.target.value.length <= 6) {
                 setForgotPassword({ ...forgotPassword, [e.target.name]: e.target.value });

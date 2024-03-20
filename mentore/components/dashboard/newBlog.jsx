@@ -26,7 +26,7 @@ export default function NewBlog({ setBlogsLoading }) {
                 }
             }
 
-            const response = await fetch('http://localhost:3000/blog/editorkey', options);
+            const response = await fetch('https://mentore-ten.vercel.app/blog/editorkey', options);
             const result = await response.json();
             if (result.key) {
                 setTINY_MCE_API_KEY(result.key);
@@ -58,7 +58,7 @@ export default function NewBlog({ setBlogsLoading }) {
         }
 
         const toastId = Loading('Creating blog...');
-        const createBlog = await fetch('http://localhost:3000/blog/create', {
+        const createBlog = await fetch('https://mentore-ten.vercel.app/blog/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

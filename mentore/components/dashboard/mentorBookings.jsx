@@ -16,7 +16,7 @@ export default function MentorBookings() {
         }
 
         const getMeetings = async () => {
-            const response = await fetch('http://localhost:3000/mentor/meetings', options);
+            const response = await fetch('https://mentore-ten.vercel.app/mentor/meetings', options);
             const result = await response.json();
             if (result.error) {
                 ErrorNotify(result.error)
@@ -31,7 +31,7 @@ export default function MentorBookings() {
     }, [meetingsLoading])
 
     const handleApprove = async (id) => {
-        const approveRequest = await fetch('http://localhost:3000/mentor/meeting/approve?id=' + id, {
+        const approveRequest = await fetch('https://mentore-ten.vercel.app/mentor/meeting/approve?id=' + id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ export default function MentorBookings() {
     }
 
     const handleReject = async (id) => {
-        const rejectRequest = await fetch('http://localhost:3000/mentor/meeting/reject?id=' + id, {
+        const rejectRequest = await fetch('https://mentore-ten.vercel.app/mentor/meeting/reject?id=' + id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ export default function MentorBookings() {
                 meeting_id: link
             })
         }
-        const response = await fetch('http://localhost:3000/meeting/join/host', options);
+        const response = await fetch('https://mentore-ten.vercel.app/meeting/join/host', options);
         const result = await response.json();
 
         if (result.error) {

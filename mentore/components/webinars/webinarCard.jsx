@@ -17,7 +17,7 @@ export default function WebinarCard({ user, webinar, setLoading }) {
             })
         };
         const toastId = Loading('Joining the webinar');
-        let webinars = await fetch('http://localhost:3000/webinar/join/participant', options);
+        let webinars = await fetch('https://mentore-ten.vercel.app/webinar/join/participant', options);
         const result = await webinars.json();
         if (!result.success) {
             ErrorNotify("Some error occurred while joining the webinar")
@@ -41,7 +41,7 @@ export default function WebinarCard({ user, webinar, setLoading }) {
             }),
         };
         const toastId = Loading('Registering for the webinar');
-        const response = await fetch('http://localhost:3000/registerforwebinar', options);
+        const response = await fetch('https://mentore-ten.vercel.app/registerforwebinar', options);
         const result = await response.json();
         if (result.error) {
             ErrorNotify(result.error);

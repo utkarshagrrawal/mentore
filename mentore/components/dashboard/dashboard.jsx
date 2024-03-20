@@ -29,7 +29,7 @@ export function Dashboard() {
                     'Content-Type': 'application/json',
                 },
             }
-            let users = await fetch('http://localhost:3000/user/details', options);
+            let users = await fetch('https://mentore-ten.vercel.app/user/details', options);
             let result = await users.json();
             if (result.error) {
                 ErrorNotify(result.error)

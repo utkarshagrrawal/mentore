@@ -18,7 +18,7 @@ export function VerifyOtp({ forgotPassword, handleChange, setLoading }) {
     const handleVerify = async (e) => {
         e.preventDefault();
         setLoading(true);
-        let verifyOtp = await fetch('http://localhost:3000/user/verifyotp', {
+        let verifyOtp = await fetch('https://mentore-ten.vercel.app/user/verifyotp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -38,7 +38,7 @@ export function VerifyOtp({ forgotPassword, handleChange, setLoading }) {
     const handleResend = async (e) => {
         e.preventDefault();
         setLoading(true);
-        let resendOtp = await fetch('http://localhost:3000/user/resendotp', {
+        let resendOtp = await fetch('https://mentore-ten.vercel.app/user/resendotp', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
