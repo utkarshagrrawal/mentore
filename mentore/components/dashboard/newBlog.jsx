@@ -1,11 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Editor } from '@tinymce/tinymce-react';
 import { DismissToast, ErrorNotify, Loading, SuccessNotify } from "../global/toast";
-import { TINY_MCE_API_KEY } from '../../src/assets/credentials';
 
 
 export default function NewBlog({ setBlogsLoading }) {
     const [blogBtnText, setBlogBtnText] = useState('Create blog');
+    const [TINY_MCE_API_KEY, setTINY_MCE_API_KEY] = useState('');
     const [blogTitle, setBlogTitle] = useState('');
     const editorRef = useRef(null);
 
@@ -16,6 +16,26 @@ export default function NewBlog({ setBlogsLoading }) {
             setBlogBtnText('Create blog')
         }
     }
+
+    useEffect(() => {
+        const getApiKey = async () => {
+            const options = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }
+
+            const response = await fetch('http://localhost:3000/blog/editorkey', options);
+            const result = await response.json();
+            if (result.key) {
+                setTINY_MCE_API_KEY(result.key);
+            }
+        }
+        if (TINY_MCE_API_KEY === '') {
+            getApiKey();
+        }
+    }, [])
 
     const handleChange = (e) => {
         setBlogTitle(e.target.value);
@@ -62,7 +82,7 @@ export default function NewBlog({ setBlogsLoading }) {
         <div className='flex flex-col w-full mb-8 mt-4 px-14'>
             <div onClick={handleCreateBlogBtn} className='text-center bg-[#f8db4edb] focus:ring-2 focus:ring-black text-slate-[850] font-medium rounded-t-lg text-sm px-8 py-2'>{blogBtnText}</div>
             {
-                (blogBtnText === 'Cancel creation') ? (
+                (blogBtnText === 'Cancel creation' && TINY_MCE_API_KEY !== '') ? (
                     <div className='flex flex-col w-full p-4 rounded-b-lg bg-blue-50'>
                         <div className='w-full'>
                             <h1 className='font-bold my-4'>Title</h1>

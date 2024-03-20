@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { RAZORPAY_KEY_ID } from "../../src/assets/credentials";
 import { ErrorNotify, SuccessNotify } from "../global/toast";
 
 const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
@@ -45,7 +44,7 @@ export default function YourBookings() {
             ErrorNotify(response.error);
         } else {
             const options = {
-                "key": RAZORPAY_KEY_ID,
+                "key": response.key_id,
                 "amount": 15000,
                 "currency": "INR",
                 "name": "Mentore",

@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { RAZORPAY_KEY_ID } from '../../src/assets/credentials';
+import React, { useEffect, useRef } from 'react';
 import { ErrorNotify, SuccessNotify } from '../global/toast';
 
 
@@ -59,14 +58,14 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
             })
         }
 
-        const pay = await fetch('http://localhost:3000/pay/' + id, options);
+        const pay = await fetch('http://localhost:3000/payment/pay/' + id, options);
         const response = await pay.json();
 
         if (response.error) {
             ErrorNotify(response.error)
         } else {
             const options = {
-                "key": RAZORPAY_KEY_ID,
+                "key": response.key_id,
                 "amount": 15000,
                 "currency": "INR",
                 "name": "Mentore",

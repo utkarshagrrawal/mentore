@@ -52,7 +52,7 @@ async function createMeetingLogic(body) {
 
     const result = await razorpayOrderCreate();
 
-    return { success: result }
+    return { success: result, key_id: process.env.RAZORPAY_KEY_ID }
 }
 
 
