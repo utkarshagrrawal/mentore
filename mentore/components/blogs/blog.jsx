@@ -21,7 +21,7 @@ export function Blog() {
                     "Content-Type": "application/json",
                 },
             };
-            let users = await fetch("http://localhost:3000/user/details", options);
+            let users = await fetch("https://mentore-ten.vercel.app/user/details", options);
             const result = await users.json();
             if (result.error) {
                 navigate('/user/login');

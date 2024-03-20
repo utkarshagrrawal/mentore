@@ -16,7 +16,7 @@ export function RequestOtp({ forgotPassword, handleChange, setLoading, setEmailS
     const handleRequest = async (e) => {
         e.preventDefault();
         setLoading(true);
-        let forgotPasswordUser = await fetch('http://localhost:3000/user/forgot-password', {
+        let forgotPasswordUser = await fetch('https://mentore-ten.vercel.app/user/forgot-password', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

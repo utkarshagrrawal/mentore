@@ -30,7 +30,7 @@ export function RegisterBlock({ register, setRegister, mentorSkills, setMentorSk
                     'Content-Type': 'application/json'
                 }
             }
-            let skills = await fetch('http://localhost:3000/mentor/skill-options', options);
+            let skills = await fetch('https://mentore-ten.vercel.app/mentor/skill-options', options);
             let response = await skills.json();
             if (response.error) {
                 ErrorNotify(response.error);
@@ -136,7 +136,7 @@ export function RegisterBlock({ register, setRegister, mentorSkills, setMentorSk
 
         setLoading({ ...loading, webLoading: true });
 
-        let sendData = await fetch('http://localhost:3000/user/register', {
+        let sendData = await fetch('https://mentore-ten.vercel.app/user/register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

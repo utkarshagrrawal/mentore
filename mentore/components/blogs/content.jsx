@@ -15,7 +15,7 @@ export default function Content({ blogId }) {
                     "Content-Type": "application/json",
                 }
             };
-            let users = await fetch(`http://localhost:3000/blog/${blogId}`, options);
+            let users = await fetch(`https://mentore-ten.vercel.app/blog/${blogId}`, options);
             const result = await users.json();
             if (result.error) {
                 ErrorNotify(result.error)

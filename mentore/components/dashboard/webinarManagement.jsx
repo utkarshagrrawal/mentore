@@ -14,7 +14,7 @@ export default function WebinarManagement({ webinarDetailsLoading, setWebinarDet
                     'Content-Type': 'application/json'
                 },
             }
-            let webinars = await fetch('http://localhost:3000/mentor/webinars', options);
+            let webinars = await fetch('https://mentore-ten.vercel.app/mentor/webinars', options);
             let response = await webinars.json();
             allWebinars.current = response.success;
             setWebinarDetailsLoading(false);
@@ -35,7 +35,7 @@ export default function WebinarManagement({ webinarDetailsLoading, setWebinarDet
             })
         };
         const toastId = Loading('Joining the webinar');
-        let webinars = await fetch('http://localhost:3000/webinar/join/host', options);
+        let webinars = await fetch('https://mentore-ten.vercel.app/webinar/join/host', options);
         const result = await webinars.json();
         if (!result.success) {
             ErrorNotify("Some error occurred while joining the webinar")

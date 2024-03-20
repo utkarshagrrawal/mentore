@@ -28,7 +28,7 @@ export default function NewWebinar({ setWebinarDetailsLoading }) {
             return;
         }
 
-        const createMeeting = await fetch('http://localhost:3000/webinar/create', {
+        const createMeeting = await fetch('https://mentore-ten.vercel.app/webinar/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

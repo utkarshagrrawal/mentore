@@ -23,7 +23,7 @@ export function SearchResults() {
                     "Content-Type": "application/json",
                 },
             };
-            let users = await fetch("http://localhost:3000/user/details", options);
+            let users = await fetch("https://mentore-ten.vercel.app/user/details", options);
             const result = await users.json();
             if (result.error) {
                 setLoggedIn(false);
@@ -45,7 +45,7 @@ export function SearchResults() {
                 }
             }
 
-            const response = await fetch("http://localhost:3000/search/" + searchQuery, options);
+            const response = await fetch("https://mentore-ten.vercel.app/search/" + searchQuery, options);
             const result = await response.json();
 
             DismissToast(toastId);
@@ -71,7 +71,7 @@ export function SearchResults() {
                     'Content-Type': 'application/json',
                 }
             }
-            let mentorDetail = await fetch('http://localhost:3000/mentor/all', options)
+            let mentorDetail = await fetch('https://mentore-ten.vercel.app/mentor/all', options)
             let result = await mentorDetail.json();
             if (result.error) {
                 ErrorNotify(result.error)

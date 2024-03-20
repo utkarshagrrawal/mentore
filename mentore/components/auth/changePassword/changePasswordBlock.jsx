@@ -73,7 +73,7 @@ export default function ChangePasswordBlock({ setLoading }) {
         }
         const toastId = Loading("Changing password...");
         setLoading(true);
-        let changePassword = await fetch('http://localhost:3000/user/change-password', {
+        let changePassword = await fetch('https://mentore-ten.vercel.app/user/change-password', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

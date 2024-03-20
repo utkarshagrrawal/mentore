@@ -11,7 +11,7 @@ export function Login() {
 
     useEffect(() => {
         const getUser = async () => {
-            let user = await fetch('http://localhost:3000/user/details', {
+            let user = await fetch('https://mentore-ten.vercel.app/user/details', {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',

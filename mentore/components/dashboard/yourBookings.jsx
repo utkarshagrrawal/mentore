@@ -9,7 +9,7 @@ export default function YourBookings() {
 
     useEffect(() => {
         const fetchMeetings = async () => {
-            const response = await fetch('http://localhost:3000/user/my-bookings', {
+            const response = await fetch('https://mentore-ten.vercel.app/user/my-bookings', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ export default function YourBookings() {
             })
         }
 
-        const pay = await fetch('http://localhost:3000/payment/pay/' + id, options);
+        const pay = await fetch('https://mentore-ten.vercel.app/payment/pay/' + id, options);
         const response = await pay.json();
 
         if (response.error) {
@@ -59,7 +59,7 @@ export default function YourBookings() {
                                 'Content-Type': 'application/json',
                             },
                         }
-                        const payment = await fetch('http://localhost:3000/payment/success/' + id, options);
+                        const payment = await fetch('https://mentore-ten.vercel.app/payment/success/' + id, options);
                         const response = await payment.json();
 
                         if (response.error) {
@@ -96,7 +96,7 @@ export default function YourBookings() {
                 meeting_id: link
             })
         }
-        const join = await fetch('http://localhost:3000/meeting/join/participant', options);
+        const join = await fetch('https://mentore-ten.vercel.app/meeting/join/participant', options);
         const response = await join.json();
         if (response.error) {
             return ErrorNotify(response.error);

@@ -18,7 +18,7 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
         const getAllMeetings = async () => {
             setDataLoading(true)
 
-            const allMeetings = await fetch('http://localhost:3000/user/bookings/mentor/' + id, options)
+            const allMeetings = await fetch('https://mentore-ten.vercel.app/user/bookings/mentor/' + id, options)
             const response = await allMeetings.json();
 
             if (response.error) {
@@ -58,7 +58,7 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
             })
         }
 
-        const pay = await fetch('http://localhost:3000/payment/pay/' + id, options);
+        const pay = await fetch('https://mentore-ten.vercel.app/payment/pay/' + id, options);
         const response = await pay.json();
 
         if (response.error) {
@@ -80,7 +80,7 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
                                 'Content-Type': 'application/json',
                             },
                         }
-                        const payment = await fetch('http://localhost:3000/paymentsuccess/' + id, options);
+                        const payment = await fetch('https://mentore-ten.vercel.app/paymentsuccess/' + id, options);
                         const response = await payment.json();
 
                         if (response.error) {
@@ -117,7 +117,7 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
                 meeting_id: link
             })
         }
-        const join = await fetch('http://localhost:3000/joinmeetingparticipant', options);
+        const join = await fetch('https://mentore-ten.vercel.app/joinmeetingparticipant', options);
         const response = await join.json();
         if (response.error) {
             return ErrorNotify(response.error)
