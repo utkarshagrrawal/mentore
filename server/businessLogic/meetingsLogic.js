@@ -44,7 +44,7 @@ async function createMeetingLogic(body) {
     const { error } = await supabase
         .from('schedule_mentors')
         .update({ meeting_link: 'https://api.dyte.io/v2/meetings/' + response.data.id })
-        .eq('uniq_id', body.uniq_id)
+        .eq('uniq_id', body.meeting_uuid)
 
     if (error) {
         return { error: error.message }
@@ -52,7 +52,7 @@ async function createMeetingLogic(body) {
 
     const result = await razorpayOrderCreate();
 
-    return { success: result }
+    return { success: result, key_id: process.env.RAZORPAY_KEY_ID }
 }
 
 

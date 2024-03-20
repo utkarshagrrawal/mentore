@@ -10,11 +10,15 @@ import DashboardHeader from '../global/dashboardHeader';
 import MentorBookings from './mentorBookings';
 import YourBookings from './yourBookings';
 import { ErrorNotify } from '../global/toast';
+import NewWebinar from './newWebinar';
+import NewBlog from './newBlog';
 
 export function Dashboard() {
     const user = useRef({});
     const [loading, setLoading] = useState(true);
     const [isMentor, setIsMentor] = useState(false);
+    const [webinarDetailsLoading, setWebinarDetailsLoading] = useState(true);
+    const [blogsLoading, setBlogsLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -47,13 +51,17 @@ export function Dashboard() {
 
             <Profile user={user} isMentor={isMentor} />
 
+            <NewWebinar setWebinarDetailsLoading={setWebinarDetailsLoading} />
+
+            <NewBlog setBlogsLoading={setBlogsLoading} />
+
             <YourBookings />
 
             {isMentor && <MentorBookings />}
 
-            {isMentor && <WebinarManagement />}
+            {isMentor && <WebinarManagement webinarDetailsLoading={webinarDetailsLoading} setWebinarDetailsLoading={setWebinarDetailsLoading} />}
 
-            {isMentor && <BlogManagement />}
+            {isMentor && <BlogManagement blogsLoading={blogsLoading} setBlogsLoading={setBlogsLoading} />}
         </>
     )
 

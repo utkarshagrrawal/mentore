@@ -1,8 +1,7 @@
 const express = require('express')
-const { registerUser, loginUser, forgotPassword, logout, changepassword, currentUserDetails, verifyOtp, resendOtp } = require('../controllers/userController')
+const { registerUser, loginUser, forgotPassword, logout, changepassword, currentUserDetails, verifyOtp, resendOtp, fetchBookingsWithMentor } = require('../controllers/userController')
 const { authentication } = require('../middlewares/authMiddleware')
 const { getMyBookings } = require('../controllers/meetingsController')
-const { fetchBookingsForMentor } = require('../controllers/mentorController')
 
 const router = express.Router()
 
@@ -24,6 +23,6 @@ router.post("/resendotp", resendOtp)
 
 router.get("/my-bookings", authentication, getMyBookings)
 
-router.get("/bookings/mentor/:id", authentication, fetchBookingsForMentor)
+router.get("/bookings/mentor/:id", authentication, fetchBookingsWithMentor)
 
 module.exports = router

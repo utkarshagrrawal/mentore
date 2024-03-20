@@ -56,7 +56,7 @@ const fetchWebinarsByMentorLogic = async (user) => {
 
     const { data, error } = await supabase
         .from('webinar')
-        .select('*')
+        .select('')
         .eq('mentor_email', email)
 
     if (error) {

@@ -1,8 +1,10 @@
 const express = require("express")
 const { authentication } = require("../middlewares/authMiddleware")
-const { createBlog, fetchBlogDetails, deleteBlog, fetchAllBlogs, fetchCommentsOnBlog, postCommentOnBlog, addLikeOnComment, addDislikeOnComment, deleteCommentOnBlog, addReplyOnComment, addLikeOnBlog, updateComment } = require("../controllers/blogController")
+const { createBlog, fetchBlogDetails, deleteBlog, fetchAllBlogs, fetchCommentsOnBlog, postCommentOnBlog, addLikeOnComment, addDislikeOnComment, deleteCommentOnBlog, addReplyOnComment, addLikeOnBlog, updateComment, fetchEditorKey } = require("../controllers/blogController")
 
 const router = express.Router()
+
+router.get("/editorkey", fetchEditorKey)
 
 router.get("/all", fetchAllBlogs)
 

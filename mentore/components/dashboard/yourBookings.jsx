@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { RAZORPAY_KEY_ID } from "../../src/assets/credentials";
 import { ErrorNotify, SuccessNotify } from "../global/toast";
 
 const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
@@ -45,7 +44,7 @@ export default function YourBookings() {
             ErrorNotify(response.error);
         } else {
             const options = {
-                "key": RAZORPAY_KEY_ID,
+                "key": response.key_id,
                 "amount": 15000,
                 "currency": "INR",
                 "name": "Mentore",
@@ -112,7 +111,7 @@ export default function YourBookings() {
             <div className='w-full'>
                 <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
                     <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
-                        <thead className="text-xs text-slate-600 uppercase bg-blue-100">
+                        <thead className="text-xs text-white uppercase bg-[#6c92df]">
                             <tr className='text-center'>
                                 <th scope="col" className="px-6 py-3">
                                     Applied on

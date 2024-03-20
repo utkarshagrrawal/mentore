@@ -1,5 +1,7 @@
 const { createBlogLogic, fetchBlogDetailsLogic, deleteBlogLogic, fetchAllBlogsLogic, fetchCommentsOnBlogLogic, postCommentOnBlogLogic, addLikeOnCommentLogic, addDislikeOnCommentLogic, deleteCommentOnBlogLogic, addLikeOnBlogLogic, addReplyOnCommentLogic, updateCommentLogic } = require("../businessLogic/blogLogic");
 
+require('dotenv').config();
+
 const fetchAllBlogs = async (req, res) => {
     const response = await fetchAllBlogsLogic();
     if (response.error) {
@@ -96,6 +98,10 @@ const updateComment = async (req, res) => {
     return res.json({ success: response.success })
 }
 
+const fetchEditorKey = async (req, res) => {
+    return res.json({ key: process.env.TINY_MCE_API_KEY })
+}
+
 module.exports = {
     fetchAllBlogs,
     createBlog,
@@ -108,5 +114,6 @@ module.exports = {
     addDislikeOnComment,
     deleteCommentOnBlog,
     addReplyOnComment,
-    updateComment
+    updateComment,
+    fetchEditorKey
 };
