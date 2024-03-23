@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { ErrorNotify } from "../global/toast";
 import Header from "../global/header";
 import BlogCard from "./insightCard";
@@ -12,7 +11,6 @@ export function Insights() {
     const [currentPage, setCurrentPage] = useState(1);
     const [blogsPerPage] = useState(10);
     const allBlogs = useRef([]);
-    const navigate = useNavigate();
     const [blogsLoading, setBlogsLoading] = useState(true);
 
     // checks if the user is logged in
@@ -28,7 +26,7 @@ export function Insights() {
             let users = await fetch("https://mentore-ten.vercel.app/user/details", options);
             const result = await users.json();
             if (result.error) {
-                navigate("/user/login");
+                localStorage.removeItem('token');
                 setLoggedIn(false);
             } else {
                 user.current = result.result;

@@ -9,7 +9,6 @@ import Profile from './profile';
 import DashboardHeader from '../global/dashboardHeader';
 import MentorBookings from './mentorBookings';
 import YourBookings from './yourBookings';
-import { ErrorNotify } from '../global/toast';
 import NewWebinar from './newWebinar';
 import NewBlog from './newBlog';
 
@@ -33,8 +32,9 @@ export function Dashboard() {
             let users = await fetch('https://mentore-ten.vercel.app/user/details', options);
             let result = await users.json();
             if (result.error) {
-                ErrorNotify(result.error)
-                return navigate('/user/login');
+                localStorage.removeItem('token');
+                navigate('/user/login');
+                return;
             } else {
                 user.current = result.result;
                 if (user.current.type === 'mentor') {

@@ -22,6 +22,7 @@ export function Register() {
             });
             let result = await user.json();
             if (result.error) {
+                localStorage.removeItem('token');
                 return;
             } else {
                 navigate('/');
