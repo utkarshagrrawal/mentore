@@ -9,9 +9,9 @@ export default function Profile({ user, isMentor }) {
                 <div className='w-full border-solid border-2 border-dark-500 rounded-lg'>
                     <div className='flex flex-col items-center mx-4 lg:mx-16 my-10 h-48'>
                         {user.current.male ? (
-                            <img src="../static/male-avatar.png" className="h-36 w-36 rounded-full" alt="Profile" />
+                            <img src="https://mwhhseuqzoudvibeyvrm.supabase.co/storage/v1/object/sign/images/male-avatar.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvbWFsZS1hdmF0YXIucG5nIiwiaWF0IjoxNzExMTg4ODM3LCJleHAiOjE3NDI3MjQ4Mzd9.qExdt9gnnYndht7-boBf9JR7TXV4f5r87clKZAZx3ZI&t=2024-03-23T10%3A13%3A57.836Z" className="h-36 w-36 rounded-full" alt="Profile" />
                         ) : (
-                            <img src="../static/female-avatar.png" className="h-36 w-36 rounded-full" alt="Profile" />
+                            <img src="https://mwhhseuqzoudvibeyvrm.supabase.co/storage/v1/object/sign/images/female-avatar.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvZmVtYWxlLWF2YXRhci5wbmciLCJpYXQiOjE3MTExODg4MDEsImV4cCI6MTc0MjcyNDgwMX0.SkW7zn8MTdTp2yQO3BousTpWQ3kBPQ2IT4wDLLKyamU&t=2024-03-23T10%3A13%3A21.412Z" className="h-36 w-36 rounded-full" alt="Profile" />
                         )}
                         <h1 className='text-3xl text-center font-semibold text-black'> {user.current && user.current.name && user.current.name.trim()} </h1>
                     </div>

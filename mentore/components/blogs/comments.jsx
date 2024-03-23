@@ -28,7 +28,7 @@ function Comment({ item, replyFields, handleReplyVisibility, handleDelete, handl
             <div className="rounded-lg border border-slate-200">
                 <div className="flex flex-col sm:flex-row gap-2 sm:gap-0 items-center justify-between px-4 py-2">
                     <div className="flex items-center">
-                        <img src={item.gender ? "../static/male-avatar.png" : "../static/female-avatar.png"} className="w-8 h-8 rounded-full" alt="User Avatar" />
+                        <img src={item.gender ? "https://mwhhseuqzoudvibeyvrm.supabase.co/storage/v1/object/sign/images/male-avatar.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvbWFsZS1hdmF0YXIucG5nIiwiaWF0IjoxNzExMTg4ODM3LCJleHAiOjE3NDI3MjQ4Mzd9.qExdt9gnnYndht7-boBf9JR7TXV4f5r87clKZAZx3ZI&t=2024-03-23T10%3A13%3A57.836Z" : "https://mwhhseuqzoudvibeyvrm.supabase.co/storage/v1/object/sign/images/female-avatar.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvZmVtYWxlLWF2YXRhci5wbmciLCJpYXQiOjE3MTExODg4MDEsImV4cCI6MTc0MjcyNDgwMX0.SkW7zn8MTdTp2yQO3BousTpWQ3kBPQ2IT4wDLLKyamU&t=2024-03-23T10%3A13%3A21.412Z"} className="w-8 h-8 rounded-full" alt="User Avatar" />
                         <div className="ml-2 text-sm text-gray-600">
                             <p className="font-semibold text-blue-800">{item.user_name}</p>
                             <p>on {dateFormatter.format(new Date(item.time))}</p>
