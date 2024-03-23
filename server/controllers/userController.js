@@ -1,4 +1,4 @@
-const { changePasswordLogic, registerUserLogic, loginUserLogic, sendResetPasswordOtpLogic, verifyOtpLogic, resendOtpLogic, userDetailsLogic, logoutUserLogic, fetchBookingsWithMentorLogic } = require("../businessLogic/userLogic");
+const { changePasswordLogic, registerUserLogic, loginUserLogic, sendResetPasswordOtpLogic, verifyOtpLogic, resendOtpLogic, userDetailsLogic, fetchBookingsWithMentorLogic } = require("../businessLogic/userLogic");
 
 const registerUser = async (req, res) => {
     const response = registerUserLogic(req.body);
@@ -56,11 +56,6 @@ const currentUserDetails = async (req, res) => {
     return res.json({ result: response.success })
 }
 
-const logout = async (req, res) => {
-    const response = await logoutUserLogic();
-    return res.json({ success: response.success })
-}
-
 const fetchBookingsWithMentor = async (req, res) => {
     const response = await fetchBookingsWithMentorLogic(req.params, req.user);
     if (response.error) {
@@ -77,6 +72,5 @@ module.exports = {
     currentUserDetails,
     verifyOtp,
     resendOtp,
-    logout,
     fetchBookingsWithMentor
 }

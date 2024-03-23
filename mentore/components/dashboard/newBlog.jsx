@@ -23,6 +23,7 @@ export default function NewBlog({ setBlogsLoading }) {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token'),
                 }
             }
 
@@ -62,6 +63,7 @@ export default function NewBlog({ setBlogsLoading }) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token'),
             },
             body: JSON.stringify({
                 title: blogTitle,

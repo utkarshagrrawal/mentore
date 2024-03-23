@@ -27,7 +27,8 @@ export function RegisterBlock({ register, setRegister, mentorSkills, setMentorSk
             let options = {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token')
                 }
             }
             let skills = await fetch('https://mentore-ten.vercel.app/mentor/skill-options', options);
@@ -139,7 +140,8 @@ export function RegisterBlock({ register, setRegister, mentorSkills, setMentorSk
         let sendData = await fetch('https://mentore-ten.vercel.app/user/register', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
             },
             body: JSON.stringify({
                 name: register.name,

@@ -11,6 +11,7 @@ export default function BlogCard({ blog, user, setBlogsLoading }) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token"),
             },
         };
 

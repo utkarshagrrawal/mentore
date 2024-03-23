@@ -14,6 +14,7 @@ export default function BlogManagement({ blogsLoading, setBlogsLoading }) {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token')
                 }
             }
             const response = await fetch('https://mentore-ten.vercel.app/mentor/blogs', options);
@@ -41,6 +42,7 @@ export default function BlogManagement({ blogsLoading, setBlogsLoading }) {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
             }
         })
         const result = await deleteBlog.json();

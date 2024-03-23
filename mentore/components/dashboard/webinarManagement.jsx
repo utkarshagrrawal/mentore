@@ -11,7 +11,8 @@ export default function WebinarManagement({ webinarDetailsLoading, setWebinarDet
             let options = {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token'),
                 },
             }
             let webinars = await fetch('https://mentore-ten.vercel.app/mentor/webinars', options);
@@ -29,6 +30,7 @@ export default function WebinarManagement({ webinarDetailsLoading, setWebinarDet
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
             },
             body: JSON.stringify({
                 "meeting_id": link

@@ -22,6 +22,7 @@ export function VerifyOtp({ forgotPassword, handleChange, setLoading }) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
             },
             body: JSON.stringify(forgotPassword)
         })
@@ -42,6 +43,7 @@ export function VerifyOtp({ forgotPassword, handleChange, setLoading }) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
             },
             body: JSON.stringify(forgotPassword)
         })

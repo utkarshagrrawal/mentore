@@ -1,5 +1,5 @@
 const express = require('express')
-const { registerUser, loginUser, forgotPassword, logout, changepassword, currentUserDetails, verifyOtp, resendOtp, fetchBookingsWithMentor } = require('../controllers/userController')
+const { registerUser, loginUser, forgotPassword, changepassword, currentUserDetails, verifyOtp, resendOtp, fetchBookingsWithMentor } = require('../controllers/userController')
 const { authentication } = require('../middlewares/authMiddleware')
 const { getMyBookings } = require('../controllers/meetingsController')
 
@@ -12,8 +12,6 @@ router.post('/login', loginUser)
 router.post("/forgot-password", forgotPassword);
 
 router.put('/change-password', authentication, changepassword)
-
-router.delete("/logout", authentication, logout)
 
 router.get("/details", authentication, currentUserDetails)
 

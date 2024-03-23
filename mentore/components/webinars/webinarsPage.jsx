@@ -16,6 +16,7 @@ export function WebinarsPage() {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": localStorage.getItem("token"),
                 },
             };
             let users = await fetch("https://mentore-ten.vercel.app/user/details", options);
@@ -36,6 +37,7 @@ export function WebinarsPage() {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": localStorage.getItem("token"),
                 },
             };
             let webinars = await fetch("https://mentore-ten.vercel.app/webinar/all", options);

@@ -11,6 +11,7 @@ export default function LandingHeader() {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": localStorage.getItem("token"),
                 },
             };
             let users = await fetch("https://mentore-ten.vercel.app/user/details", options);

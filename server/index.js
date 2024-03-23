@@ -9,15 +9,12 @@ const paymentRoute = require('./routes/paymentRoute');
 const meetingRoute = require('./routes/meetingRoute');
 const searchRoute = require('./routes/searchRoute');
 
-const { linkRedis } = require('./utility/redisConnection');
-
 require('dotenv').config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-linkRedis();
 
 app.use('/user', userRoute)
 

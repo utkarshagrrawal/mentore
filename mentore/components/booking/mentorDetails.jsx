@@ -11,6 +11,7 @@ export default function MentorDetails({ id, mentorDetails }) {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token'),
                 }
             }
             let mentors = await fetch(`https://mentore-ten.vercel.app/mentor/profile?id=${id}`, options);

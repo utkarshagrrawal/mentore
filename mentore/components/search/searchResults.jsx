@@ -21,6 +21,7 @@ export function SearchResults() {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": localStorage.getItem("token"),
                 },
             };
             let users = await fetch("https://mentore-ten.vercel.app/user/details", options);
@@ -42,6 +43,7 @@ export function SearchResults() {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    "Authorization": localStorage.getItem("token")
                 }
             }
 
@@ -69,6 +71,7 @@ export function SearchResults() {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token'),
                 }
             }
             let mentorDetail = await fetch('https://mentore-ten.vercel.app/mentor/all', options)
