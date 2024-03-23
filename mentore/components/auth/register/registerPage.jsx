@@ -17,6 +17,7 @@ export function Register() {
                 method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token')
                 }
             });
             let result = await user.json();

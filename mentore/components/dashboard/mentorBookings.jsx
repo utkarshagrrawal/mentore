@@ -12,6 +12,7 @@ export default function MentorBookings() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token'),
             }
         }
 
@@ -35,6 +36,7 @@ export default function MentorBookings() {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token'),
             },
         })
         const response = await approveRequest.json();
@@ -52,6 +54,7 @@ export default function MentorBookings() {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token'),
             },
         })
         const response = await rejectRequest.json();
@@ -69,6 +72,7 @@ export default function MentorBookings() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token'),
             },
             body: JSON.stringify({
                 meeting_id: link

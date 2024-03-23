@@ -27,6 +27,7 @@ export default function BookingRequest({ mentorId, setDataLoading, mentorDetails
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
             },
             body: JSON.stringify({ mentorId: mentorId, startDateTime: schedulingDetails.startDateTime, duration: schedulingDetails.duration, about: schedulingDetails.about })
         }

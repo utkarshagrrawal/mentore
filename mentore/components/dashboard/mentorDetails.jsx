@@ -15,6 +15,7 @@ export default function MentorProfile() {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token')
                 }
             }
             let skills = await fetch('https://mentore-ten.vercel.app/mentor/skill-options', options)
@@ -34,7 +35,8 @@ export default function MentorProfile() {
             let options = {
                 method: 'GET',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token')
                 }
             }
             let mentorDetailsResponse = await fetch('https://mentore-ten.vercel.app/mentor/details', options)

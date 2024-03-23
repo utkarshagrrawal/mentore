@@ -2,7 +2,6 @@ const { supabase } = require("../utility/dbConnection");
 const { sendForgotPasswordMail, sendNewPasswordMail } = require("../utility/mailConnection");
 const { generateOtp } = require("../utility/otpConnection");
 const { GenerateSalt, GeneratePassword, GenerateSignature } = require("../utility/passportUtility");
-const { storeInRedis, deleteFromRedis } = require("../utility/redisConnection");
 
 async function registerUserLogic(body) {
     const { email, password, name, age, registerFor, profession, company, experience, skills } = body;
@@ -73,9 +72,8 @@ async function loginUserLogic(body) {
     }
 
     const sign = GenerateSignature({ email: email, name: data[0].name, gender: data[0].male });
-    await storeInRedis("token", sign);
 
-    return { success: 'Login successfull' }
+    return { success: 'Login successfull', token: sign }
 }
 
 
@@ -281,12 +279,6 @@ async function userDetailsLogic(user) {
 }
 
 
-async function logoutUserLogic() {
-    await deleteFromRedis('token');
-    return { success: 'User logged out successfully' }
-}
-
-
 async function fetchBookingsWithMentorLogic(params, user) {
     const { id } = params
     const { email } = user
@@ -323,6 +315,5 @@ module.exports = {
     resendOtpLogic,
     changePasswordLogic,
     userDetailsLogic,
-    logoutUserLogic,
     fetchBookingsWithMentorLogic,
 }

@@ -140,6 +140,7 @@ export default function Comments({ blogId, user }) {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": localStorage.getItem("token")
                 },
             }
 
@@ -187,6 +188,7 @@ export default function Comments({ blogId, user }) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
             },
             body: JSON.stringify({
                 "comment": newComment
@@ -208,6 +210,7 @@ export default function Comments({ blogId, user }) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
             }
         }
 
@@ -229,6 +232,7 @@ export default function Comments({ blogId, user }) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
             }
         }
 
@@ -254,6 +258,7 @@ export default function Comments({ blogId, user }) {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
             }
         }
         const response = await fetch("https://mentore-ten.vercel.app/blog/" + blogId + "/comment/" + commentId, options);
@@ -303,6 +308,7 @@ export default function Comments({ blogId, user }) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
             },
             body: JSON.stringify({
                 "reply": value
@@ -361,6 +367,7 @@ export default function Comments({ blogId, user }) {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem("token")
             },
             body: JSON.stringify({
                 "comment": value

@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ErrorNotify } from "./toast";
 import { RiLockPasswordLine, RiLogoutCircleRLine } from "react-icons/ri";
 
 
@@ -8,16 +7,7 @@ export default function DashboardHeader() {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
-        const sendLogoutRequest = await fetch('https://mentore-ten.vercel.app/user/logout', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-        const response = await sendLogoutRequest.json();
-        if (response.error) {
-            return ErrorNotify(response.error)
-        }
+        localStorage.removeItem('token');
         navigate('/user/login');
     }
 

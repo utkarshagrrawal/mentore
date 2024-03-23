@@ -13,6 +13,7 @@ export default function YourBookings() {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token')
                 }
             })
             const result = await response.json();
@@ -31,6 +32,7 @@ export default function YourBookings() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
             },
             body: JSON.stringify({
                 'title': 'Payment_for_mentor_session_for_' + id,
@@ -57,6 +59,7 @@ export default function YourBookings() {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
+                                'Authorization': localStorage.getItem('token'),
                             },
                         }
                         const payment = await fetch('https://mentore-ten.vercel.app/payment/success/' + id, options);
@@ -91,6 +94,7 @@ export default function YourBookings() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token'),
             },
             body: JSON.stringify({
                 meeting_id: link

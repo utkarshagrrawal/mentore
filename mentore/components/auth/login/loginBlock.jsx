@@ -27,11 +27,14 @@ export function LoginBlock({ login, setLogin, setLoading }) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
             },
             body: JSON.stringify(login)
         })
         let result = await loginUser.json();
         if (result.success) {
+            console.log(result)
+            localStorage.setItem('token', result.token);
             SuccessNotify("Logged in successfully")
             navigate('/');
         } else {

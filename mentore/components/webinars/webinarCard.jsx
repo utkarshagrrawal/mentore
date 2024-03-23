@@ -11,6 +11,7 @@ export default function WebinarCard({ user, webinar, setLoading }) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
             },
             body: JSON.stringify({
                 "meeting_id": meeting_id
@@ -35,6 +36,7 @@ export default function WebinarCard({ user, webinar, setLoading }) {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('token')
             },
             body: JSON.stringify({
                 webinar_id: id
