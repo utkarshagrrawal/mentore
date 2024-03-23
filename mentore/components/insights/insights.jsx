@@ -89,7 +89,9 @@ export function Insights() {
                     {!blogsLoading && currentBlogs?.length > 0 ? (
                         <div className="mx-16 w-full grid grid-cols-2">
                             {currentBlogs.map((blog, index) => {
-                                <BlogCard key={index} blog={blog} user={user} setBlogsLoading={setBlogsLoading} />
+                                return (
+                                    <BlogCard key={index} blog={blog} user={user} setBlogsLoading={setBlogsLoading} />
+                                )
                             })}
                         </div>
                     ) : (
