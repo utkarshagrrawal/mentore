@@ -27,8 +27,8 @@ export function BookMentor() {
             let users = await fetch("https://mentore-ten.vercel.app/user/details", options);
             const result = await users.json();
             if (result.error) {
+                localStorage.removeItem('token');
                 setLoggedIn(false);
-                navigate('/user/login')
             } else {
                 setLoggedIn(true);
             }

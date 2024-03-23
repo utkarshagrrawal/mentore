@@ -1,27 +1,28 @@
 const jwt = require('jsonwebtoken');
 
 const validateSignature = async (req, res) => {
-    console.log(req.headers)
-    const signature = req.headers.Authorization;
-    console.log(signature)
+    const signature = req.headers.authorization;
     if (signature) {
         try {
             const payload = jwt.verify(signature, process.env.APP_SECRET_KEY);
             req.user = payload;
-            return true;
+            return { "success": true };
         } catch (error) {
-            return false;
+            if (error === 'TokenExpiredError') {
+                return { "failure": "JWT Token Expired" }
+            }
+            return { "failure": "Invalid JWT Token" };
         }
     }
-    return false;
+    return { "failure": "JWT Token not found" };
 }
 
 const authentication = async (req, res, next) => {
     const validate = await validateSignature(req, res);
-    if (validate) {
+    if (validate.success) {
         next();
     } else {
-        return res.json({ error: 'Unauthorized' })
+        return res.json({ error: validate.failure })
     }
 }
 

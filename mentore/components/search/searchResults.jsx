@@ -27,6 +27,7 @@ export function SearchResults() {
             let users = await fetch("https://mentore-ten.vercel.app/user/details", options);
             const result = await users.json();
             if (result.error) {
+                localStorage.removeItem('token');
                 setLoggedIn(false);
             } else {
                 setLoggedIn(true);
