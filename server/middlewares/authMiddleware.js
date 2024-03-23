@@ -1,9 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const validateSignature = async (req, res) => {
-    console.log(req.headers)
-    const signature = req.headers.Authorization;
-    console.log(signature)
+    const signature = req.headers.authorization;
     if (signature) {
         try {
             const payload = jwt.verify(signature, process.env.APP_SECRET_KEY);
