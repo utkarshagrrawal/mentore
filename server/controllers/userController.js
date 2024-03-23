@@ -13,7 +13,7 @@ const loginUser = async (req, res) => {
     if (response.error) {
         return res.json({ error: response.error })
     }
-    return res.json({ success: response.success })
+    return res.json({ success: response.success, token: response.token })
 }
 
 const forgotPassword = async (req, res) => {
