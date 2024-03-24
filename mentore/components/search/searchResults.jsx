@@ -37,33 +37,46 @@ export function SearchResults() {
     }, [])
 
     useEffect(() => {
-        const findMentors = async () => {
-            const toastId = Loading("Searching for mentors")
+        let controller = new AbortController();
 
+        const findMentors = async () => {
             const options = {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     "Authorization": localStorage.getItem("token")
-                }
+                },
+                signal: controller.signal
             }
 
-            const response = await fetch("https://mentore-ten.vercel.app/search/" + searchQuery, options);
-            const result = await response.json();
+            let toastId = Loading("Searching for mentors")
 
-            DismissToast(toastId);
+            try {
+                DismissToast(toastId);
+                toastId = Loading("Searching for mentors");
 
-            if (result.Error) {
-                ErrorNotify(result.error)
-            } else {
-                SuccessNotify("Mentors found")
-                mentors.current = result.response;
-                console.log(mentors.current)
+                const response = await fetch("https://mentore-ten.vercel.app/search/" + searchQuery, options);
+                const result = await response.json();
+
+                DismissToast(toastId);
+
+                if (result.Error) {
+                    ErrorNotify(result.error)
+                } else {
+                    SuccessNotify("Mentors found")
+                    // mentors.current = result;
+                    // console.log(mentors.current)
+                }
+            } catch (error) {
+
             }
         }
+
         if (searchQuery !== '') {
             findMentors();
         }
+
+        return () => controller.abort();
     }, [searchQuery])
 
     useEffect(() => {

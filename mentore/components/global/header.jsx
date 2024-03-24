@@ -21,6 +21,22 @@ export default function Header(props) {
         }
     }, [])
 
+    useEffect(() => {
+        const addHeaderClass = () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 30) {
+                header.classList.add('bg-white', 'shadow-lg', 'fixed', 'z-[999]', 'transition', 'duration-600', 'ease-in-out'); // Tailwind classes
+            } else {
+                header.classList.remove('bg-white', 'shadow-lg', 'fixed', 'z-[999]');  // Tailwind classes
+                setTimeout(() => {
+                    header.classList.add('transition', 'duration-600', 'ease-in-out'); // Tailwind classes
+                }, 600)
+            }
+        }
+        window.addEventListener('scroll', addHeaderClass);
+        return () => window.removeEventListener('scroll', addHeaderClass);
+    }, [])
+
     const handleSearch = (e) => {
         clearTimeout(clearId.current);
         clearId.current = setTimeout(() => {
