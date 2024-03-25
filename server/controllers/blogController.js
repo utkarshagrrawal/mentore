@@ -1,4 +1,4 @@
-const { createBlogLogic, fetchBlogDetailsLogic, deleteBlogLogic, fetchAllBlogsLogic, fetchCommentsOnBlogLogic, postCommentOnBlogLogic, addLikeOnCommentLogic, addDislikeOnCommentLogic, deleteCommentOnBlogLogic, addLikeOnBlogLogic, addReplyOnCommentLogic, updateCommentLogic } = require("../businessLogic/blogLogic");
+const { createBlogLogic, fetchBlogDetailsLogic, deleteBlogLogic, fetchAllBlogsLogic, fetchCommentsOnBlogLogic, postCommentOnBlogLogic, addLikeOnCommentLogic, addDislikeOnCommentLogic, deleteCommentOnBlogLogic, addLikeOnBlogLogic, addReplyOnCommentLogic, updateCommentLogic } = require("../logic/blogLogic");
 
 require('dotenv').config();
 

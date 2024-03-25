@@ -1,4 +1,4 @@
-const { changePasswordLogic, registerUserLogic, loginUserLogic, sendResetPasswordOtpLogic, verifyOtpLogic, resendOtpLogic, userDetailsLogic, fetchBookingsWithMentorLogic } = require("../businessLogic/userLogic");
+const { changePasswordLogic, registerUserLogic, loginUserLogic, sendResetPasswordOtpLogic, verifyOtpLogic, resendOtpLogic, userDetailsLogic, fetchBookingsWithMentorLogic } = require("../logic/userLogic");
 
 const registerUser = async (req, res) => {
     const response = registerUserLogic(req.body);

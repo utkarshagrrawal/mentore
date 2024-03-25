@@ -1,4 +1,4 @@
-const { fetchBookingsForMentorLogic, approveMeetingRequestLogic, rejectMeetingRequestLogic, fetchWebinarsByMentorLogic, fetchMentorDetailsLogic, fetchMentorSkillOptionsLogic, fetchAllMentorsLogic, fetchMentorProfileLogic, fetchBlogsByMentorLogic, fetchMentorAvailabilityLogic } = require("../businessLogic/mentorLogic")
+const { fetchBookingsForMentorLogic, approveMeetingRequestLogic, rejectMeetingRequestLogic, fetchWebinarsByMentorLogic, fetchMentorDetailsLogic, fetchMentorSkillOptionsLogic, fetchAllMentorsLogic, fetchMentorProfileLogic, fetchBlogsByMentorLogic, fetchMentorAvailabilityLogic } = require("../logic/mentorLogic")
 
 const fetchBookingsForMentor = async (req, res) => {
     const response = await fetchBookingsForMentorLogic(req.user);

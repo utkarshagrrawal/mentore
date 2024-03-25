@@ -38,6 +38,14 @@ export default function Footer() {
                                 Insights
                             </Link>
                         </li>
+                        <li>
+                            <Link
+                                to="/qna"
+                                className="block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700"
+                            >
+                                QnA
+                            </Link>
+                        </li>
                     </ul>
                 </div>
                 <hr className="my-6 border-gray-200 sm:mx-auto lg:my-4 dark:border-gray-700" />

@@ -25,11 +25,11 @@ export default function Header(props) {
         const addHeaderClass = () => {
             const header = document.querySelector('header');
             if (window.scrollY > 30) {
-                header.classList.add('bg-white', 'shadow-lg', 'fixed', 'z-[999]', 'transition', 'duration-600', 'ease-in-out'); // Tailwind classes
+                header.classList.add('bg-white', 'shadow-lg', 'fixed', 'z-[999]', 'transition', 'duration-600', 'ease-in-out');
             } else {
-                header.classList.remove('bg-white', 'shadow-lg', 'fixed', 'z-[999]');  // Tailwind classes
+                header.classList.remove('bg-white', 'shadow-lg', 'fixed', 'z-[999]');
                 setTimeout(() => {
-                    header.classList.add('transition', 'duration-600', 'ease-in-out'); // Tailwind classes
+                    header.classList.add('transition', 'duration-600', 'ease-in-out');
                 }, 600)
             }
         }
@@ -48,7 +48,7 @@ export default function Header(props) {
 
     return (
         <>
-            <header className="w-full min-[572px]:block hidden">
+            <header className="w-full min-[572px]:block hidden top-0">
                 <div>
                     <div className='flex flex-wrap items-center min-[573px]:justify-between min-[760px]:mx-8 min-[830px]:mx-16 mx-4 my-3'>
                         <Link to='/'><img src="https://mwhhseuqzoudvibeyvrm.supabase.co/storage/v1/object/sign/images/logo.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvbG9nby5wbmciLCJpYXQiOjE3MTExODg4NzQsImV4cCI6MTc0MjcyNDg3NH0.KFDnSmauZ-GWjuA9Si0SajJG2a0iizGTKlpVZVjZYQg&t=2024-03-23T10%3A14%3A34.573Z" className="h-8 mix-blend-multiply" alt="Mentore" /></Link>

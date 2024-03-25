@@ -1,4 +1,4 @@
-const { getMyBookingsLogic, createMeetingLogic, joinMeetingParticipantLogic, joinMeetingHostLogic } = require("../businessLogic/meetingsLogic");
+const { getMyBookingsLogic, createMeetingLogic, joinMeetingParticipantLogic, joinMeetingHostLogic } = require("../logic/meetingsLogic");
 
 require('dotenv').config();
 
