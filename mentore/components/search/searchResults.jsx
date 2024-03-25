@@ -49,7 +49,7 @@ export function SearchResults() {
                 signal: controller.signal
             }
 
-            let toastId = Loading("Searching for mentors")
+            let toastId;
 
             try {
                 DismissToast(toastId);
