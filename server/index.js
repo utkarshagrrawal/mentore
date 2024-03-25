@@ -8,6 +8,7 @@ const blogRoute = require('./routes/blogRoute');
 const paymentRoute = require('./routes/paymentRoute');
 const meetingRoute = require('./routes/meetingRoute');
 const searchRoute = require('./routes/searchRoute');
+const questionRoute = require('./routes/questionRoute');
 
 require('dotenv').config();
 
@@ -29,6 +30,8 @@ app.use("/blog", blogRoute)
 app.use("/payment", paymentRoute)
 
 app.use("/meeting", meetingRoute)
+
+app.use("/question", questionRoute)
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000");

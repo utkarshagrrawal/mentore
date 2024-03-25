@@ -92,6 +92,14 @@ export default function LandingHeader() {
                                     Insights
                                 </Link>
                             </li>
+                            <li>
+                                <Link
+                                    to="/qna"
+                                    className="block rounded px-3 py-2 text-gray-900 hover:bg-gray-100 md:border-0 md:p-0 md:hover:bg-transparent md:hover:text-blue-700"
+                                >
+                                    QnA
+                                </Link>
+                            </li>
                             {!loggedIn ? (
                                 <li>
                                     <Link

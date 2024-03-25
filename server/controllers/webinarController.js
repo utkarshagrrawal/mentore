@@ -1,4 +1,4 @@
-const { registerForWebinarLogic, joinWebinarAsHostLogic, createWebinarLogic, fetchAllWebinarsLogic, joinWebinarAsParticipantLogic } = require("../businessLogic/webinarLogic")
+const { registerForWebinarLogic, joinWebinarAsHostLogic, createWebinarLogic, fetchAllWebinarsLogic, joinWebinarAsParticipantLogic } = require("../logic/webinarLogic")
 
 const createWebinar = async (req, res) => {
     const response = await createWebinarLogic(req.body, req.user);
