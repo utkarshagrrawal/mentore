@@ -36,22 +36,28 @@ function Answer({ item, replyFields, handleReplyVisibility, handleDelete, handle
                     </div>
                     <div className="flex items-center gap-2">
                         <div className='flex items-center gap-3'>
-                            <div className='flex items-center hover:cursor-pointer' onClick={() => handleReplyVisibility(item.answer_id)}>
-                                {replyFields[item.answer_id]?.showReplyInput ? <TiCancel className="text-red-600" /> : <FaReply className="text-blue-600" />}
-                                <span className={`ml-1 text-sm ${replyFields[item.answer_id]?.showReplyInput ? 'text-red-600' : 'text-blue-600'}`}>{replyFields[item.answer_id]?.showReplyInput ? 'Cancel reply' : 'Reply'}</span>
-                            </div>
-                            {user.email === item.answered_by_email && (
-                                <>
-                                    <div className='hover:cursor-pointer flex items-center' onClick={() => handleDelete(item.answer_id)}>
-                                        <MdDelete className="text-red-600" />
-                                        <span className="text-sm text-red-600">Delete</span>
+                            {
+                                user.type === 'mentor' && (
+                                    <div className='flex items-center hover:cursor-pointer' onClick={() => handleReplyVisibility(item.answer_id)}>
+                                        {replyFields[item.answer_id]?.showReplyInput ? <TiCancel className="text-red-600" /> : <FaReply className="text-blue-600" />}
+                                        <span className={`ml-1 text-sm ${replyFields[item.answer_id]?.showReplyInput ? 'text-red-600' : 'text-blue-600'}`}>{replyFields[item.answer_id]?.showReplyInput ? 'Cancel reply' : 'Reply'}</span>
                                     </div>
-                                    <div className='hover:cursor-pointer flex items-center' onClick={() => handleEditVisibility(item.answer_id)}>
-                                        {editFields[item.answer_id]?.showEditInput ? <TiCancel className="text-red-600" /> : <FaEdit className="text-slate-700" />}
-                                        <span className={`ml-1 text-sm ${editFields[item.answer_id]?.showEditInput ? 'text-red-600' : 'text-slate-700'}`}>{editFields[item.answer_id]?.showEditInput ? 'Cancel edit' : 'Edit'}</span>
-                                    </div>
-                                </>
-                            )}
+                                )
+                            }
+                            {
+                                user.email === item.answered_by_email && (
+                                    <>
+                                        <div className='hover:cursor-pointer flex items-center' onClick={() => handleDelete(item.answer_id)}>
+                                            <MdDelete className="text-red-600" />
+                                            <span className="text-sm text-red-600">Delete</span>
+                                        </div>
+                                        <div className='hover:cursor-pointer flex items-center' onClick={() => handleEditVisibility(item.answer_id)}>
+                                            {editFields[item.answer_id]?.showEditInput ? <TiCancel className="text-red-600" /> : <FaEdit className="text-slate-700" />}
+                                            <span className={`ml-1 text-sm ${editFields[item.answer_id]?.showEditInput ? 'text-red-600' : 'text-slate-700'}`}>{editFields[item.answer_id]?.showEditInput ? 'Cancel edit' : 'Edit'}</span>
+                                        </div>
+                                    </>
+                                )
+                            }
                         </div>
                         <div className='flex items-center'>
                             <div className="flex items-center">
