@@ -56,7 +56,7 @@ export function WebinarsPage() {
     }, [loading])
 
     return (
-        <div className='min-h-screen items-center flex flex-col w-full mb-10'>
+        <div className='min-h-screen items-center flex flex-col w-full'>
             <Header loggedIn={loggedIn} />
             {allWebinars.current?.length > 0 ? <WebinarsDisplay allWebinars={allWebinars} loading={loading} setLoading={setLoading} user={user} /> : <EmptyWebinarsPage />}
         </div>
