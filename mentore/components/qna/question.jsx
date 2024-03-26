@@ -55,7 +55,6 @@ export function Question() {
                 ErrorNotify(result.error)
             } else {
                 const nestedAnswers = createNestedAnswers(result.result);
-                console.log(nestedAnswers)
                 setAnswers(nestedAnswers);
             }
             setLoading(false);
