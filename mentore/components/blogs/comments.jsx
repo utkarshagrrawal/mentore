@@ -67,8 +67,8 @@ function Comment({ item, replyFields, handleReplyVisibility, handleDelete, handl
                                             </svg>
                                         )
                                 }
-                                <span className="text-sm text-gray-600">{item.liked_by && item.liked_by.length}</span>
                             </div>
+                            <span className={`text-sm font-semibold ${item.liked_by.length - item.disliked_by.length >= 0 ? 'text-blue-500' : 'text-red-500'}`}>{item.liked_by && item.disliked_by && (item.liked_by.length - item.disliked_by.length)}</span>
                             <div className="flex items-center">
                                 {
                                     item.disliked_by && item.disliked_by.includes(user.current.email) ?
@@ -82,7 +82,6 @@ function Comment({ item, replyFields, handleReplyVisibility, handleDelete, handl
                                             </svg>
                                         )
                                 }
-                                <span className="text-sm text-gray-600">{item.disliked_by && item.disliked_by.length}</span>
                             </div>
                         </div>
                     </div>
@@ -126,6 +125,7 @@ export default function Comments({ blogId, user }) {
     const [loading, setLoading] = useState(true);
     const [replyFields, setReplyFields] = useState({});
     const [editFields, setEditFields] = useState({});
+    const [commenting, setCommenting] = useState(false);
     const comments = useRef([]);
     const [newComment, setNewComment] = useState('');
 
@@ -184,6 +184,8 @@ export default function Comments({ blogId, user }) {
             return ErrorNotify("Comment should be less than 1000 characters")
         }
 
+        setCommenting(true);
+
         const options = {
             method: "POST",
             headers: {
@@ -203,6 +205,8 @@ export default function Comments({ blogId, user }) {
             SuccessNotify("Comment added successfully!")
         }
         setLoading(true);
+        setNewComment('');
+        setCommenting(false);
     }
 
     const handleLike = async (comment_id) => {
@@ -392,11 +396,28 @@ export default function Comments({ blogId, user }) {
     return (
         <>
             <div className="w-full text-center my-10">
-                <span className="text-3xl font-bold">Discussion</span>
-                <div className="sm:mx-16 mx-4 mt-4 relative">
-                    <input onChange={handleChange} value={newComment} className="w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none p-3 pr-[45px] resize-none duration-200" placeholder="Publish your thoughts from here..." />
-                    <button className="flex items-center text-white font-semibold p-3 rounded-lg transition duration-200 absolute top-0 right-0" onClick={handlePost}>
-                        <TbSend className='text-2xl text-black hover:rotate-45 duration-200 hover:text-blue-500' title='Post comment' />
+                <div className="sm:mx-16 mx-4 mt-10 p-6 border rounded-lg shadow-md">
+                    <textarea
+                        className="w-full p-2 border border-gray-300 rounded-md resize-none focus:outline-none focus:border-blue-500"
+                        rows="4"
+                        placeholder="Publish your thoughts from here..."
+                        value={newComment}
+                        onChange={handleChange}
+                        required
+                    ></textarea>
+                    <button
+                        type="submit"
+                        onClick={handlePost}
+                        disabled={commenting}
+                        className="mt-4 w-full bg-blue-500 text-white py-1 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 flex justify-center"
+                    >
+                        {
+                            commenting ? (
+                                <div className="border-gray-300 h-5 w-5 animate-spin rounded-full border-2 border-white border-t-blue-600" />
+                            ) : (
+                                "Post Comment"
+                            )
+                        }
                     </button>
                 </div>
             </div>
