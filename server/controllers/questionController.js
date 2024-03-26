@@ -1,4 +1,4 @@
-const { askQuestionLogic, fetchQuestionsLogic, fetchAnswersWithLikesDislikesLogic, fetchQuestionDetailsLogic, submitAnswerLogic, editAnswerLogic, likeAnswerLogic, deleteAnswerLogic } = require("../logic/questionLogic")
+const { askQuestionLogic, fetchQuestionsLogic, fetchAnswersWithLikesDislikesLogic, fetchQuestionDetailsLogic, submitAnswerLogic, editAnswerLogic, likeAnswerLogic, deleteAnswerLogic, replyAnswerLogic } = require("../logic/questionLogic")
 
 const askQuestion = async (req, res) => {
     const response = await askQuestionLogic(req.body, req.user)
@@ -64,6 +64,14 @@ const deleteAnswer = async (req, res) => {
     return res.json({ result: response.result })
 }
 
+const replyAnswer = async (req, res) => {
+    const response = await replyAnswerLogic(req.params, req.body, req.user)
+    if (response.error) {
+        return res.json({ error: response.error })
+    }
+    return res.json({ result: response.result })
+}
+
 module.exports = {
     askQuestion,
     fetchQuestions,
@@ -72,5 +80,6 @@ module.exports = {
     submitAnswer,
     editAnswer,
     likeAnswer,
-    deleteAnswer
+    deleteAnswer,
+    replyAnswer
 }
