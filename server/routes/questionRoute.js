@@ -1,5 +1,5 @@
 const app = require('express');
-const { askQuestion, fetchQuestions, fetchAnswersWithLikesDislikes, fetchQuestionWithDetails, submitAnswer, editAnswer, likeAnswer, deleteAnswer } = require('../controllers/questionController');
+const { askQuestion, fetchQuestions, fetchAnswersWithLikesDislikes, fetchQuestionWithDetails, submitAnswer, editAnswer, likeAnswer, deleteAnswer, replyAnswer } = require('../controllers/questionController');
 const { authentication } = require('../middlewares/authMiddleware')
 
 const router = app.Router();
@@ -19,5 +19,7 @@ router.put('/:id/answer/:answer_id', authentication, editAnswer)
 router.post('/:id/answer/:answer_id/like', authentication, likeAnswer)
 
 router.delete('/:id/answer/:answer_id', authentication, deleteAnswer)
+
+router.post('/:id/answer/:answer_id/reply', authentication, replyAnswer)
 
 module.exports = router

@@ -9,7 +9,7 @@ export function Question() {
     const [user, setUser] = useState({});
     const [question, setQuestion] = useState([]);
     const [answer, setAnswer] = useState("");
-    const [answers, setAnswers] = useState({});
+    const [answers, setAnswers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [answering, setAnswering] = useState(false);
     const { id } = useParams();
@@ -126,6 +126,7 @@ export function Question() {
             setAnswer("");
         }
 
+        setAnswering(false);
         setLoading(true);
     }
 
@@ -161,7 +162,7 @@ export function Question() {
                     <button
                         type="submit"
                         disabled={answering}
-                        className="mt-4 w-full bg-blue-500 text-white py-1 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+                        className="mt-4 w-full bg-blue-500 text-white py-1 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 flex justify-center"
                     >
                         {
                             answering ? (

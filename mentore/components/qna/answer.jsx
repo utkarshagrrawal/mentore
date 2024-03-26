@@ -22,7 +22,7 @@ export function createNestedAnswers(answers, parentId = null) {
 }
 
 
-function Answer({ item, replyFields, handleReplyVisibility, handleDelete, handleLike, handleDislike, handleReplyText, handleReplyPost, user, dateFormatter, handleEditPost, handleEditText, handleEditVisibility, editFields }) {
+function Answer({ item, replyFields, handleReplyVisibility, handleDelete, handleLike, handleReplyText, handleReplyPost, user, dateFormatter, handleEditPost, handleEditText, handleEditVisibility, editFields }) {
     return (
         <>
             <div className="rounded-lg border border-slate-200">
@@ -31,43 +31,49 @@ function Answer({ item, replyFields, handleReplyVisibility, handleDelete, handle
                         <img src={item.gender ? "https://mwhhseuqzoudvibeyvrm.supabase.co/storage/v1/object/sign/images/male-avatar.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvbWFsZS1hdmF0YXIucG5nIiwiaWF0IjoxNzExMTg4ODM3LCJleHAiOjE3NDI3MjQ4Mzd9.qExdt9gnnYndht7-boBf9JR7TXV4f5r87clKZAZx3ZI&t=2024-03-23T10%3A13%3A57.836Z" : "https://mwhhseuqzoudvibeyvrm.supabase.co/storage/v1/object/sign/images/female-avatar.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvZmVtYWxlLWF2YXRhci5wbmciLCJpYXQiOjE3MTExODg4MDEsImV4cCI6MTc0MjcyNDgwMX0.SkW7zn8MTdTp2yQO3BousTpWQ3kBPQ2IT4wDLLKyamU&t=2024-03-23T10%3A13%3A21.412Z"} className="w-8 h-8 rounded-full" alt="User Avatar" />
                         <div className="ml-2 text-sm text-gray-600">
                             <p className="font-semibold text-blue-800">{item.answered_by_name}</p>
-                            <p>on {dateFormatter.format(new Date(item.answered_at))}</p>
+                            <p>on {dateFormatter.format(new Date(item.time))}</p>
                         </div>
                     </div>
-                    <div className="flex items-center gap-6">
-                        <div className='flex items-center gap-2'>
-                            <div className='flex items-center hover:cursor-pointer' onClick={() => handleReplyVisibility(item.answer_id)}>
-                                {replyFields[item.answer_id]?.showReplyInput ? <TiCancel className="text-red-600" /> : <FaReply className="text-blue-600" />}
-                                <span className={`ml-1 text-sm ${replyFields[item.answer_id]?.showReplyInput ? 'text-red-600' : 'text-blue-600'}`}>{replyFields[item.answer_id]?.showReplyInput ? 'Cancel reply' : 'Reply'}</span>
-                            </div>
-                            {user.email === item.user_email && (
-                                <>
-                                    <div className='hover:cursor-pointer flex items-center' onClick={() => handleDelete(item.answer_id)}>
-                                        <MdDelete className="text-red-600" />
-                                        <span className="text-sm text-red-600">Delete</span>
+                    <div className="flex items-center gap-2">
+                        <div className='flex items-center gap-3'>
+                            {
+                                user.type === 'mentor' && (
+                                    <div className='flex items-center hover:cursor-pointer' onClick={() => handleReplyVisibility(item.answer_id)}>
+                                        {replyFields[item.answer_id]?.showReplyInput ? <TiCancel className="text-red-600" /> : <FaReply className="text-blue-600" />}
+                                        <span className={`ml-1 text-sm ${replyFields[item.answer_id]?.showReplyInput ? 'text-red-600' : 'text-blue-600'}`}>{replyFields[item.answer_id]?.showReplyInput ? 'Cancel reply' : 'Reply'}</span>
                                     </div>
-                                    <div className='hover:cursor-pointer flex items-center' onClick={() => handleEditVisibility(item.answer_id)}>
-                                        {editFields[item.answer_id]?.showEditInput ? <TiCancel className="text-red-600" /> : <FaEdit className="text-slate-700" />}
-                                        <span className={`ml-1 text-sm ${editFields[item.answer_id]?.showEditInput ? 'text-red-600' : 'text-slate-700'}`}>{editFields[item.answer_id]?.showEditInput ? 'Cancel edit' : 'Edit'}</span>
-                                    </div>
-                                </>
-                            )}
+                                )
+                            }
+                            {
+                                user.email === item.answered_by_email && (
+                                    <>
+                                        <div className='hover:cursor-pointer flex items-center' onClick={() => handleDelete(item.answer_id)}>
+                                            <MdDelete className="text-red-600" />
+                                            <span className="text-sm text-red-600">Delete</span>
+                                        </div>
+                                        <div className='hover:cursor-pointer flex items-center' onClick={() => handleEditVisibility(item.answer_id)}>
+                                            {editFields[item.answer_id]?.showEditInput ? <TiCancel className="text-red-600" /> : <FaEdit className="text-slate-700" />}
+                                            <span className={`ml-1 text-sm ${editFields[item.answer_id]?.showEditInput ? 'text-red-600' : 'text-slate-700'}`}>{editFields[item.answer_id]?.showEditInput ? 'Cancel edit' : 'Edit'}</span>
+                                        </div>
+                                    </>
+                                )
+                            }
                         </div>
                         <div className='flex items-center'>
                             <div className="flex items-center">
                                 {
                                     item.liked_by && item.liked_by.includes(user.email) ?
                                         (
-                                            <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width={24} height={24} strokeWidth={1.5} stroke="currentColor" onClick={() => handleLike(item.answer_id)}>
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                                            <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width={20} height={20} onClick={() => handleLike(item.answer_id)}>
+                                                <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
                                             </svg>
                                         ) : (
-                                            <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width={24} height={24} onClick={() => handleLike(item.answer_id)}>
-                                                <path d="m11.645 20.91-.007-.003-.022-.012a15.247 15.247 0 0 1-.383-.218 25.18 25.18 0 0 1-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0 1 12 5.052 5.5 5.5 0 0 1 16.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 0 1-4.244 3.17 15.247 15.247 0 0 1-.383.219l-.022.012-.007.004-.003.001a.752.752 0 0 1-.704 0l-.003-.001Z" />
+                                            <svg className="hover:cursor-pointer" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width={20} height={20} strokeWidth={1.5} stroke="currentColor" onClick={() => handleLike(item.answer_id)}>
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
                                             </svg>
                                         )
                                 }
-                                <span className="text-sm text-gray-600">{item.liked_by && item.liked_by.length}</span>
+                                <span className="text-sm text-gray-600 ml-1">{item.liked_by && item.liked_by.length} Likes</span>
                             </div>
                         </div>
                     </div>
@@ -96,7 +102,7 @@ function Answer({ item, replyFields, handleReplyVisibility, handleDelete, handle
             {item.child_answers && item.child_answers.map((child, id) => {
                 return (
                     <div key={id} className="pl-8 w-full mt-4 border-l-2">
-                        <Answer item={child} replyFields={replyFields} handleReplyVisibility={handleReplyVisibility} handleDelete={handleDelete} handleLike={handleLike} handleDislike={handleDislike} handleReplyText={handleReplyText} handleReplyPost={handleReplyPost} user={user} dateFormatter={dateFormatter} handleEditPost={handleEditPost} handleEditText={handleEditText} handleEditVisibility={handleEditVisibility} editFields={editFields} />
+                        <Answer item={child} replyFields={replyFields} handleReplyVisibility={handleReplyVisibility} handleDelete={handleDelete} handleLike={handleLike} handleReplyText={handleReplyText} handleReplyPost={handleReplyPost} user={user} dateFormatter={dateFormatter} handleEditPost={handleEditPost} handleEditText={handleEditText} handleEditVisibility={handleEditVisibility} editFields={editFields} />
                     </div>
                 )
             })}
@@ -195,7 +201,7 @@ export default function Answers({ questionId, user, setLoading, answers }) {
                 "Authorization": localStorage.getItem("token")
             },
             body: JSON.stringify({
-                "reply": value
+                reply: value
             })
         }
         const response = await fetch("https://mentore-ten.vercel.app/question/" + questionId + "/answer/" + id + "/reply", options)
@@ -274,15 +280,14 @@ export default function Answers({ questionId, user, setLoading, answers }) {
     }
 
     return (
-        // answers?.map((item, id) => {
-        //     return (
-        //         <div className="w-full my-4" key={id}>
-        //             <div className="sm:mx-16 mx-4 flex flex-col">
-        //                 <Answer item={item} replyFields={replyFields} handleReplyVisibility={handleReplyVisibility} handleDelete={handleDelete} handleLike={handleLike} handleDislike={handleDislike} handleReplyText={handleReplyText} handleReplyPost={handleReplyPost} user={user} dateFormatter={dateFormatter} handleEditPost={handleEditPost} handleEditVisibility={handleEditVisibility} handleEditText={handleEditText} editFields={editFields} />
-        //             </div>
-        //         </div >
-        //     )
-        // })
-        <></>
+        answers.length > 0 && answers?.map((item, id) => {
+            return (
+                <div className="w-full my-4" key={id}>
+                    <div className="sm:mx-16 mx-4 flex flex-col">
+                        <Answer item={item} replyFields={replyFields} handleReplyVisibility={handleReplyVisibility} handleDelete={handleDelete} handleLike={handleLike} handleReplyText={handleReplyText} handleReplyPost={handleReplyPost} user={user} dateFormatter={dateFormatter} handleEditPost={handleEditPost} handleEditVisibility={handleEditVisibility} handleEditText={handleEditText} editFields={editFields} />
+                    </div>
+                </div >
+            )
+        })
     )
 }
