@@ -8,6 +8,7 @@ import { ErrorNotify } from "../global/toast";
 export function Qna() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [questions, setQuestions] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -51,21 +52,24 @@ export function Qna() {
             } else {
                 setQuestions(result.result);
             }
+            setLoading(false);
         }
 
-        fetchQuestions();
-    }, [])
+        if (loading) {
+            fetchQuestions();
+        }
+    }, [loading])
 
     return (
-        <div className="min-h-screen w-full">
+        <div className="min-h-screen w-full mb-10">
             <Header loggedIn={loggedIn} />
 
-            <AskQuestion />
+            <AskQuestion setLoading={setLoading} />
 
             {
                 questions.length > 0 && questions.map((question, index) => {
                     return (
-                        < QuestionCard key={index} {...question} />
+                        <QuestionCard key={index} {...question} />
                     )
                 })
             }

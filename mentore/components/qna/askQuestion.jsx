@@ -3,7 +3,7 @@ import { ErrorNotify, SuccessNotify } from "../global/toast";
 import Select from "react-select";
 
 
-export default function AskQuestion() {
+export default function AskQuestion(props) {
     const [tags, setTags] = useState([]);
     const [question, setQuestion] = useState("");
     const [selectedTags, setSelectedTags] = useState([]);
@@ -64,7 +64,7 @@ export default function AskQuestion() {
             SuccessNotify("Question posted successfully");
         }
 
-        setSelectedTags([]);
+        props.setLoading(true);
         setQuestion("");
         setAsking(false);
     }

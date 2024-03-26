@@ -1,5 +1,5 @@
 const app = require('express');
-const { askQuestion, fetchQuestions, fetchAnswersWithLikesDislikes, fetchQuestionWithDetails } = require('../controllers/questionController');
+const { askQuestion, fetchQuestions, fetchAnswersWithLikesDislikes, fetchQuestionWithDetails, submitAnswer, editAnswer, likeAnswer, deleteAnswer } = require('../controllers/questionController');
 const { authentication } = require('../middlewares/authMiddleware')
 
 const router = app.Router();
@@ -11,5 +11,13 @@ router.get('/all', fetchQuestions)
 router.get('/:id', fetchQuestionWithDetails)
 
 router.get('/:id/answer/all', fetchAnswersWithLikesDislikes)
+
+router.post('/:id/answer', authentication, submitAnswer)
+
+router.put('/:id/answer/:answer_id', authentication, editAnswer)
+
+router.post('/:id/answer/:answer_id/like', authentication, likeAnswer)
+
+router.delete('/:id/answer/:answer_id', authentication, deleteAnswer)
 
 module.exports = router
