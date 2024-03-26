@@ -1,4 +1,4 @@
-const { askQuestionLogic, fetchQuestionsLogic, fetchAnswersWithLikesDislikesLogic, fetchQuestionDetailsLogic } = require("../logic/questionLogic")
+const { askQuestionLogic, fetchQuestionsLogic, fetchAnswersWithLikesDislikesLogic, fetchQuestionDetailsLogic, submitAnswerLogic, editAnswerLogic, likeAnswerLogic, deleteAnswerLogic } = require("../logic/questionLogic")
 
 const askQuestion = async (req, res) => {
     const response = await askQuestionLogic(req.body, req.user)
@@ -32,9 +32,45 @@ const fetchAnswersWithLikesDislikes = async (req, res) => {
     return res.json({ result: response.result })
 }
 
+const submitAnswer = async (req, res) => {
+    const response = await submitAnswerLogic(req.params, req.body, req.user)
+    if (response.error) {
+        return res.json({ error: response.error })
+    }
+    return res.json({ result: response.result })
+}
+
+const editAnswer = async (req, res) => {
+    const response = await editAnswerLogic(req.params, req.body);
+    if (response.error) {
+        return res.json({ error: response.error })
+    }
+    return res.json({ result: response.result })
+}
+
+const likeAnswer = async (req, res) => {
+    const response = await likeAnswerLogic(req.params, req.user)
+    if (response.error) {
+        return res.json({ error: response.error })
+    }
+    return res.json({ result: response.result })
+}
+
+const deleteAnswer = async (req, res) => {
+    const response = await deleteAnswerLogic(req.params)
+    if (response.error) {
+        return res.json({ error: response.error })
+    }
+    return res.json({ result: response.result })
+}
+
 module.exports = {
     askQuestion,
     fetchQuestions,
     fetchQuestionWithDetails,
-    fetchAnswersWithLikesDislikes
+    fetchAnswersWithLikesDislikes,
+    submitAnswer,
+    editAnswer,
+    likeAnswer,
+    deleteAnswer
 }
