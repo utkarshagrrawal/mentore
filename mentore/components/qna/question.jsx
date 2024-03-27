@@ -100,7 +100,7 @@ export function Question() {
             return;
         }
         if (answer.length < 30) {
-            ErrorNotify("Answer should be at least 10 characters long");
+            ErrorNotify("Answer should be at least 30 characters long");
             return;
         }
 
