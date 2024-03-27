@@ -3,7 +3,7 @@ import WebinarCard from "./webinarCard";
 
 export default function WebinarsDisplay({ allWebinars, loading, setLoading, user }) {
     return (
-        <div className="w-full mb-10">
+        <div className="w-full h-screen mb-10">
             <div className="flex flex-wrap justify-center items-center mx-16 mt-3">
                 <h1 className="text-4xl font-bold text-center">Live webinars</h1>
             </div>
