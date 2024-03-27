@@ -43,7 +43,7 @@ export default function WebinarCard({ user, webinar, setLoading }) {
             }),
         };
         const toastId = Loading('Registering for the webinar');
-        const response = await fetch('https://mentore-ten.vercel.app/registerforwebinar', options);
+        const response = await fetch('https://mentore-ten.vercel.app/webinar/register', options);
         const result = await response.json();
         if (result.error) {
             ErrorNotify(result.error);
