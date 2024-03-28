@@ -52,9 +52,15 @@ export function Dashboard() {
 
             <Profile user={user} isMentor={isMentor} />
 
-            <NewWebinar setWebinarDetailsLoading={setWebinarDetailsLoading} />
+            {
+                isMentor && (
+                    <>
+                        <NewWebinar setWebinarDetailsLoading={setWebinarDetailsLoading} />
 
-            <NewBlog setBlogsLoading={setBlogsLoading} />
+                        <NewBlog setBlogsLoading={setBlogsLoading} />
+                    </>
+                )
+            }
 
             <YourBookings />
 
