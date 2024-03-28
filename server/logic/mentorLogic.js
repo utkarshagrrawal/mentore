@@ -150,12 +150,6 @@ const fetchMentorAvailabilityLogic = async (body, user) => {
     let endTime = new Date(startDateTime);
     endTime.setHours(endTime.getHours() + parseInt(duration));
 
-    startTime.setHours(startTime.getHours() + 5);
-    startTime.setMinutes(startTime.getMinutes() + 30);
-
-    endTime.setHours(endTime.getHours() + 5);
-    endTime.setMinutes(endTime.getMinutes() + 30);
-
     startTime = startTime.toISOString().split('.')[0];
     endTime = endTime.toISOString().split('.')[0];
 
