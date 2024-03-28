@@ -115,7 +115,7 @@ export default function YourBookings() {
             <div className='w-full'>
                 <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
                     <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
-                        <thead className="text-xs text-white uppercase bg-[#6c92df]">
+                        <thead className="text-xs text-white uppercase bg-blue-600">
                             <tr className='text-center'>
                                 <th scope="col" className="px-6 py-3">
                                     Applied on
@@ -146,7 +146,7 @@ export default function YourBookings() {
                                         </td>
                                         <td className="px-6 py-4 text-black">
                                             {(item.status === 'pending') && (
-                                                <button disabled className='border-[0.1rem] bg-[#fdc113] focus:ring-2 focus:ring-blue-500 font-medium rounded-lg text-sm py-1 w-full'>Pending</button>
+                                                <button disabled className='border-[0.1rem] bg-yellow-400 focus:ring-2 focus:ring-blue-500 font-medium rounded-lg text-sm py-1 w-full'>Pending</button>
                                             )}
                                             {(item.status === 'payment pending') && (
                                                 <button onClick={() => handlePay(item.uniq_id)} className='bg-blue-700 focus:ring-2 focus:ring-blue-500 text-white font-medium rounded-lg text-sm py-1 w-full'>Pay</button>

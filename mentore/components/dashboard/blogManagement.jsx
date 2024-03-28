@@ -59,7 +59,7 @@ export default function BlogManagement({ blogsLoading, setBlogsLoading }) {
             <div className='w-full'>
                 <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
                     <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
-                        <thead className="text-xs text-white uppercase bg-[#6c92df]">
+                        <thead className="text-xs text-white uppercase bg-blue-600">
                             <tr className='text-center'>
                                 <th scope="col" className="px-6 py-3">
                                     Posted on
