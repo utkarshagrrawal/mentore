@@ -121,7 +121,7 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
                 meeting_id: link
             })
         }
-        const join = await fetch('https://mentore-ten.vercel.app/joinmeetingparticipant', options);
+        const join = await fetch('https://mentore-ten.vercel.app/meeting/join/participant', options);
         const response = await join.json();
         if (response.error) {
             return ErrorNotify(response.error)
