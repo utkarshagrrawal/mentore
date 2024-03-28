@@ -47,7 +47,7 @@ export function Dashboard() {
     }, [])
 
     const dashboard = (
-        <>
+        <div className='mb-10'>
             <DashboardHeader />
 
             <Profile user={user} isMentor={isMentor} />
@@ -63,7 +63,7 @@ export function Dashboard() {
             {isMentor && <WebinarManagement webinarDetailsLoading={webinarDetailsLoading} setWebinarDetailsLoading={setWebinarDetailsLoading} />}
 
             {isMentor && <BlogManagement blogsLoading={blogsLoading} setBlogsLoading={setBlogsLoading} />}
-        </>
+        </div>
     )
 
     return (

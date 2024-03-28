@@ -94,7 +94,7 @@ export default function MentorBookings() {
             <div className='w-full mb-8'>
                 <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
                     <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
-                        <thead className="text-xs text-white uppercase bg-[#6c92df]">
+                        <thead className="text-xs text-white uppercase bg-blue-600">
                             <tr className='text-center'>
                                 <th scope="col" className="px-6 py-3">
                                     Start time
@@ -125,7 +125,7 @@ export default function MentorBookings() {
                                         </td>
                                         <td className="px-6 py-4 text-black">
                                             {item.status === 'payment pending' ? (
-                                                <button disabled className='border-[0.1rem] bg-[#fdc113] focus:ring-2 focus:ring-blue-500 font-medium rounded-lg text-sm px-8 py-1 w-full'>
+                                                <button disabled className='border-[0.1rem] bg-yellow-400 focus:ring-2 focus:ring-blue-500 font-medium rounded-lg text-sm px-8 py-1 w-full'>
                                                     Payment pending
                                                 </button>
                                             ) : item.status === 'pending' ? (

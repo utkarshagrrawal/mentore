@@ -82,7 +82,7 @@ export default function NewBlog({ setBlogsLoading }) {
 
     return (
         <div className='flex flex-col w-full mb-8 mt-4 px-14'>
-            <div onClick={handleCreateBlogBtn} className='text-center bg-[#f8db4edb] focus:ring-2 focus:ring-black text-slate-[850] font-medium rounded-t-lg text-sm px-8 py-2'>{blogBtnText}</div>
+            <div onClick={handleCreateBlogBtn} className='text-center bg-yellow-400 focus:ring-2 focus:ring-black text-slate-[850] font-medium rounded-t-lg text-sm px-8 py-2'>{blogBtnText}</div>
             {
                 (blogBtnText === 'Cancel creation' && TINY_MCE_API_KEY !== '') ? (
                     <div className='flex flex-col w-full p-4 rounded-b-lg bg-blue-50'>

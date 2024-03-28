@@ -60,7 +60,7 @@ export default function NewWebinar({ setWebinarDetailsLoading }) {
 
     return (
         <div className='flex flex-col w-full mb-8 mt-4 px-14 justify-end'>
-            <div onClick={handleWebinarCreateBtn} className='bg-[#f8db4edb] text-center focus:ring-2 focus:ring-black text-slate-[850] font-medium rounded-t-lg text-sm px-8 py-2'>{webinarBtnText}</div>
+            <div onClick={handleWebinarCreateBtn} className='bg-yellow-400 text-center focus:ring-2 focus:ring-black text-slate-[850] font-medium rounded-t-lg text-sm px-8 py-2'>{webinarBtnText}</div>
             {
                 (webinarBtnText === 'Cancel creation') ? (
                     <div className="w-full bg-blue-50 rounded-b-lg p-4">
