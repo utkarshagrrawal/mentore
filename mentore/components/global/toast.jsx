@@ -2,14 +2,14 @@ import toast from 'react-hot-toast';
 
 export function SuccessNotify(message) {
     toast.success(message, {
-        duration: 2000,
+        duration: 4000,
         position: 'top-center',
     });
 }
 
 export function ErrorNotify(message) {
     toast.error(message, {
-        duration: 2000,
+        duration: 4000,
         position: 'top-center',
     });
 }

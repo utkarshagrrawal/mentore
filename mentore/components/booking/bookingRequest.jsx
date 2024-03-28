@@ -4,6 +4,7 @@ import { DismissToast, ErrorNotify, Loading, SuccessNotify } from '../global/toa
 
 export default function BookingRequest({ mentorId, setDataLoading, mentorDetails }) {
     const [schedulingDetails, setSchedulingDetails] = useState({ startDateTime: '', duration: '', about: '' })
+    const [scheduling, setScheduling] = useState(false)
 
     const handleSchedulingDetails = (e) => {
         setSchedulingDetails({ ...schedulingDetails, [e.target.id]: e.target.value })
@@ -23,6 +24,8 @@ export default function BookingRequest({ mentorId, setDataLoading, mentorDetails
             return;
         }
 
+        setScheduling(true)
+
         let options = {
             method: 'POST',
             headers: {
@@ -41,6 +44,8 @@ export default function BookingRequest({ mentorId, setDataLoading, mentorDetails
             SuccessNotify("Meeting request sent successfully to mentor")
         }
         setDataLoading(true)
+        setScheduling(false)
+        setSchedulingDetails({ startDateTime: '', duration: '', about: '' })
     }
 
     return (
@@ -62,7 +67,15 @@ export default function BookingRequest({ mentorId, setDataLoading, mentorDetails
                     <textarea id='about' name='about' value={schedulingDetails.about} onChange={handleSchedulingDetails} placeholder='Please specify the reason in brief for this session requirement' className='border rounded-lg w-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'></textarea>
                 </div>
                 <div className='flex justify-center mt-4'>
-                    <button className='border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-[0.4rem] w-full' onClick={handleSchedule}>Schedule</button>
+                    <button className='bg-blue-700 focus:ring-2 focus:ring-blue-500 text-white font-medium rounded-lg text-sm px-8 py-[0.4rem] w-full flex justify-center' disabled={scheduling} onClick={handleSchedule}>
+                        {
+                            scheduling ? (
+                                <div className="border-gray-300 h-5 w-5 animate-spin rounded-full border-2 border-white border-t-blue-600" />
+                            ) : (
+                                'Schedule'
+                            )
+                        }
+                    </button>
                 </div>
             </div>
         </div>
