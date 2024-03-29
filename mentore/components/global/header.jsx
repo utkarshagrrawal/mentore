@@ -24,7 +24,7 @@ export default function Header(props) {
     useEffect(() => {
         const addHeaderClass = () => {
             const header = document.querySelector('header');
-            if (window.scrollY > 30) {
+            if (window.scrollY > 0) {
                 header.classList.add('bg-white', 'shadow-lg', 'fixed', 'z-[999]', 'transition', 'duration-600', 'ease-in-out');
             } else {
                 header.classList.remove('bg-white', 'shadow-lg', 'fixed', 'z-[999]');
