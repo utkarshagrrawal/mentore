@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { DismissToast, ErrorNotify, Loading, SuccessNotify } from '../global/toast';
 import { FaReply } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import { FaEdit } from "react-icons/fa";
+import { CiEdit } from "react-icons/ci";
 import { TbSend } from "react-icons/tb";
 import { TiCancel } from "react-icons/ti";
 
@@ -47,7 +47,7 @@ function Comment({ item, replyFields, handleReplyVisibility, handleDelete, handl
                                         <span className="text-sm text-red-600">Delete</span>
                                     </div>
                                     <div className='hover:cursor-pointer flex items-center' onClick={() => handleEditVisibility(item.comment_id)}>
-                                        {editFields[item.comment_id]?.showEditInput ? <TiCancel className="text-red-600" /> : <FaEdit className="text-slate-700" />}
+                                        {editFields[item.comment_id]?.showEditInput ? <TiCancel className="text-red-600" /> : <CiEdit className="text-slate-700" />}
                                         <span className={`ml-1 text-sm ${editFields[item.comment_id]?.showEditInput ? 'text-red-600' : 'text-slate-700'}`}>{editFields[item.comment_id]?.showEditInput ? 'Cancel edit' : 'Edit'}</span>
                                     </div>
                                 </>
