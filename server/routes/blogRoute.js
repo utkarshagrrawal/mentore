@@ -1,4 +1,5 @@
 const express = require("express")
+const bodyParser = require('body-parser')
 const { authentication } = require("../middlewares/authMiddleware")
 const { createBlog, fetchBlogDetails, deleteBlog, fetchAllBlogs, fetchCommentsOnBlog, postCommentOnBlog, addLikeOnComment, addDislikeOnComment, deleteCommentOnBlog, addReplyOnComment, addLikeOnBlog, updateComment, fetchEditorKey } = require("../controllers/blogController")
 
@@ -7,8 +8,6 @@ const router = express.Router()
 router.get("/editorkey", fetchEditorKey)
 
 router.get("/all", fetchAllBlogs)
-
-router.post("/create", authentication, createBlog)
 
 router.get("/:id", authentication, fetchBlogDetails)
 
@@ -29,5 +28,10 @@ router.delete("/:blogId/comment/:commentId", authentication, deleteCommentOnBlog
 router.put("/:blogId/comment/:commentId", authentication, updateComment)
 
 router.post("/:blogId/comment/:commentId/reply", authentication, addReplyOnComment)
+
+router.use(bodyParser.json({ limit: '10mb', extended: true }));
+router.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+
+router.post("/create", authentication, createBlog)
 
 module.exports = router
