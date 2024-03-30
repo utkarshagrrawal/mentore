@@ -123,7 +123,7 @@ const deleteAnswerLogic = async (params) => {
 const replyAnswerLogic = async (params, body, user) => {
     const { error } = await supabase
         .from('question_answers')
-        .insert({ question_id: params.id, answer: body.reply, answered_by_email: user.email, answered_by_name: user.name, parent_answer_id: params.answer_id })
+        .insert({ question_id: params.id, answer: body.reply, answered_by_email: user.email, answered_by_name: user.name, parent_answer_id: params.answer_id, answered_by_gender: user.gender })
 
     if (error) {
         return { error: error.message }
