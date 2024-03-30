@@ -7,5 +7,15 @@
 }
 
 body {
-    font-family: 'Poppins';
+    font-family: "IBM Plex Sans", sans-serif;
+}
+
+::selection {
+    background-color: #2463eb;
+    color: #fff;
+}
+
+::-moz-selection {
+    background-color: #2463eb;
+    color: #fff;
 }
