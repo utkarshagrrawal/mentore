@@ -43,6 +43,18 @@ export default function AskQuestion(props) {
             ErrorNotify("Question cannot be empty");
             return;
         }
+        if (question.trim() === "") {
+            ErrorNotify("Question cannot be empty");
+            return;
+        }
+        if (question.length < 10) {
+            ErrorNotify("Question should be atleast 10 characters long");
+            return;
+        }
+        if (selectedTags.length === 0) {
+            ErrorNotify("Please select tags");
+            return;
+        }
 
         setAsking(true);
 
