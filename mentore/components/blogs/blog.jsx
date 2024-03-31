@@ -10,7 +10,6 @@ export function Blog() {
     const user = useRef([]);
     const [loggedIn, setLoggedIn] = useState(false);
     const { id } = useParams();
-    const navigate = useNavigate();
 
     // checks if the user is logged in
     useEffect(() => {
