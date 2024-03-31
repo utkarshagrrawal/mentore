@@ -30,11 +30,11 @@ export default function Content({ blogId }) {
 
     return (
         !loading && (
-            <div class="w-full">
+            <div className="w-full">
                 <div className="mb-10 sm:mx-16 mx-4 flex flex-col items-center justify-center">
-                    <h1 class="text-4xl font-bold text-center text-gray-800 mb-4 mt-10">{blog.current.title}</h1>
-                    <h2 class="text-lg font-semibold text-center text-gray-700 mb-8">By {blog.current.name}</h2>
-                    <div class="bg-white rounded-lg border border-gray-200 p-6">
+                    <h1 className="text-4xl font-bold text-center text-gray-800 mb-4 mt-10">{blog.current.title}</h1>
+                    <h2 className="text-lg font-semibold text-center text-gray-700 mb-8">By {blog.current.name}</h2>
+                    <div className="bg-white rounded-lg border border-gray-200 p-6">
                         {parse(blog.current.content)}
                     </div>
                 </div>
