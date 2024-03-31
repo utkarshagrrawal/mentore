@@ -1,7 +1,8 @@
 import { Login } from '../components/auth/login/loginPage'
 import { Register } from '../components/auth/register/registerPage'
 import { ForgotPassword } from '../components/auth/forgotPassword/forgotPasswordPage'
-import { NotFound } from '../components/errorPages/notfound'
+import { NotFound } from '../components/errorPages/404'
+import { ServerError } from '../components/errorPages/500'
 import { Home } from '../components/landing/home'
 import { Dashboard } from '../components/dashboard/dashboard'
 import { Insights } from '../components/insights/insights'
@@ -11,17 +12,18 @@ import { ChangePassword } from '../components/auth/changePassword/changePassword
 import { WebinarsPage } from '../components/webinars/webinarsPage'
 import { Qna } from '../components/qna/qna'
 import { Blog } from '../components/blogs/blog'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { Question } from '../components/qna/question'
+import ErrorBoundary from '../components/errorPages/ErrorBoundary'
 
 
 import { Toaster } from 'react-hot-toast';
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
-import { Question } from '../components/qna/question'
+
 
 function App() {
   return (
-    <>
+    <ErrorBoundary>
       <Toaster />
       <Router>
         <Routes>
@@ -39,9 +41,10 @@ function App() {
           <Route path='/user/change-password' element={<ChangePassword />} />
           <Route path='/blog/:id' element={<Blog />} />
           <Route path='*' element={<NotFound />} />
+          <Route path='/500' element={<ServerError />} />
         </Routes>
       </Router>
-    </>
+    </ErrorBoundary>
   )
 }
 
