@@ -71,12 +71,12 @@ export default function NewBlog({ setBlogsLoading }) {
             })
         })
         const response = await createBlog.json();
+        DismissToast(toastId);
         if (response.error) {
             ErrorNotify(response.error);
         } else {
-            SuccessNotify(response.success);
+            SuccessNotify("Blog created successfully");
         }
-        DismissToast(toastId);
         setBlogsLoading(true);
     }
 
