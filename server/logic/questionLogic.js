@@ -75,6 +75,7 @@ const editAnswerLogic = async (params, body) => {
 const likeAnswerLogic = async (params, user) => {
     const { data, error } = await supabase
         .from('question_answer_likes')
+        .select('*')
         .eq('answer_id', params.answer_id)
         .eq('liked_by_email', user.email)
 
