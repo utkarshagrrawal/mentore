@@ -17,7 +17,7 @@ export function QuestionCard(props) {
                     <h1 className="text-gray-700 font-semibold">Asked by: {props?.asked_by_name}</h1>
                 </div>
                 <div className="flex items-center">
-                    <span className="text-blue-600 font-semibold">{props?.answered_by.length}</span>
+                    <span className="text-blue-600 font-semibold">{props?.answered_by}</span>
                     <p className="text-gray-500 ml-2">Answers</p>
                     <p className="text-gray-500 ml-4">Posted on: {dateFormatter.format(new Date(props?.created_at))}</p>
                 </div>
@@ -29,7 +29,7 @@ export function QuestionCard(props) {
             <div className="flex items-center">
                 <h2 className="text-lg font-semibold text-gray-900 mr-2">Tags:</h2>
                 <div className="flex flex-wrap">
-                    {props?.tags.length > 0 && props.tags.map((tag, index) => (
+                    {props?.tags?.length > 0 && props.tags.map((tag, index) => (
                         <span key={index} className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2 mb-2 hover:bg-blue-700">{tag}</span>
                     ))}
                 </div>
