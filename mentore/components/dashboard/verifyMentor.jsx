@@ -94,13 +94,13 @@ export default function VerifyMentor() {
                                 return (
                                     <tr key={item.uniq_id} className="text-center">
                                         <th scope="row" className="px-6 py-4 font-medium text-black whitespace-pre-line">
-                                            {item.mentor_name}
+                                            {item.name}
                                         </th>
                                         <td className="px-6 py-4 text-black">
-                                            {item.mentor_email}
+                                            {item.email}
                                         </td>
                                         <td className="px-6 py-4 text-black">
-                                            {item.skills}
+                                            {item.skills.skills}
                                         </td>
                                         <td className="px-6 py-4 text-black">
                                             {item.status === 'pending' && (
