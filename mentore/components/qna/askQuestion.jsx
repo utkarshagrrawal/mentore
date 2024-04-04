@@ -4,31 +4,9 @@ import Select from "react-select";
 
 
 export default function AskQuestion(props) {
-    const [tags, setTags] = useState([]);
     const [question, setQuestion] = useState("");
     const [selectedTags, setSelectedTags] = useState([]);
     const [asking, setAsking] = useState(false);
-
-    useEffect(() => {
-        const fetchSkills = async () => {
-            const options = {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": localStorage.getItem("token"),
-                },
-            };
-
-            const response = await fetch("https://mentore-ten.vercel.app/mentor/skill-options", options);
-            const result = await response.json();
-            if (result.error) {
-                ErrorNotify(result.error)
-            } else {
-                setTags(result.result);
-            }
-        }
-        fetchSkills();
-    }, [])
 
     const handleSelectChange = selectedOptions => {
         setSelectedTags(selectedOptions.map(option => option.value))
@@ -91,12 +69,12 @@ export default function AskQuestion(props) {
                 <div className="px-6 py-2">
                     <label htmlFor="tags" className="block text-gray-700 text-lg font-bold mb-2">Select Tags</label>
                     <Select isMulti className="basic-multi-select w-full"
-                        isDisabled={tags?.length === 0}
+                        isDisabled={props.tags?.length === 0}
                         classNamePrefix="select"
                         onChange={handleSelectChange}
                         options=
                         {
-                            tags?.length > 0 && tags.map((tag) => {
+                            props.tags?.length > 0 && props.tags.map((tag) => {
                                 return { value: tag.name, label: tag.name }
                             })
                         }
