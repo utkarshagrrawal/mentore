@@ -11,17 +11,17 @@ async function registerUserLogic(body) {
         .select()
         .eq('email', email);
 
-    if (data && data.length > 0) {
-        return { error: 'User already exists' }
-    } else if (error) {
+    if (error) {
         return { error: error.message }
+    } else if (data.length > 0) {
+        return { error: 'User already exists' }
     }
 
     const salt = await GenerateSalt();
     const hashedPassword = await GeneratePassword(password, salt);
     const { error: registeringError } = await supabase
         .from('users')
-        .insert({ email: email, password: hashedPassword, name: name, dob: age, type: registerFor, salt: salt });
+        .insert({ email: email, password: hashedPassword, name: name, dob: age, type: registerFor, salt: salt })
 
     if (registeringError) {
         return { error: registeringError.message }

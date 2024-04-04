@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors');
 
 const userRoute = require('./routes/userRoute');
+const adminRoute = require('./routes/adminRoute');
 const webinarRoute = require('./routes/webinarRoute');
 const mentorRoute = require('./routes/mentorRoute');
 const blogRoute = require('./routes/blogRoute');
@@ -18,6 +19,8 @@ app.use(express.json());
 
 
 app.use('/user', userRoute)
+
+app.use('/admin', adminRoute)
 
 app.use('/search', searchRoute)
 

@@ -1,4 +1,4 @@
-const { fetchBookingsForMentorLogic, approveMeetingRequestLogic, rejectMeetingRequestLogic, fetchWebinarsByMentorLogic, fetchMentorDetailsLogic, fetchMentorSkillOptionsLogic, fetchAllMentorsLogic, fetchMentorProfileLogic, fetchBlogsByMentorLogic, fetchMentorAvailabilityLogic } = require("../logic/mentorLogic")
+const { fetchBookingsForMentorLogic, approveMeetingRequestLogic, rejectMeetingRequestLogic, fetchWebinarsByMentorLogic, fetchMentorDetailsLogic, fetchMentorSkillOptionsLogic, fetchAllMentorsLogic, fetchMentorProfileLogic, fetchBlogsByMentorLogic, fetchMentorAvailabilityLogic, isMentorVerifiedLogic } = require("../logic/mentorLogic")
 
 const fetchBookingsForMentor = async (req, res) => {
     const response = await fetchBookingsForMentorLogic(req.user);
@@ -87,6 +87,15 @@ const fetchMentorAvailability = async (req, res) => {
 }
 
 
+const isMentorVerified = async (req, res) => {
+    const response = await isMentorVerifiedLogic(req.user);
+    if (response.error) {
+        return res.json({ error: response.error })
+    }
+    return res.json({ success: response.success })
+}
+
+
 module.exports = {
     fetchMentorSkillOptions,
     fetchMentorDetails,
@@ -97,5 +106,6 @@ module.exports = {
     rejectMeetingRequest,
     fetchWebinarsByMentor,
     fetchBlogsByMentor,
-    fetchMentorAvailability
+    fetchMentorAvailability,
+    isMentorVerified
 }

@@ -65,7 +65,7 @@ export function SearchResults() {
                 } else {
                     SuccessNotify("Mentors found")
                     // mentors.current = result;
-                    // console.log(mentors.current)
+                    console.log(mentors.current)
                 }
             } catch (error) {
 

@@ -100,6 +100,7 @@ const fetchAllMentorsLogic = async () => {
     const { data, error } = await supabase
         .from('mentors')
         .select()
+        .eq('verified', true)
 
     if (error) {
         return { error: error.message }
@@ -200,6 +201,26 @@ const fetchMentorAvailabilityLogic = async (body, user) => {
 }
 
 
+const isMentorVerifiedLogic = async (user) => {
+    const { email } = user;
+
+    const { data, error } = await supabase
+        .from('mentors')
+        .select()
+        .eq('email', email)
+
+    if (error) {
+        return { error: error.message }
+    }
+
+    if (data.length === 0) {
+        return { error: 'You are not a mentor' }
+    }
+
+    return { success: data[0].verified }
+}
+
+
 module.exports = {
     fetchBookingsForMentorLogic,
     approveMeetingRequestLogic,
@@ -210,5 +231,6 @@ module.exports = {
     fetchAllMentorsLogic,
     fetchMentorProfileLogic,
     fetchBlogsByMentorLogic,
-    fetchMentorAvailabilityLogic
+    fetchMentorAvailabilityLogic,
+    isMentorVerifiedLogic
 }

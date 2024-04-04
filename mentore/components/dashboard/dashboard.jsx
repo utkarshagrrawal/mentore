@@ -11,11 +11,14 @@ import MentorBookings from './mentorBookings';
 import YourBookings from './yourBookings';
 import NewWebinar from './newWebinar';
 import NewBlog from './newBlog';
+import VerifyMentor from './verifyMentor';
 
 export function Dashboard() {
     const user = useRef({});
     const [loading, setLoading] = useState(true);
     const [isMentor, setIsMentor] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [isVerified, setIsVerified] = useState(false);
     const [webinarDetailsLoading, setWebinarDetailsLoading] = useState(true);
     const [blogsLoading, setBlogsLoading] = useState(true);
     const navigate = useNavigate();
@@ -39,12 +42,37 @@ export function Dashboard() {
                 user.current = result.result;
                 if (user.current.type === 'mentor') {
                     setIsMentor(true);
+                } else if (user.current.type === 'admin') {
+                    setIsAdmin(true);
                 }
             }
             setLoading(false);
         }
         getUser();
     }, [])
+
+    useEffect(() => {
+        const checkVerification = async () => {
+            let options = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token'),
+                },
+            }
+            let response = await fetch('https://mentore-ten.vercel.app/mentor/verified', options);
+            let result = await response.json();
+            if (result.error) {
+                setIsVerified(false);
+            } else {
+                setIsVerified(result.success);
+            }
+        }
+
+        if (isMentor) {
+            checkVerification();
+        }
+    }, [isMentor])
 
     const dashboard = (
         <div className='mb-10'>
@@ -53,7 +81,7 @@ export function Dashboard() {
             <Profile user={user} isMentor={isMentor} />
 
             {
-                isMentor && (
+                isMentor && isVerified && (
                     <>
                         <NewWebinar setWebinarDetailsLoading={setWebinarDetailsLoading} />
 
@@ -64,11 +92,13 @@ export function Dashboard() {
 
             <YourBookings />
 
-            {isMentor && <MentorBookings />}
+            {isAdmin && <VerifyMentor />}
 
-            {isMentor && <WebinarManagement webinarDetailsLoading={webinarDetailsLoading} setWebinarDetailsLoading={setWebinarDetailsLoading} />}
+            {isMentor && isVerified && <MentorBookings />}
 
-            {isMentor && <BlogManagement blogsLoading={blogsLoading} setBlogsLoading={setBlogsLoading} />}
+            {isMentor && isVerified && <WebinarManagement webinarDetailsLoading={webinarDetailsLoading} setWebinarDetailsLoading={setWebinarDetailsLoading} />}
+
+            {isMentor && isVerified && <BlogManagement blogsLoading={blogsLoading} setBlogsLoading={setBlogsLoading} />}
         </div>
     )
 
