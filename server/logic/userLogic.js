@@ -30,7 +30,7 @@ async function registerUserLogic(body) {
     if (registerFor === 'mentor') {
         const { error } = await supabase
             .from('mentors')
-            .insert({ email: email, name: name, skills: { "skills": skills }, profession: profession, company: company, experience: experience, fees: 150 });
+            .insert({ email: email, name: name, skills: { "skills": skills }, profession: profession, company: company, experience: experience, fees: 150, verified: false });
 
         if (error) {
             return { error: error.message }
