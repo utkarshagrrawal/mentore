@@ -133,6 +133,17 @@ const replyAnswerLogic = async (params, body, user) => {
     return { result: "Answer posted successfully" }
 }
 
+const fetchQuestionsWithFilterLogic = async (body) => {
+    const { data, error } = await supabase
+        .rpc('fetch_questions_with_filter', { inputtags: [...body.tags] })
+
+    if (error) {
+        return { error: error.message }
+    }
+
+    return { result: data }
+}
+
 module.exports = {
     askQuestionLogic,
     fetchQuestionsLogic,
@@ -142,5 +153,6 @@ module.exports = {
     editAnswerLogic,
     likeAnswerLogic,
     deleteAnswerLogic,
-    replyAnswerLogic
+    replyAnswerLogic,
+    fetchQuestionsWithFilterLogic
 }
