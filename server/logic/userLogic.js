@@ -4,7 +4,7 @@ const { generateOtp } = require("../utility/otpConnection");
 const { GenerateSalt, GeneratePassword, GenerateSignature } = require("../utility/passportUtility");
 
 async function registerUserLogic(body) {
-    const { email, password, name, age, registerFor, profession, company, experience, skills } = body;
+    const { email, password, gender, name, age, registerFor, profession, company, experience, skills } = body;
 
     const { data, error } = await supabase
         .from('users')
@@ -21,7 +21,7 @@ async function registerUserLogic(body) {
     const hashedPassword = await GeneratePassword(password, salt);
     const { error: registeringError } = await supabase
         .from('users')
-        .insert({ email: email, password: hashedPassword, name: name, dob: age, type: registerFor, salt: salt })
+        .insert({ email: email, password: hashedPassword, name: name, dob: age, type: registerFor, salt: salt, male: gender === 'male' ? true : false })
 
     if (registeringError) {
         return { error: registeringError.message }
@@ -30,7 +30,7 @@ async function registerUserLogic(body) {
     if (registerFor === 'mentor') {
         const { error } = await supabase
             .from('mentors')
-            .insert({ email: email, name: name, skills: { "skills": skills }, profession: profession, company: company, experience: experience, fees: 150, verified: false });
+            .insert({ email: email, name: name, skills: { "skills": skills }, profession: profession, company: company, experience: experience, fees: 150, verified: false, male: gender === 'male' ? true : false });
 
         if (error) {
             return { error: error.message }

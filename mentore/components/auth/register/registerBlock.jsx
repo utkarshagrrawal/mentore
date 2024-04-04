@@ -146,6 +146,7 @@ export function RegisterBlock({ register, setRegister, mentorSkills, setMentorSk
             body: JSON.stringify({
                 name: register.name,
                 email: register.email,
+                gender: register.gender,
                 password: register.password,
                 age: register.age,
                 registerFor: register.registerFor,
@@ -185,7 +186,6 @@ export function RegisterBlock({ register, setRegister, mentorSkills, setMentorSk
                                 id="name"
                                 name="name"
                                 type="text"
-                                autoComplete="name"
                                 onChange={handleChange}
                                 value={register.name}
                                 required
@@ -204,7 +204,6 @@ export function RegisterBlock({ register, setRegister, mentorSkills, setMentorSk
                                 id='age'
                                 name='age'
                                 type='date'
-                                autoComplete='age'
                                 onChange={handleChange}
                                 value={register.age}
                                 required
@@ -213,17 +212,27 @@ export function RegisterBlock({ register, setRegister, mentorSkills, setMentorSk
                         </div>
                     </div>
 
-                    <div>
-                        <div className="mt-2 flex justify-between">
-                            <label htmlFor="registerFor" className='block text-sm font-medium leading-6 text-gray-900'>
-                                Register as
-                            </label>
-                            <div>
-                                <input type='radio' id='mentor' name='registerFor' value='mentor' onChange={handleChange} className='mr-2' required />
-                                <label htmlFor='mentor' className='mr-4'>Mentor</label>
-                                <input type='radio' id='mentee' name='registerFor' value='mentee' onChange={handleChange} className='mr-2' required />
-                                <label htmlFor='mentee'>Mentee</label>
-                            </div>
+                    <div className="mt-2 flex justify-between">
+                        <label htmlFor="gender" className="block text-sm font-medium leading-6 text-gray-900">
+                            Gender
+                        </label>
+                        <div>
+                            <input type='radio' id='male' name='gender' value='male' onChange={handleChange} className='mr-2' required />
+                            <label htmlFor='male' className='mr-4'>Male</label>
+                            <input type='radio' id="female" name='gender' value='female' onChange={handleChange} className='mr-2' required />
+                            <label htmlFor='female'>Female</label>
+                        </div>
+                    </div>
+
+                    <div className="mt-2 flex justify-between">
+                        <label htmlFor="registerFor" className='block text-sm font-medium leading-6 text-gray-900'>
+                            Register as
+                        </label>
+                        <div>
+                            <input type='radio' id='mentor' name='registerFor' value='mentor' onChange={handleChange} className='mr-2' required />
+                            <label htmlFor='mentor' className='mr-4'>Mentor</label>
+                            <input type='radio' id='mentee' name='registerFor' value='mentee' onChange={handleChange} className='mr-2' required />
+                            <label htmlFor='mentee'>Mentee</label>
                         </div>
                     </div>
 
