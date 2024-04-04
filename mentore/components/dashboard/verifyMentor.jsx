@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ErrorNotify, SuccessNotify } from "../global/toast";
+import { DismissToast, ErrorNotify, Loading, SuccessNotify } from "../global/toast";
 
 export default function VerifyMentor() {
     const [pendingVerifications, setPendingVerifications] = useState([])
@@ -31,6 +31,8 @@ export default function VerifyMentor() {
     }, [updatePendingVerifications])
 
     const handleApprove = async (id) => {
+        const toastId = Loading("Verifying mentor...")
+
         const approveRequest = await fetch('https://mentore-ten.vercel.app/admin/verify-mentor?id=' + id, {
             method: 'PUT',
             headers: {
@@ -39,6 +41,8 @@ export default function VerifyMentor() {
             },
         })
         const response = await approveRequest.json();
+
+        DismissToast(toastId)
 
         if (response.error) {
             ErrorNotify(response.error)
@@ -49,6 +53,8 @@ export default function VerifyMentor() {
     }
 
     const handleReject = async (id) => {
+        const toastId = Loading("Removing mentor...")
+
         const rejectRequest = await fetch('https://mentore-ten.vercel.app/admin/reject-mentor?id=' + id, {
             method: 'PUT',
             headers: {
@@ -57,6 +63,8 @@ export default function VerifyMentor() {
             },
         })
         const response = await rejectRequest.json();
+
+        DismissToast(toastId)
 
         if (response.error) {
             ErrorNotify(response.error)
@@ -100,10 +108,12 @@ export default function VerifyMentor() {
                                             {item.email}
                                         </td>
                                         <td className="px-6 py-4 text-black">
-                                            {item.skills.skills}
+                                            {
+                                                item.skills.skills.length > 0 && item.skills.skills.map((skill, index) => index === item.skills.skills.length - 1 ? skill : skill + ', ')
+                                            }
                                         </td>
                                         <td className="px-6 py-4 text-black">
-                                            {item.status === 'pending' && (
+                                            {!item.verified && (
                                                 <div className='grid grid-cols-2 gap-2'>
                                                     <button onClick={() => handleApprove(item.uniq_id)} className='border border-green-500 duration-150 hover:bg-green-700 focus:ring-2 focus:ring-green-500 hover:text-white font-medium rounded-lg text-sm py-1'>
                                                         Accept
