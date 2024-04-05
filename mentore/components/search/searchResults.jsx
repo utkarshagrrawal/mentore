@@ -13,7 +13,7 @@ export function SearchResults() {
     const [detailsLoading, setDetailsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(0); // Track current page
     const mentorsPerPage = 18; // Number of mentors per page
-    const mentors = useRef([]);
+    const [mentors, setMentors] = useState([]); // List of mentors
 
     useEffect(() => {
         const getUser = async () => {
@@ -64,8 +64,8 @@ export function SearchResults() {
                     ErrorNotify(result.error)
                 } else {
                     SuccessNotify("Mentors found")
-                    // mentors.current = result;
-                    console.log(mentors.current)
+                    setMentors(result.result)
+                    console.log(mentors)
                 }
             } catch (error) {
 
@@ -93,7 +93,7 @@ export function SearchResults() {
             if (result.error) {
                 ErrorNotify(result.error)
             } else {
-                mentors.current = result.result;
+                setMentors(result.result)
             }
             setDetailsLoading(false);
         }
@@ -103,7 +103,7 @@ export function SearchResults() {
     // Pagination: Logic to slice mentors based on current page
     const indexOfLastMentor = (currentPage + 1) * mentorsPerPage;
     const indexOfFirstMentor = indexOfLastMentor - mentorsPerPage;
-    const currentMentors = mentors.current.slice(
+    const currentMentors = mentors.length > 0 && mentors.slice(
         indexOfFirstMentor,
         indexOfLastMentor
     );
@@ -127,7 +127,7 @@ export function SearchResults() {
             </div>
 
             {/* Pagination */}
-            {!detailsLoading && <Paginate pages={Math.ceil(mentors.current.length / mentorsPerPage)} onChange={handlePageChange} />}
+            {!detailsLoading && <Paginate pages={Math.ceil(mentors.length / mentorsPerPage)} onChange={handlePageChange} />}
         </div>
     );
 }
