@@ -114,7 +114,7 @@ export default function NewBlog({ setBlogsLoading }) {
                                 content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                             }}
                         />
-                        <button onClick={handlePublish} className='border border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-6 py-2 my-4 place-self-end w-1/7'>
+                        <button onClick={handlePublish} className={`border border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-6 py-2 my-4 place-self-end w-1/7 ${creatingBlog && 'opacity-50 cursor-not-allowed'}`} disabled={creatingBlog}>
                             {
                                 creatingBlog ? (
                                     <div className="border-gray-300 h-5 w-5 animate-spin rounded-full border-2 border-white border-t-blue-600" />
