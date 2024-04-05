@@ -121,7 +121,7 @@ export function SearchResults() {
             <div className='w-full my-10'>
                 {!detailsLoading && (
                     <div className='grid lg:grid-cols-3 gap-2 md:grid-cols-2 grid-cols-1 place-content-center place-items-center drop-shadow-xl'>
-                        {currentMentors?.map((mentor, index) => <MentorCard key={index} mentor={mentor} />)}
+                        {currentMentors.length > 0 && currentMentors.map((mentor, index) => <MentorCard key={index} mentor={mentor} />)}
                     </div>
                 )}
             </div>
