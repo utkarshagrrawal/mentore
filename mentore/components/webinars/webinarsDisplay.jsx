@@ -9,7 +9,7 @@ export default function WebinarsDisplay({ allWebinars, loading, setLoading, user
             </div>
             <div className="flex w-full flex-wrap justify-center items-center mt-8">
                 <div className="w-full mx-16 grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 place-items-center place-content-center">
-                    {!loading && allWebinars.current.map((webinar, index) => {
+                    {!loading && allWebinars.map((webinar, index) => {
                         if (new Date().toISOString() < new Date(webinar.end_time).toISOString()) {
                             return <WebinarCard user={user} webinar={webinar} key={index} setLoading={setLoading} />
                         }
