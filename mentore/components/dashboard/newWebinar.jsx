@@ -85,7 +85,7 @@ export default function NewWebinar({ setWebinarDetailsLoading }) {
                             </div>
                         </div>
                         <div className="flex justify-end mt-4">
-                            <button onClick={handleCreate} className="border border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-6 py-2">
+                            <button onClick={handleCreate} className={`border border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-6 py-2 ${creatingWebinar && 'opacity-50 cursor-not-allowed'}`} disabled={creatingWebinar}>
                                 {
                                     creatingWebinar ? (
                                         <div className="border-gray-300 h-5 w-5 animate-spin rounded-full border-2 border-white border-t-blue-600" />
