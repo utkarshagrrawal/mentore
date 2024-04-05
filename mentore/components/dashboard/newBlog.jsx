@@ -5,6 +5,7 @@ import { DismissToast, ErrorNotify, Loading, SuccessNotify } from "../global/toa
 
 export default function NewBlog({ setBlogsLoading }) {
     const [blogBtnText, setBlogBtnText] = useState('Create blog');
+    const [creatingBlog, setCreatingBlog] = useState(false)
     const [TINY_MCE_API_KEY, setTINY_MCE_API_KEY] = useState('');
     const [blogTitle, setBlogTitle] = useState('');
     const editorRef = useRef(null);
@@ -58,6 +59,8 @@ export default function NewBlog({ setBlogsLoading }) {
             return;
         }
 
+        setCreatingBlog(true);
+
         const toastId = Loading('Creating blog...');
         const createBlog = await fetch('https://mentore-ten.vercel.app/blog/create', {
             method: 'POST',
@@ -77,6 +80,8 @@ export default function NewBlog({ setBlogsLoading }) {
         } else {
             SuccessNotify("Blog created successfully");
         }
+
+        setCreatingBlog(false);
         setBlogsLoading(true);
     }
 
@@ -109,7 +114,13 @@ export default function NewBlog({ setBlogsLoading }) {
                                 content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
                             }}
                         />
-                        <button onClick={handlePublish} className='border border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-6 py-2 my-4 place-self-end w-1/7'>Publish</button>
+                        <button onClick={handlePublish} className='border border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-6 py-2 my-4 place-self-end w-1/7'>
+                            {
+                                creatingBlog ? (
+                                    <div className="border-gray-300 h-5 w-5 animate-spin rounded-full border-2 border-white border-t-blue-600" />
+                                ) : ('Publish')
+                            }
+                        </button>
                     </div>
                 ) : null
             }
