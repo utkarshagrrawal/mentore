@@ -29,7 +29,7 @@ export default function MentorDetails({ id, mentorDetails }) {
     return (
         !loading && (
             <div className='w-full drop-shadow-xl'>
-                <div className='bg-gradient-to-r from-blue-300 to-blue-300 min-h-32 mx-16 rounded-t-lg mt-8'>
+                <div className='bg-[url("https://www.preplaced.in/_next/image?url=%2F_next%2Fstatic%2Fmedia%2FProfileHeader.3d8c11fa.gif&w=1920&q=75")] bg-no-repeat bg-cover min-h-32 mx-16 rounded-t-lg mt-8'>
                 </div>
                 <div className='mx-16'>
                     <img src={mentorDetails.current && mentorDetails.current.male ? "https://mwhhseuqzoudvibeyvrm.supabase.co/storage/v1/object/sign/images/male-avatar.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvbWFsZS1hdmF0YXIucG5nIiwiaWF0IjoxNzExMTg4ODM3LCJleHAiOjE3NDI3MjQ4Mzd9.qExdt9gnnYndht7-boBf9JR7TXV4f5r87clKZAZx3ZI&t=2024-03-23T10%3A13%3A57.836Z" : "https://mwhhseuqzoudvibeyvrm.supabase.co/storage/v1/object/sign/images/female-avatar.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvZmVtYWxlLWF2YXRhci5wbmciLCJpYXQiOjE3MTExODg4MDEsImV4cCI6MTc0MjcyNDgwMX0.SkW7zn8MTdTp2yQO3BousTpWQ3kBPQ2IT4wDLLKyamU&t=2024-03-23T10%3A13%3A21.412Z"} className='w-32 h-32 rounded-full absolute -mt-20 sm:ml-10 ml-4 border-4 border-white' alt='mentor' />
