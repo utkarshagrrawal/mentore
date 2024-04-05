@@ -14,7 +14,10 @@ export default function DashboardHeader() {
     return (
         <header className="w-full">
             <div className='flex flex-wrap justify-center items-center md:justify-between lg:justify-between mx-16 my-3'>
-                <Link to='/'><img src="https://mwhhseuqzoudvibeyvrm.supabase.co/storage/v1/object/sign/images/logo.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvbG9nby5wbmciLCJpYXQiOjE3MTExODg4NzQsImV4cCI6MTc0MjcyNDg3NH0.KFDnSmauZ-GWjuA9Si0SajJG2a0iizGTKlpVZVjZYQg&t=2024-03-23T10%3A14%3A34.573Z" className="h-8 mix-blend-multiply" alt="Mentore" /></Link>
+                <Link to='/' className="flex items-center justify-center gap-2">
+                    <img src="https://mwhhseuqzoudvibeyvrm.supabase.co/storage/v1/object/sign/images/logo.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvbG9nby5wbmciLCJpYXQiOjE3MTIzNDQ0ODEsImV4cCI6MTc0Mzg4MDQ4MX0.R_a_H8TO26tJm794AbsCJzLN4tdFGyF2dIPrnYfWzzg&t=2024-04-05T19%3A14%3A41.780Z" className="h-8 mix-blend-multiply" alt="Mentore" />
+                    <span className="text-2xl font-semibold text-blue-700">Mentore</span>
+                </Link>
                 <div className='flex items-center gap-4'>
                     <Link to='/user/change-password' type="button" className="flex items-center gap-2 px-4 py-2 font-medium rounded-lg text-sm text-blue-700 hover:text-white bg-blue-100 hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:outline-none duration-200">
                         <RiLockPasswordLine />
