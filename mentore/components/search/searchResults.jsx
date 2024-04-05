@@ -65,7 +65,6 @@ export function SearchResults() {
                 } else {
                     SuccessNotify("Mentors found")
                     setMentors(result.result)
-                    console.log(mentors)
                 }
             } catch (error) {
 
@@ -103,7 +102,7 @@ export function SearchResults() {
     // Pagination: Logic to slice mentors based on current page
     const indexOfLastMentor = (currentPage + 1) * mentorsPerPage;
     const indexOfFirstMentor = indexOfLastMentor - mentorsPerPage;
-    const currentMentors = mentors.length > 0 && mentors.slice(
+    const currentMentors = mentors && mentors.length > 0 && mentors.slice(
         indexOfFirstMentor,
         indexOfLastMentor
     );
@@ -121,13 +120,13 @@ export function SearchResults() {
             <div className='w-full my-10'>
                 {!detailsLoading && (
                     <div className='grid lg:grid-cols-3 gap-2 md:grid-cols-2 grid-cols-1 place-content-center place-items-center drop-shadow-xl'>
-                        {currentMentors.length > 0 && currentMentors.map((mentor, index) => <MentorCard key={index} mentor={mentor} />)}
+                        {currentMentors && currentMentors.length > 0 && currentMentors.map((mentor, index) => <MentorCard key={index} mentor={mentor} />)}
                     </div>
                 )}
             </div>
 
             {/* Pagination */}
-            {!detailsLoading && <Paginate pages={Math.ceil(mentors.length / mentorsPerPage)} onChange={handlePageChange} />}
+            {!detailsLoading && <Paginate pages={mentors ? Math.ceil(mentors.length / mentorsPerPage) : 1} onChange={handlePageChange} />}
         </div>
     );
 }
