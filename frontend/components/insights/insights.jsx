@@ -72,10 +72,6 @@ export function Insights() {
     // Pagination
     const indexOfLastBlog = currentPage * blogsPerPage;
     const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
-    // const currentBlogs = allBlogs.current.slice(
-    //     indexOfFirstBlog,
-    //     indexOfLastBlog
-    // );
 
     const handleFilter = () => {
         let filteredBlogs = allBlogs.current;
@@ -100,37 +96,37 @@ export function Insights() {
 
     return (
         <div className="flex min-h-screen w-full flex-col items-center">
-            {/* Header Section */}
             <Header loggedIn={loggedIn} />
 
-            {/* Main Content Section */}
             <div className="w-full mt-10">
                 <div className="my-3 flex flex-row w-full flex-wrap items-center">
-                    {/* Left 1/4 for sorting options (you can customize this part) */}
-                    <div className="flex flex-col w-1/4 items-center border border-gray-300 rounded p-4">
-                        {/* Add sorting options here */}
-                        <input className="m-2 w-full border border-gray-400 rounded p-2 focus:outline-none focus:border-blue-500" type="text" placeholder="Insight Title" value={searchTitle} onChange={(e) => setSearchTitle(e.target.value)} />
-                        <input className="m-2 w-full border border-gray-400 rounded p-2 focus:outline-none focus:border-blue-500" type="text" placeholder="Author Name" value={searchAuthor} onChange={(e) => setSearchAuthor(e.target.value)} />
-                        <button className="bg-blue-500 text-white m-2 w-full p-2 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600 transition-colors duration-300" onClick={handleFilter}>Filter</button>
-                    </div>
-
-
-                    {/* Right 3/4 for blog cards */}
-                    <div className="flex w-3/4">
-                        {!blogsLoading && currentBlogs?.length > 0 ? (
-                            <div className="mx-16 w-full flex">
-                                {currentBlogs.map((blog, index) => {
-                                    return (
-                                        <BlogCard key={index} blog={blog} user={user} setBlogsLoading={setBlogsLoading} />
-                                    )
-                                })}
+                    {
+                        !blogsLoading ? (
+                            <div className="w-full">
+                                <div className="mx-4 sm:mx-16 flex flex-col items-center mb-10">
+                                    <h2 className="text-2xl font-semibold text-gray-800 mb-4">Search and Filter</h2>
+                                    <div className="flex flex-col sm:flex-row w-full bg-white rounded-lg">
+                                        <input className="flex-grow px-4 py-3 border border-gray-300 rounded-lg focus:outline-none mb-2 sm:mb-0 sm:mr-2" type="text" placeholder="Insight Title" value={searchTitle} onChange={(e) => setSearchTitle(e.target.value)} />
+                                        <input className="flex-grow px-4 py-3 border border-gray-300 rounded-lg focus:outline-none mb-2 sm:mb-0 sm:mr-2" type="text" placeholder="Author Name" value={searchAuthor} onChange={(e) => setSearchAuthor(e.target.value)} />
+                                        <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-3 rounded-md transition-colors duration-300 ease-in-out" onClick={handleFilter}>Filter</button>
+                                    </div>
+                                </div>
                             </div>
                         ) : (
-                            <EmptyInsightsPage />
-                        )}
-
-                    </div>
-
+                            <></>
+                        )
+                    }
+                    {!blogsLoading && currentBlogs?.length > 0 ? (
+                        <div className="sm:mx-16 mx-4 w-full">
+                            {currentBlogs.map((blog, index) => {
+                                return (
+                                    <BlogCard key={index} blog={blog} user={user} setBlogsLoading={setBlogsLoading} />
+                                )
+                            })}
+                        </div>
+                    ) : (
+                        <EmptyInsightsPage />
+                    )}
                 </div>
             </div>
         </div>

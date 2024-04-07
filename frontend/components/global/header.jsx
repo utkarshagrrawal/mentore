@@ -77,7 +77,7 @@ export default function Header(props) {
                             </Link>
                             <button
                                 onClick={handleLogin}
-                                className='flex items-center gap-2 px-4 py-2 font-medium rounded-lg text-sm text-white bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-md transition duration-300 ease-in-out'
+                                className='flex items-center gap-2 px-4 py-2 font-medium rounded-lg text-sm text-blue-700 bg-blue-100 hover:bg-blue-600 hover:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none shadow-md transition duration-300 ease-in-out'
                             >
                                 {props?.loggedIn ? <MdSpaceDashboard /> : <RiLoginCircleLine />}
                                 {props?.loggedIn ? 'Dashboard' : 'Login'}
