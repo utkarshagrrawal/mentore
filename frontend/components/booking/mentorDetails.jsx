@@ -36,16 +36,30 @@ export default function MentorDetails({ id, mentorDetails }) {
                 </div>
                 <div className='bg-gray-100 min-h-32 mx-16 rounded-b-lg py-4'>
                     <div className='pt-14 pl-6 flex items-center gap-2'>
-                        <h3 className='text-2xl font-semibold'>{mentorDetails.current && mentorDetails.current.name}</h3><span className='text'>{mentorDetails.current && mentorDetails.current.male ? '(He/him)' : '(She/her)'}</span>
+                        <h3 className='text-2xl font-semibold'>{mentorDetails.current && mentorDetails.current.name}</h3>
+                        <span>{mentorDetails.current && mentorDetails.current.male ? '(He/him)' : '(She/her)'}</span>
                     </div>
-                    <div className='pt-1 pl-6 flex items-center gap-2'>
-                        <h3>{mentorDetails.current && mentorDetails.current.profession} at {mentorDetails.current && mentorDetails.current.company}</h3>
-                    </div>
-                    <div className='pt-1 pl-6 flex items-center gap-2'>
-                        <h3>Experience: {mentorDetails.current && mentorDetails.current.experience} years</h3>
+                    <h3 className='pt-1 pl-6 font-semibold'>{mentorDetails.current && mentorDetails.current.profession} at {mentorDetails.current && mentorDetails.current.company}</h3>
+                    <h3 className='pt-1 pl-6'><span className='font-semibold'>Experience:</span> {mentorDetails.current && mentorDetails.current.experience} years</h3>
+                    <div className='pt-1 pl-6 flex flex-col gap-2'>
+                        <h3 className='font-semibold'>Skills:</h3>
+                        <div className='flex flex-wrap gap-2'>
+                            {
+                                mentorDetails.current.skills && mentorDetails.current.skills.skills?.map((skill, index) => {
+                                    return (
+                                        <span
+                                            key={index}
+                                            className='bg-slate-300 font-medium text-black px-3 py-1 rounded-full text-sm'
+                                        >
+                                            {skill}
+                                        </span>
+                                    )
+                                })
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
+            </div >
         )
     )
 }
