@@ -105,31 +105,32 @@ export function Insights() {
 
             {/* Main Content Section */}
             <div className="w-full mt-10">
-                <div className="my-3 flex flex-row w-full flex-wrap items-center ">
+                <div className="my-3 flex flex-row w-full flex-wrap items-center">
                     {/* Left 1/4 for sorting options (you can customize this part) */}
-                    <div className="flex flex-col w-1/4 items-center">
+                    <div className="flex flex-col w-1/4 items-center border border-gray-300 rounded p-4">
                         {/* Add sorting options here */}
-                        <input className="m-2 w-3/4 border border-black p-1" type="text" placeholder="Insight Title" value={searchTitle} onChange={(e) => setSearchTitle(e.target.value)} />
-                        <input className="m-2 w-3/4 border border-black p-1" type="text" placeholder="Author Name" value={searchAuthor} onChange={(e) => setSearchAuthor(e.target.value)} />
-                        <button className="bg-blue-500 text-white m-2 w-3/4 p-1" onClick={handleFilter}>Filter</button>
+                        <input className="m-2 w-full border border-gray-400 rounded p-2 focus:outline-none focus:border-blue-500" type="text" placeholder="Insight Title" value={searchTitle} onChange={(e) => setSearchTitle(e.target.value)} />
+                        <input className="m-2 w-full border border-gray-400 rounded p-2 focus:outline-none focus:border-blue-500" type="text" placeholder="Author Name" value={searchAuthor} onChange={(e) => setSearchAuthor(e.target.value)} />
+                        <button className="bg-blue-500 text-white m-2 w-full p-2 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600 transition-colors duration-300" onClick={handleFilter}>Filter</button>
                     </div>
+
 
                     {/* Right 3/4 for blog cards */}
                     <div className="flex w-3/4">
-                    {!blogsLoading && currentBlogs?.length > 0 ? (
-                        <div className="mx-16 w-full flex">
-                            {currentBlogs.map((blog, index) => {
-                                return (
-                                    <BlogCard key={index} blog={blog} user={user} setBlogsLoading={setBlogsLoading} />
-                                )
-                            })}
-                        </div>
-                    ) : (
-                        <EmptyInsightsPage />
-                    )}
+                        {!blogsLoading && currentBlogs?.length > 0 ? (
+                            <div className="mx-16 w-full flex">
+                                {currentBlogs.map((blog, index) => {
+                                    return (
+                                        <BlogCard key={index} blog={blog} user={user} setBlogsLoading={setBlogsLoading} />
+                                    )
+                                })}
+                            </div>
+                        ) : (
+                            <EmptyInsightsPage />
+                        )}
 
                     </div>
-                    
+
                 </div>
             </div>
         </div>

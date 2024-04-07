@@ -28,7 +28,7 @@ export default function BlogCard({ blog, user, setBlogsLoading }) {
     };
 
     return (
-        <div className="mb-8 w-3/4 place-self-end col-span-2 rounded-lg border border-gray-200 bg-white p-4 shadow-lg">
+        <div className="mb-8 w-full place-self-end col-span-2 rounded-lg border border-gray-200 bg-white p-4 shadow-lg">
             <div className="flex justify-between flex-col sm:flex-row">
                 <div className="overflow-hidden hover:overflow-visible">
                     <h3 className="mb-2 text-2xl font-bold text-gray-800">{blog.title}</h3>
