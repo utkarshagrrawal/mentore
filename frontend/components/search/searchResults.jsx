@@ -63,8 +63,36 @@ export function SearchResults() {
                 if (result.Error) {
                     ErrorNotify(result.error)
                 } else {
-                    SuccessNotify("Mentors found")
-                    setMentors(JSON.parse(result.response))
+                    if (JSON.parse(result.response).length > 0) {
+                        SuccessNotify("Mentors found")
+                        setMentors(JSON.parse(result.response))
+                    } else {
+                        const toastId = Loading("No mentors found. Searching for similar mentors");
+
+                        let mentorDetail = await fetch('https://mentore-ten.vercel.app/mentor/all', options)
+                        let result = await mentorDetail.json();
+
+                        DismissToast(toastId);
+
+                        if (result.error) {
+                            ErrorNotify(result.error)
+                        } else {
+                            let filteredPersons = result.result.filter((person) => {
+                                if (person.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+                                    return person.uniq_id;
+                                }
+                                return null;
+                            })
+                            setMentors(filteredPersons.map((person) => {
+                                return result.result.find((mentor) => mentor.uniq_id === person.uniq_id)
+                            }))
+                            if (filteredPersons.length > 0) {
+                                SuccessNotify("Similar mentors found")
+                            } else {
+                                ErrorNotify("No mentors found")
+                            }
+                        }
+                    }
                 }
             } catch (error) {
 
