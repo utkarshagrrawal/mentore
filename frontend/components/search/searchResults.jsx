@@ -64,7 +64,7 @@ export function SearchResults() {
                     ErrorNotify(result.error)
                 } else {
                     SuccessNotify("Mentors found")
-                    setMentors(result.result)
+                    setMentors(JSON.parse(result.response))
                 }
             } catch (error) {
 
