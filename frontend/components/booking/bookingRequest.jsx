@@ -39,7 +39,11 @@ export default function BookingRequest({ mentorId, setDataLoading, mentorDetails
         const result = await schedule.json();
         DismissToast(toastId);
         if (result.error) {
-            ErrorNotify("Some error occured. Please try again")
+            if (result.error === "Invalid JWT Token") {
+                ErrorNotify("Please login to schedule a meeting")
+            } else {
+                ErrorNotify('Some error occured. Please try again')
+            }
         } else {
             SuccessNotify("Meeting request sent successfully to mentor")
         }
