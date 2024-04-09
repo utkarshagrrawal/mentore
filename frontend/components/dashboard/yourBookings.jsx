@@ -18,7 +18,7 @@ export default function YourBookings() {
             })
             const result = await response.json();
             if (result.error) {
-                ErrorNotify(result.error)
+                ErrorNotify("Some error occured. Please try again")
             } else {
                 menteeMeetings.current = result.result;
                 setMenteeMeetingsLoading(false);

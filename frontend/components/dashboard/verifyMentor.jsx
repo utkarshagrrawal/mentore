@@ -17,7 +17,7 @@ export default function VerifyMentor() {
             const result = await response.json();
 
             if (result.error) {
-                ErrorNotify(result.error)
+                ErrorNotify("Some error occured. Please try again")
             } else {
                 setPendingVerifications(result.result)
             }

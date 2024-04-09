@@ -134,7 +134,7 @@ export default function Answers({ questionId, user, setLoading, answers }) {
         DismissToast(toastId);
 
         if (result.error) {
-            ErrorNotify(result.error)
+            ErrorNotify("Some error occured. Please try again")
         }
         setLoading(true);
     }
@@ -154,7 +154,7 @@ export default function Answers({ questionId, user, setLoading, answers }) {
         const response = await fetch("https://mentore-ten.vercel.app/question/" + questionId + "/answer/" + answer_id, options);
         const result = await response.json();
         if (result.error) {
-            ErrorNotify(result.error)
+            ErrorNotify("Some error occured. Please try again")
         } else {
             SuccessNotify("Answer deleted successfully")
         }
@@ -210,7 +210,7 @@ export default function Answers({ questionId, user, setLoading, answers }) {
         DismissToast(toastId);
 
         if (result.error) {
-            ErrorNotify(result.error)
+            ErrorNotify("Some error occured. Please try again")
         } else {
             SuccessNotify("Reply added successfully")
             setLoading(true);
@@ -272,7 +272,7 @@ export default function Answers({ questionId, user, setLoading, answers }) {
         DismissToast(toastId);
 
         if (result.error) {
-            ErrorNotify(result.error)
+            ErrorNotify("Some error occured. Please try again")
         } else {
             SuccessNotify("Answer updated successfully")
             setLoading(true);

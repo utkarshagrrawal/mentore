@@ -46,7 +46,7 @@ export default function WebinarCard({ user, webinar, setLoading }) {
         const response = await fetch('https://mentore-ten.vercel.app/webinar/register', options);
         const result = await response.json();
         if (result.error) {
-            ErrorNotify(result.error);
+            ErrorNotify("Some error occured. Please try again");
         } else {
             SuccessNotify("Registered for the webinar successfully");
             setLoading(true);

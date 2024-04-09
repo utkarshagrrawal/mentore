@@ -52,7 +52,7 @@ export function Question() {
             const result = await response.json();
 
             if (result.error) {
-                ErrorNotify(result.error)
+                ErrorNotify("Some error occured. Please try again")
             } else {
                 const nestedAnswers = createNestedAnswers(result.result);
                 setAnswers(nestedAnswers);
@@ -79,7 +79,7 @@ export function Question() {
             const result = await response.json();
 
             if (result.error) {
-                ErrorNotify(result.error)
+                ErrorNotify("Some error occured. Please try again")
             } else {
                 setQuestion(result.result);
             }
@@ -119,7 +119,7 @@ export function Question() {
         const result = await response.json();
 
         if (result.error) {
-            ErrorNotify(result.error)
+            ErrorNotify("Some error occured. Please try again")
         } else {
             SuccessNotify("Answer posted successfully")
             setAnswer("");

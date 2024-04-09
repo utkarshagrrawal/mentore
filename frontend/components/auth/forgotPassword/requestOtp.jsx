@@ -29,7 +29,7 @@ export function RequestOtp({ forgotPassword, handleChange, setLoading, setEmailS
             SuccessNotify(result.success);
             setEmailSent(true);
         } else {
-            ErrorNotify(result.error);
+            ErrorNotify("Some error occured. Please try again");
         }
         setLoading(false);
     }

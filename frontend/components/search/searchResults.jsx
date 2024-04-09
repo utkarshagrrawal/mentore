@@ -61,7 +61,7 @@ export function SearchResults() {
                 DismissToast(toastId);
 
                 if (result.Error) {
-                    ErrorNotify(result.error)
+                    ErrorNotify("Some error occured. Please try again")
                 } else {
                     if (JSON.parse(result.response).length > 0) {
                         SuccessNotify("Mentors found")
@@ -75,7 +75,7 @@ export function SearchResults() {
                         DismissToast(toastId);
 
                         if (result.error) {
-                            ErrorNotify(result.error)
+                            ErrorNotify("Some error occured. Please try again")
                         } else {
                             let filteredPersons = result.result.filter((person) => {
                                 if (person.name.toLowerCase().includes(searchQuery.toLowerCase())) {
@@ -118,7 +118,7 @@ export function SearchResults() {
             let mentorDetail = await fetch('https://mentore-ten.vercel.app/mentor/all', options)
             let result = await mentorDetail.json();
             if (result.error) {
-                ErrorNotify(result.error)
+                ErrorNotify("Some error occured. Please try again")
             } else {
                 setMentors(result.result)
             }

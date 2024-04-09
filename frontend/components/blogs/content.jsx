@@ -19,7 +19,7 @@ export default function Content({ blogId }) {
             let users = await fetch(`https://mentore-ten.vercel.app/blog/${blogId}`, options);
             const result = await users.json();
             if (result.error) {
-                ErrorNotify(result.error)
+                ErrorNotify("Some error occured. Please try again")
             } else {
                 blog.current = result.result;
             }

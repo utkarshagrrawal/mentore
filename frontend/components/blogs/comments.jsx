@@ -148,7 +148,7 @@ export default function Comments({ blogId, user }) {
             const result = await response.json();
 
             if (result.error) {
-                ErrorNotify(result.error)
+                ErrorNotify("Some error occured. Please try again")
             } else {
                 comments.current = createNestedComments(result.result)
                 setReplyFields(result.result.map(item => {
@@ -200,7 +200,7 @@ export default function Comments({ blogId, user }) {
         const response = await fetch("https://mentore-ten.vercel.app/blog/" + blogId + "/comment", options);
         const result = await response.json();
         if (result.error) {
-            ErrorNotify(result.error)
+            ErrorNotify("Some error occured. Please try again")
         } else {
             SuccessNotify("Comment added successfully!")
         }
@@ -226,7 +226,7 @@ export default function Comments({ blogId, user }) {
         DismissToast(toastId);
 
         if (result.error) {
-            ErrorNotify(result.error)
+            ErrorNotify("Some error occured. Please try again")
         }
         setLoading(true);
     }
@@ -248,7 +248,7 @@ export default function Comments({ blogId, user }) {
         DismissToast(toastId);
 
         if (result.error) {
-            ErrorNotify(result.error)
+            ErrorNotify("Some error occured. Please try again")
         }
         setLoading(true);
     }
@@ -268,7 +268,7 @@ export default function Comments({ blogId, user }) {
         const response = await fetch("https://mentore-ten.vercel.app/blog/" + blogId + "/comment/" + commentId, options);
         const result = await response.json();
         if (result.error) {
-            ErrorNotify(result.error)
+            ErrorNotify("Some error occured. Please try again")
         } else {
             SuccessNotify("Comment deleted successfully")
         }
@@ -324,7 +324,7 @@ export default function Comments({ blogId, user }) {
         DismissToast(toastId);
 
         if (result.error) {
-            ErrorNotify(result.error)
+            ErrorNotify("Some error occured. Please try again")
         } else {
             SuccessNotify("Reply added successfully")
             setLoading(true);
@@ -386,7 +386,7 @@ export default function Comments({ blogId, user }) {
         DismissToast(toastId);
 
         if (result.error) {
-            ErrorNotify(result.error)
+            ErrorNotify("Some error occured. Please try again")
         } else {
             SuccessNotify("Comment updated successfully")
             setLoading(true);

@@ -49,7 +49,7 @@ export default function AskQuestion(props) {
         const result = await response.json();
 
         if (result.error) {
-            ErrorNotify(result.error)
+            ErrorNotify("Some error occured. Please try again")
         } else {
             SuccessNotify("Question posted successfully");
         }
