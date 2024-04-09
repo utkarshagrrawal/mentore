@@ -33,7 +33,7 @@ export default function MentorCard({ index, mentor }) {
                 </div>
                 <div>
                     <Link
-                        to={`/mentor/${mentor.uniq_id}`}
+                        to={`/mentor/${mentor.uniq_id || mentor.uuid}`}
                         className='flex justify-center mt-4 items-center px-3 py-2 text-sm font-medium text-white border border-black duration-200 rounded-lg bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300'
                     >
                         View details

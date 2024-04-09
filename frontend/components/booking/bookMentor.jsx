@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Loader } from '../global/loader';
 import Header from '../global/header';
 import MentorDetails from './mentorDetails';
@@ -8,7 +8,6 @@ import BookingsTable from './bookingsTable';
 
 export function BookMentor() {
     const { id } = useParams();
-    const navigate = useNavigate();
     const [loggedIn, setLoggedIn] = useState(false);
     const [loading, setLoading] = useState(true)
     const [dataLoading, setDataLoading] = useState(true)
