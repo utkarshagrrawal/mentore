@@ -17,7 +17,7 @@ export default function MentorDetails({ id, mentorDetails }) {
             let mentors = await fetch(`https://mentore-ten.vercel.app/mentor/profile?id=${id}`, options);
             const result = await mentors.json();
             if (result.error) {
-                ErrorNotify(result.error)
+                ErrorNotify("Some error occurred. Please try again")
             } else {
                 mentorDetails.current = result.result;
             }
