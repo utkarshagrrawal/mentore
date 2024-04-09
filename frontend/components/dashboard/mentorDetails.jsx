@@ -20,7 +20,7 @@ export default function MentorProfile() {
             let skills = await fetch('https://mentore-ten.vercel.app/mentor/skill-options', options)
             let result = await skills.json();
             if (result.error) {
-                ErrorNotify(result.error)
+                ErrorNotify("Some error occured. Please try again")
             } else {
                 allSkills.current = result.result;
             }
@@ -41,7 +41,7 @@ export default function MentorProfile() {
             let mentorDetailsResponse = await fetch('https://mentore-ten.vercel.app/mentor/details', options)
             let result = await mentorDetailsResponse.json();
             if (result.error) {
-                ErrorNotify(result.error)
+                ErrorNotify("Some error occured. Please try again")
             } else {
                 setMentorDetails(result.result);
             }

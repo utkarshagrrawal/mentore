@@ -47,7 +47,7 @@ export default function BlogManagement({ blogsLoading, setBlogsLoading }) {
         })
         const result = await deleteBlog.json();
         if (result.error) {
-            ErrorNotify(result.error)
+            ErrorNotify("Some error occured. Please try again")
         }
 
         setBlogsLoading(true);

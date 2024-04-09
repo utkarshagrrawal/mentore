@@ -20,7 +20,7 @@ export default function MentorBookings() {
             const response = await fetch('https://mentore-ten.vercel.app/mentor/meetings', options);
             const result = await response.json();
             if (result.error) {
-                ErrorNotify(result.error)
+                ErrorNotify("Some error occured. Please try again")
             } else {
                 meetings.current = result.result;
             }
@@ -82,7 +82,7 @@ export default function MentorBookings() {
         const result = await response.json();
 
         if (result.error) {
-            return ErrorNotify(result.error);
+            return ErrorNotify("Some error occured. Please try again");
         } else {
             return window.open(result.success, '_blank');
         }
