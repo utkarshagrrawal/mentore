@@ -6,11 +6,11 @@ const { removeExpiredMeetings } = require('../middlewares/meetingMiddleware')
 
 const router = express.Router()
 
-router.get("/all", authentication, fetchAllMentors)
+router.get("/all", fetchAllMentors)
 
 router.get("/skill-options", fetchMentorSkillOptions)
 
-router.get("/profile", authentication, fetchMentorProfile)
+router.get("/profile", fetchMentorProfile)
 
 router.get("/details", authentication, fetchMentorDetails)
 
