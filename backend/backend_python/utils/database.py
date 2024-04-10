@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 class DATABASE:
     def __init__(self, logger):
-        load_dotenv(r'backend\backend_python\.env.local')
+        load_dotenv(r"backend\backend_python\.env.local")
 
         self.logger = logger
         self.supabase_url = os.getenv("SUPABASE_URL")
