@@ -16,7 +16,7 @@ export function RequestOtp({ forgotPassword, handleChange, setLoading, setEmailS
     const handleRequest = async (e) => {
         e.preventDefault();
         setLoading(true);
-        let forgotPasswordUser = await fetch('https://mentore-ten.vercel.app/user/forgot-password', {
+        let forgotPasswordUser = await fetch('http://localhost:3000/user/forgot-password', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -29,7 +29,11 @@ export function RequestOtp({ forgotPassword, handleChange, setLoading, setEmailS
             SuccessNotify(result.success);
             setEmailSent(true);
         } else {
-            ErrorNotify("Some error occured. Please try again");
+            if (result.error === 'User with this mail does not exists') {
+                ErrorNotify(result.error);
+            } else {
+                ErrorNotify('Something went wrong');
+            }
         }
         setLoading(false);
     }
