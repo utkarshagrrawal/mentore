@@ -32,7 +32,7 @@ export function Dashboard() {
                     'Authorization': localStorage.getItem('token'),
                 },
             }
-            let users = await fetch('https://mentore-backend.vercel.app//user/details', options);
+            let users = await fetch('https://mentore-backend.vercel.app/user/details', options);
             let result = await users.json();
             if (result.error) {
                 localStorage.removeItem('token');
@@ -60,7 +60,7 @@ export function Dashboard() {
                     'Authorization': localStorage.getItem('token'),
                 },
             }
-            let response = await fetch('https://mentore-backend.vercel.app//mentor/verified', options);
+            let response = await fetch('https://mentore-backend.vercel.app/mentor/verified', options);
             let result = await response.json();
             if (result.error) {
                 setIsVerified(false);

@@ -16,7 +16,7 @@ export default function BlogCard({ blog, user, setBlogsLoading }) {
         };
 
         const toastId = Loading('Loading');
-        let response = await fetch("https://mentore-backend.vercel.app//blog/" + blogId + "/like", options);
+        let response = await fetch("https://mentore-backend.vercel.app/blog/" + blogId + "/like", options);
         let result = await response.json();
 
         if (result.success) {

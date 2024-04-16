@@ -23,7 +23,7 @@ export function Qna() {
                 },
             };
 
-            const response = await fetch("https://mentore-backend.vercel.app//user/details", options);
+            const response = await fetch("https://mentore-backend.vercel.app/user/details", options);
             const result = await response.json();
 
             if (result.error) {
@@ -47,7 +47,7 @@ export function Qna() {
                 },
             };
 
-            const response = await fetch("https://mentore-backend.vercel.app//question/all", options);
+            const response = await fetch("https://mentore-backend.vercel.app/question/all", options);
             const result = await response.json();
 
             if (result.error) {
@@ -73,7 +73,7 @@ export function Qna() {
                 },
             };
 
-            const response = await fetch("https://mentore-backend.vercel.app//mentor/skill-options", options);
+            const response = await fetch("https://mentore-backend.vercel.app/mentor/skill-options", options);
             const result = await response.json();
 
             if (result.error) {
@@ -99,7 +99,7 @@ export function Qna() {
                 body: JSON.stringify({ tags: selectedTags })
             }
 
-            const response = await fetch("https://mentore-backend.vercel.app//question/filter", options);
+            const response = await fetch("https://mentore-backend.vercel.app/question/filter", options);
             const result = await response.json();
 
             DismissToast(toastId);

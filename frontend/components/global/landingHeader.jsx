@@ -14,7 +14,7 @@ export default function LandingHeader() {
                     "Authorization": localStorage.getItem("token"),
                 },
             };
-            let users = await fetch("https://mentore-backend.vercel.app//user/details", options);
+            let users = await fetch("https://mentore-backend.vercel.app/user/details", options);
             const result = await users.json();
             if (result.error) {
                 localStorage.removeItem('token');

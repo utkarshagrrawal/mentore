@@ -144,7 +144,7 @@ export default function Comments({ blogId, user }) {
                 },
             }
 
-            const response = await fetch("https://mentore-backend.vercel.app//blog/" + blogId + "/comments", options);
+            const response = await fetch("https://mentore-backend.vercel.app/blog/" + blogId + "/comments", options);
             const result = await response.json();
 
             if (result.error) {
@@ -197,7 +197,7 @@ export default function Comments({ blogId, user }) {
             })
         };
 
-        const response = await fetch("https://mentore-backend.vercel.app//blog/" + blogId + "/comment", options);
+        const response = await fetch("https://mentore-backend.vercel.app/blog/" + blogId + "/comment", options);
         const result = await response.json();
         if (result.error) {
             ErrorNotify("Some error occured. Please try again")
@@ -220,7 +220,7 @@ export default function Comments({ blogId, user }) {
 
         const toastId = Loading("Loading...");
 
-        const response = await fetch("https://mentore-backend.vercel.app//blog/" + blogId + "/comment/" + comment_id + "/like", options);
+        const response = await fetch("https://mentore-backend.vercel.app/blog/" + blogId + "/comment/" + comment_id + "/like", options);
         const result = await response.json();
 
         DismissToast(toastId);
@@ -242,7 +242,7 @@ export default function Comments({ blogId, user }) {
 
         const toastId = Loading("Loading...");
 
-        const response = await fetch("https://mentore-backend.vercel.app//blog/" + blogId + "/comment/" + comment_id + "/dislike", options);
+        const response = await fetch("https://mentore-backend.vercel.app/blog/" + blogId + "/comment/" + comment_id + "/dislike", options);
         const result = await response.json();
 
         DismissToast(toastId);
@@ -265,7 +265,7 @@ export default function Comments({ blogId, user }) {
                 "Authorization": localStorage.getItem("token")
             }
         }
-        const response = await fetch("https://mentore-backend.vercel.app//blog/" + blogId + "/comment/" + commentId, options);
+        const response = await fetch("https://mentore-backend.vercel.app/blog/" + blogId + "/comment/" + commentId, options);
         const result = await response.json();
         if (result.error) {
             ErrorNotify("Some error occured. Please try again")
@@ -318,7 +318,7 @@ export default function Comments({ blogId, user }) {
                 "reply": value
             })
         }
-        const response = await fetch("https://mentore-backend.vercel.app//blog/" + blogId + "/comment/" + id + "/reply", options)
+        const response = await fetch("https://mentore-backend.vercel.app/blog/" + blogId + "/comment/" + id + "/reply", options)
         const result = await response.json();
 
         DismissToast(toastId);
@@ -380,7 +380,7 @@ export default function Comments({ blogId, user }) {
 
         const toastId = Loading("Updating comment...")
 
-        const response = await fetch("https://mentore-backend.vercel.app//blog/" + blogId + "/comment/" + comment_id, options);
+        const response = await fetch("https://mentore-backend.vercel.app/blog/" + blogId + "/comment/" + comment_id, options);
         const result = await response.json();
 
         DismissToast(toastId);

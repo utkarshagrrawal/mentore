@@ -27,7 +27,7 @@ export function WebinarsPage() {
                     "Authorization": localStorage.getItem("token"),
                 },
             };
-            let users = await fetch("https://mentore-backend.vercel.app//user/details", options);
+            let users = await fetch("https://mentore-backend.vercel.app/user/details", options);
             const result = await users.json();
             if (result.error) {
                 localStorage.removeItem('token');
@@ -49,7 +49,7 @@ export function WebinarsPage() {
                     "Authorization": localStorage.getItem("token"),
                 },
             };
-            let webinars = await fetch("https://mentore-backend.vercel.app//webinar/all", options);
+            let webinars = await fetch("https://mentore-backend.vercel.app/webinar/all", options);
             const result = await webinars.json();
             if (result.error) {
                 ErrorNotify("Some error occurred while fetching webinars")

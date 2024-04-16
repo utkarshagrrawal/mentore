@@ -23,7 +23,7 @@ export function LoginBlock({ login, setLogin, setLoading }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        let loginUser = await fetch('https://mentore-backend.vercel.app//user/login', {
+        let loginUser = await fetch('https://mentore-backend.vercel.app/user/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
