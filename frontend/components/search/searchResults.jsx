@@ -24,7 +24,7 @@ export function SearchResults() {
                     "Authorization": localStorage.getItem("token"),
                 },
             };
-            let users = await fetch("https://mentore-ten.vercel.app/user/details", options);
+            let users = await fetch("https://mentore-backend.vercel.app//user/details", options);
             const result = await users.json();
             if (result.error) {
                 localStorage.removeItem('token');
@@ -55,7 +55,7 @@ export function SearchResults() {
                 DismissToast(toastId);
                 toastId = Loading("Searching for mentors");
 
-                const response = await fetch("https://mentore-ten.vercel.app/search/" + searchQuery, options);
+                const response = await fetch("https://mentore-backend.vercel.app//search/" + searchQuery, options);
                 const result = await response.json();
 
                 DismissToast(toastId);
@@ -69,7 +69,7 @@ export function SearchResults() {
                     } else {
                         const toastId = Loading("No mentors found. Searching for similar mentors");
 
-                        let mentorDetail = await fetch('https://mentore-ten.vercel.app/mentor/all', options)
+                        let mentorDetail = await fetch('https://mentore-backend.vercel.app//mentor/all', options)
                         let result = await mentorDetail.json();
 
                         DismissToast(toastId);
@@ -115,7 +115,7 @@ export function SearchResults() {
                     'Authorization': localStorage.getItem('token'),
                 }
             }
-            let mentorDetail = await fetch('https://mentore-ten.vercel.app/mentor/all', options)
+            let mentorDetail = await fetch('https://mentore-backend.vercel.app//mentor/all', options)
             let result = await mentorDetail.json();
             if (result.error) {
                 ErrorNotify("Some error occured. Please try again")

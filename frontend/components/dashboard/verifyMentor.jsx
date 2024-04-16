@@ -7,7 +7,7 @@ export default function VerifyMentor() {
 
     useEffect(() => {
         const fetchPendingVerifications = async () => {
-            const response = await fetch('https://mentore-ten.vercel.app/admin/pending-verifications', {
+            const response = await fetch('https://mentore-backend.vercel.app//admin/pending-verifications', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export default function VerifyMentor() {
     const handleApprove = async (id) => {
         const toastId = Loading("Verifying mentor...")
 
-        const approveRequest = await fetch('https://mentore-ten.vercel.app/admin/verify-mentor?id=' + id, {
+        const approveRequest = await fetch('https://mentore-backend.vercel.app//admin/verify-mentor?id=' + id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ export default function VerifyMentor() {
     const handleReject = async (id) => {
         const toastId = Loading("Removing mentor...")
 
-        const rejectRequest = await fetch('https://mentore-ten.vercel.app/admin/reject-mentor?id=' + id, {
+        const rejectRequest = await fetch('https://mentore-backend.vercel.app//admin/reject-mentor?id=' + id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

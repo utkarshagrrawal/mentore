@@ -45,7 +45,7 @@ export default function AskQuestion(props) {
             body: JSON.stringify({ question: question, tags: selectedTags })
         }
 
-        const response = await fetch("https://mentore-ten.vercel.app/question/ask", options);
+        const response = await fetch("https://mentore-backend.vercel.app//question/ask", options);
         const result = await response.json();
 
         if (result.error) {

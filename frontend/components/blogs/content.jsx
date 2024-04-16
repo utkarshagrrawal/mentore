@@ -16,7 +16,7 @@ export default function Content({ blogId }) {
                     "Authorization": localStorage.getItem("token")
                 }
             };
-            let users = await fetch(`https://mentore-ten.vercel.app/blog/${blogId}`, options);
+            let users = await fetch(`https://mentore-backend.vercel.app//blog/${blogId}`, options);
             const result = await users.json();
             if (result.error) {
                 ErrorNotify("Some error occured. Please try again")

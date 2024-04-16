@@ -128,7 +128,7 @@ export default function Answers({ questionId, user, setLoading, answers }) {
 
         const toastId = Loading("Loading...");
 
-        const response = await fetch("https://mentore-ten.vercel.app/question/" + questionId + "/answer/" + answer_id + "/like", options);
+        const response = await fetch("https://mentore-backend.vercel.app//question/" + questionId + "/answer/" + answer_id + "/like", options);
         const result = await response.json();
 
         DismissToast(toastId);
@@ -151,7 +151,7 @@ export default function Answers({ questionId, user, setLoading, answers }) {
                 "Authorization": localStorage.getItem("token")
             }
         }
-        const response = await fetch("https://mentore-ten.vercel.app/question/" + questionId + "/answer/" + answer_id, options);
+        const response = await fetch("https://mentore-backend.vercel.app//question/" + questionId + "/answer/" + answer_id, options);
         const result = await response.json();
         if (result.error) {
             ErrorNotify("Some error occured. Please try again")
@@ -204,7 +204,7 @@ export default function Answers({ questionId, user, setLoading, answers }) {
                 reply: value
             })
         }
-        const response = await fetch("https://mentore-ten.vercel.app/question/" + questionId + "/answer/" + id + "/reply", options)
+        const response = await fetch("https://mentore-backend.vercel.app//question/" + questionId + "/answer/" + id + "/reply", options)
         const result = await response.json();
 
         DismissToast(toastId);
@@ -266,7 +266,7 @@ export default function Answers({ questionId, user, setLoading, answers }) {
 
         const toastId = Loading("Updating answer...")
 
-        const response = await fetch("https://mentore-ten.vercel.app/question/" + questionId + "/answer/" + answer_id, options);
+        const response = await fetch("https://mentore-backend.vercel.app//question/" + questionId + "/answer/" + answer_id, options);
         const result = await response.json();
 
         DismissToast(toastId);

@@ -17,7 +17,7 @@ export default function MentorProfile() {
                     'Authorization': localStorage.getItem('token')
                 }
             }
-            let skills = await fetch('https://mentore-ten.vercel.app/mentor/skill-options', options)
+            let skills = await fetch('https://mentore-backend.vercel.app//mentor/skill-options', options)
             let result = await skills.json();
             if (result.error) {
                 ErrorNotify("Some error occured. Please try again")
@@ -38,7 +38,7 @@ export default function MentorProfile() {
                     'Authorization': localStorage.getItem('token')
                 }
             }
-            let mentorDetailsResponse = await fetch('https://mentore-ten.vercel.app/mentor/details', options)
+            let mentorDetailsResponse = await fetch('https://mentore-backend.vercel.app//mentor/details', options)
             let result = await mentorDetailsResponse.json();
             if (result.error) {
                 ErrorNotify("Some error occured. Please try again")
