@@ -11,7 +11,7 @@ export function BookMentor() {
     const [loggedIn, setLoggedIn] = useState(false);
     const [loading, setLoading] = useState(true)
     const [dataLoading, setDataLoading] = useState(true)
-    const mentorDetails = useRef([]);
+    const [mentorDetails, setMentorDetails] = useState([]);
 
     useEffect(() => {
         setLoading(true)
@@ -40,11 +40,11 @@ export function BookMentor() {
         <>
             <Header loggedIn={loggedIn} />
 
-            <MentorDetails id={id} mentorDetails={mentorDetails} />
+            <MentorDetails id={id} mentorDetails={mentorDetails} setMentorDetails={setMentorDetails} />
 
             <BookingRequest mentorId={id} mentorDetails={mentorDetails} setDataLoading={setDataLoading} />
 
-            <BookingsTable dataLoading={dataLoading} setDataLoading={setDataLoading} id={id} />
+            <BookingsTable loggedIn={loggedIn} dataLoading={dataLoading} setDataLoading={setDataLoading} id={id} />
         </>
     )
 

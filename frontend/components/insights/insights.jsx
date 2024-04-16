@@ -120,7 +120,7 @@ export function Insights() {
                         <div className="sm:mx-16 mx-4 w-full">
                             {currentBlogs.map((blog, index) => {
                                 return (
-                                    <BlogCard key={index} blog={blog} user={user} setBlogsLoading={setBlogsLoading} />
+                                    <BlogCard loggedIn={loggedIn} key={index} blog={blog} user={user} setBlogsLoading={setBlogsLoading} />
                                 )
                             })}
                         </div>

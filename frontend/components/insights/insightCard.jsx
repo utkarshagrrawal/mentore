@@ -3,10 +3,14 @@ import parse from "html-react-parser";
 import { Link } from "react-router-dom";
 import { DismissToast, ErrorNotify, Loading } from "../global/toast";
 
-export default function BlogCard({ blog, user, setBlogsLoading }) {
+export default function BlogCard({ loggedIn, blog, user, setBlogsLoading }) {
     const dateTimeFormatter = Intl.DateTimeFormat(undefined, { timeStyle: "short", dateStyle: "medium" })
 
     const handleLike = async (blogId) => {
+        if (!loggedIn) {
+            ErrorNotify("Please login to like the blog");
+            return;
+        }
         let options = {
             method: "POST",
             headers: {
@@ -27,6 +31,14 @@ export default function BlogCard({ blog, user, setBlogsLoading }) {
         DismissToast(toastId);
     };
 
+    const handleRedirect = async (blogId) => {
+        if (!loggedIn) {
+            ErrorNotify("Please login to view the blog");
+        } else {
+            location.href = "/blog/" + blogId;
+        }
+    }
+
     return (
         <div className="mb-8 w-full place-self-end col-span-2 rounded-lg border border-gray-200 bg-white p-4 shadow-lg">
             <div className="flex justify-between flex-col sm:flex-row">
@@ -41,9 +53,9 @@ export default function BlogCard({ blog, user, setBlogsLoading }) {
             <div className="mb-4 h-24 overflow-hidden">
                 {parse(blog.content)}
             </div>
-            <Link to={`/blog/${blog.id}`} className="block text-blue-700 hover:underline">
+            <button onClick={() => handleRedirect(blog.id)} className="block text-blue-700 hover:underline">
                 Read More
-            </Link>
+            </button>
             <div className="mt-4 flex items-center justify-between">
                 <div className={`flex items-center border px-3 rounded-full ${blog.liked_by.includes(user.current.email) && 'bg-red-50'}`}>
                     <button

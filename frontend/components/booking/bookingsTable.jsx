@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { ErrorNotify, SuccessNotify } from '../global/toast';
 
 
-export default function BookingsTable({ dataLoading, setDataLoading, id }) {
+export default function BookingsTable({ loggedIn, dataLoading, setDataLoading, id }) {
     const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' });
 
     const meetings = useRef([]);
@@ -22,7 +22,7 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
             const allMeetings = await fetch('https://mentore-backend.vercel.app/user/bookings/mentor/' + id, options)
             const response = await allMeetings.json();
 
-            if (response.error) {
+            if (response.error !== 'Invalid JWT Token') {
                 ErrorNotify(response.error)
             } else {
                 meetings.current = response.result;
@@ -136,7 +136,7 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
                 <h1 className='text-center text-3xl font-bold text-black'>Current bookings</h1>
                 <div className='relative overflow-x-auto mt-4 border-[0.1rem] border-black sm:rounded-lg'>
                     <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
-                        <thead className="text-xs text-white uppercase bg-[#6c92df]">
+                        <thead className="text-xs text-white uppercase bg-blue-700">
                             <tr className='text-center uppercase'>
                                 <th scope="col" className="px-6 py-3">
                                     Start time
@@ -183,7 +183,9 @@ export default function BookingsTable({ dataLoading, setDataLoading, id }) {
                             }) : (
                                 <tr className='text-center text-black'>
                                     <td scope="row" className='px-6 py-3' colSpan='4'>
-                                        No bookings
+                                        {
+                                            loggedIn ? 'No bookings found' : 'Please login to view your bookings'
+                                        }
                                     </td>
                                 </tr>
                             )}

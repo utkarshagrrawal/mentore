@@ -55,7 +55,7 @@ export default function BookingRequest({ mentorId, setDataLoading, mentorDetails
     return (
         <div className='w-full mt-10'>
             <div className='bg-blue-50 rounded-lg shadow-lg p-6 mx-16'>
-                <h2 className='text-2xl font-bold mb-4 text-blue-700'>Book a 1:1 meet here with {mentorDetails.current && mentorDetails.current.name}:</h2>
+                <h2 className='text-2xl font-bold mb-4 text-blue-700'>Book a 1:1 meet here with {mentorDetails && mentorDetails.name}:</h2>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                     <div className='flex flex-col'>
                         <label htmlFor='date' className='font-semibold'>Date and time</label>
