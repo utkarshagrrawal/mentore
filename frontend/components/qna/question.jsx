@@ -174,7 +174,7 @@ export function Question() {
                 </form>
             </div>
 
-            <Answers answers={answers} questionId={id} user={user} setLoading={setLoading} />
+            <Answers answers={answers} loggedIn={loggedIn} questionId={id} user={user} setLoading={setLoading} />
         </>
     )
 }

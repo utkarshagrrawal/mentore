@@ -111,13 +111,17 @@ function Answer({ item, replyFields, handleReplyVisibility, handleDelete, handle
 }
 
 
-export default function Answers({ questionId, user, setLoading, answers }) {
+export default function Answers({ questionId, user, setLoading, answers, loggedIn }) {
     const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
 
     const [replyFields, setReplyFields] = useState({});
     const [editFields, setEditFields] = useState({});
 
     const handleLike = async (answer_id) => {
+        if (!loggedIn) {
+            return ErrorNotify("Please login to like the answer")
+        }
+
         const options = {
             method: "POST",
             headers: {
