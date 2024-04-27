@@ -162,7 +162,7 @@ async function verifyOtpLogic(body) {
 
 
 async function resendOtpLogic(body) {
-    const { email } = req.body;
+    const { email } = body;
 
     const { data, error } = await supabase
         .from('otp')
