@@ -1,7 +1,7 @@
 const { supabase } = require("../utility/database.connection");
-const { sendForgotPasswordMail, sendNewPasswordMail } = require("../utility/mail.connection");
 const { generateOtp } = require("../utility/otpConnection");
 const { GenerateSalt, GeneratePassword, GenerateSignature } = require("../utility/passportUtility");
+require('dotenv').config();
 
 async function registerUserLogic(body) {
     const { email, password, gender, name, age, registerFor, profession, company, experience, skills } = body;
@@ -116,13 +116,7 @@ async function sendResetPasswordOtpLogic(body) {
         return { error: otpSaveError.message }
     }
 
-    const response = sendForgotPasswordMail(email, totp);
-
-    if (response.error) {
-        return { error: response.error }
-    }
-
-    return { success: 'Password reset OTP sent successfully' }
+    return { success: 'Password reset OTP sent successfully', otp: totp, emailServiceID: process.env.EMAIL_SERVICE_ID, emailPublicKey: process.env.EMAILJS_PUBLIC_KEY, emailPrivateKey: process.env.EMAILJS_PRIVATE_KEY}
 }
 
 
@@ -163,13 +157,7 @@ async function verifyOtpLogic(body) {
         return { error: 'Password reset failed' }
     }
 
-    const response = await sendNewPasswordMail(email, password);
-
-    if (response.error) {
-        return { error: response.error }
-    }
-
-    return { success: 'Otp verified successfully' }
+    return { success: 'Otp verified successfully', tempPassword: password, emailServiceID: process.env.EMAIL_SERVICE_ID, emailPublicKey: process.env.EMAILJS_PUBLIC_KEY, emailPrivateKey: process.env.EMAILJS_PRIVATE_KEY }
 }
 
 
@@ -224,12 +212,7 @@ async function resendOtpLogic(body) {
         return { error: 'Otp resend failed!' }
     }
 
-    const response = await sendForgotPasswordMail(email, totp);
-    if (response.error) {
-        return { error: response.error }
-    }
-
-    return { success: 'Otp resend successfull!' }
+    return { success: 'Otp resend successfull!', otp: totp, emailServiceID: process.env.EMAIL_SERVICE_ID, emailPublicKey: process.env.EMAILJS_PUBLIC_KEY, emailPrivateKey: process.env.EMAILJS_PRIVATE_KEY }
 }
 
 

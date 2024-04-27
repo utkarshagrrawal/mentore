@@ -21,7 +21,7 @@ const forgotPassword = async (req, res) => {
     if (response.error) {
         return res.json({ error: response.error })
     }
-    return res.json({ success: response.success })
+    return res.json(response)
 }
 
 const verifyOtp = async (req, res) => {

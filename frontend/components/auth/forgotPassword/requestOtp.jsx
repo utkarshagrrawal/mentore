@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
 import { ErrorNotify, SuccessNotify } from "../../global/toast";
+import emailjs from '@emailjs/browser';
 
 export function RequestOtp({ forgotPassword, handleChange, setLoading, setEmailSent }) {
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -26,7 +27,20 @@ export function RequestOtp({ forgotPassword, handleChange, setLoading, setEmailS
         })
         let result = await forgotPasswordUser.json();
         if (result.success) {
-            SuccessNotify(result.success);
+            const templateParams = {
+                reply_to: forgotPassword.email,
+                message: `Hey, your otp for verification is: ${result.otp}. Please do not share it with anyone.`
+            };
+            try {
+                await emailjs.send(result.emailServiceID, 'template_mdm21jv', templateParams, {
+                    publicKey: result.emailPublicKey,
+                    privateKey: result.emailPrivateKey
+                })
+                setEmailSent(true);
+                SuccessNotify("OTP sent successfully")
+            } catch (error) {
+                ErrorNotify("Error sending email" + error)
+            }
             setEmailSent(true);
         } else {
             if (result.error === 'User with this mail does not exists') {

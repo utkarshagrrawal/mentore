@@ -26,12 +26,24 @@ export function VerifyOtp({ forgotPassword, handleChange, setLoading }) {
             },
             body: JSON.stringify(forgotPassword)
         })
-        let response = await verifyOtp.json();
-        if (response.success) {
-            SuccessNotify(response.success);
-            navigate('/user/login');
+        let result = await verifyOtp.json();
+        if (result.success) {
+            const templateParams = {
+                reply_to: forgotPassword.email,
+                message: `Hey, your new password is: ${result.tempPassword}. Please do not share it with anyone and change it after login.`
+            };
+            try {
+                await emailjs.send(result.emailServiceID, 'template_531nigr', templateParams, {
+                    publicKey: result.emailPublicKey,
+                    privateKey: result.emailPrivateKey
+                })
+                SuccessNotify("Password reset successfull")
+                navigate('/user/login');
+            } catch (error) {
+                ErrorNotify("Error sending email" + error)
+            }
         } else {
-            ErrorNotify(response.error);
+            ErrorNotify(result.error);
         }
         setLoading(false)
     }
@@ -47,11 +59,23 @@ export function VerifyOtp({ forgotPassword, handleChange, setLoading }) {
             },
             body: JSON.stringify(forgotPassword)
         })
-        let response = await resendOtp.json();
-        if (response.success) {
-            SuccessNotify(response.success);
+        let result = await resendOtp.json();
+        if (result.success) {
+            const templateParams = {
+                reply_to: forgotPassword.email,
+                message: `Hey, your otp for verification is: ${result.otp}. Please do not share it with anyone.`
+            };
+            try {
+                await emailjs.send(result.emailServiceID, 'template_mdm21jv', templateParams, {
+                    publicKey: result.emailPublicKey,
+                    privateKey: result.emailPrivateKey
+                })
+                SuccessNotify("OTP sent successfully")
+            } catch (error) {
+                ErrorNotify("Error sending email" + error)
+            }
         } else {
-            ErrorNotify(response.error);
+            ErrorNotify(result.error);
         }
         setLoading(false)
     }
