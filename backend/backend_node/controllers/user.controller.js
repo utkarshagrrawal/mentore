@@ -29,7 +29,7 @@ const verifyOtp = async (req, res) => {
     if (response.error) {
         return res.json({ error: response.error })
     }
-    return res.json({ success: response.success })
+    return res.json(response)
 }
 
 const resendOtp = async (req, res) => {
@@ -37,7 +37,7 @@ const resendOtp = async (req, res) => {
     if (response.error) {
         return res.json({ error: response.error })
     }
-    return res.json({ success: response.success })
+    return res.json(response)
 }
 
 const changepassword = async (req, res) => {
