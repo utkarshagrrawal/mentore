@@ -6,6 +6,7 @@ const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: "medium", time
 export default function MentorBookings() {
     const [meetingsLoading, setMeetingsLoading] = useState(true);
     const meetings = useRef([]);
+    const [isApprovingOrRejecting, setIsApprovingOrRejecting] = useState(false);
 
     useEffect(() => {
         const options = {
@@ -32,6 +33,7 @@ export default function MentorBookings() {
     }, [meetingsLoading])
 
     const handleApprove = async (id) => {
+        setIsApprovingOrRejecting(true);
         const approveRequest = await fetch('https://mentore-backend.vercel.app/mentor/meeting/approve?id=' + id, {
             method: 'PUT',
             headers: {
@@ -45,11 +47,13 @@ export default function MentorBookings() {
         } else {
             SuccessNotify("Meeting approved successfully!")
         }
+        setIsApprovingOrRejecting(false);
         setMeetingsLoading(true);
         return;
     }
 
     const handleReject = async (id) => {
+        setIsApprovingOrRejecting(true);
         const rejectRequest = await fetch('https://mentore-backend.vercel.app/mentor/meeting/reject?id=' + id, {
             method: 'PUT',
             headers: {
@@ -63,6 +67,7 @@ export default function MentorBookings() {
         } else {
             SuccessNotify("Meeting rejected successfully!")
         }
+        setIsApprovingOrRejecting(false);
         setMeetingsLoading(true);
         return;
     }

@@ -35,7 +35,7 @@ export default function YourBookings() {
                 'Authorization': localStorage.getItem('token')
             },
             body: JSON.stringify({
-                'title': 'Payment_for_mentor_session_for_' + id,
+                'title': 'Payment_for_mentor_session_for_' + id
             })
         }
 
@@ -47,7 +47,7 @@ export default function YourBookings() {
         } else {
             const options = {
                 "key": response.key_id,
-                "amount": 15000,
+                "amount": response.fees * 100,
                 "currency": "INR",
                 "name": "Mentore",
                 "description": "Payment for mentor session",

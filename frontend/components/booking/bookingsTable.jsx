@@ -56,8 +56,7 @@ export default function BookingsTable({ loggedIn, dataLoading, setDataLoading, i
                 'Authorization': localStorage.getItem('token')
             },
             body: JSON.stringify({
-                'title': 'Payment_for_mentor_session_for_' + id,
-                'amount': mentorDetails.fees,
+                'title': 'Payment_for_mentor_session_for_' + id
             })
         }
 
@@ -69,7 +68,7 @@ export default function BookingsTable({ loggedIn, dataLoading, setDataLoading, i
         } else {
             const options = {
                 "key": response.key_id,
-                "amount": mentorDetails.fees * 100,
+                "amount": response.fees * 100,
                 "currency": "INR",
                 "name": "Mentore",
                 "description": "Payment for mentor session",

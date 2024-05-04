@@ -41,6 +41,7 @@ export default function MentorDetails({ id, mentorDetails, setMentorDetails }) {
                     </div>
                     <h3 className='pt-1 pl-6 font-semibold'>{mentorDetails && mentorDetails.profession} at {mentorDetails && mentorDetails.company}</h3>
                     <h3 className='pt-1 pl-6'><span className='font-semibold'>Experience:</span> {mentorDetails && mentorDetails.experience} years</h3>
+                    <h3 className='pt-1 pl-6'><span className='font-semibold'>Fees:</span> {mentorDetails && mentorDetails.fees} INR</h3>
                     <div className='pt-1 pl-6 flex flex-col gap-2'>
                         <h3 className='font-semibold'>Skills:</h3>
                         <div className='flex flex-wrap gap-2'>

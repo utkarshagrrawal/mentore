@@ -13,14 +13,14 @@ const pay = async (req, res, next) => {
 }
 
 
-const paymentSuccess = async (req, res) => {
+const paymentSuccess = async (req, res, next) => {
     const response = await paymentSuccessLogic(req.params);
 
     if (response.error) {
         return res.json({ error: response.error })
     }
 
-    return res.json({ result: response.success })
+    next();
 }
 
 

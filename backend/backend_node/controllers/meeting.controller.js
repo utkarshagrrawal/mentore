@@ -11,7 +11,7 @@ const getMyBookings = async (req, res) => {
 }
 
 const createMeeting = async (req, res) => {
-    const response = await createMeetingLogic(req.body);
+    const response = await createMeetingLogic(req.body, req.params);
     if (response.error) {
         return res.json({ error: response.error })
     }

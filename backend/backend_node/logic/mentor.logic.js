@@ -187,7 +187,7 @@ const fetchMentorAvailabilityLogic = async (body, user) => {
         if (data.response) {
             const { error } = await supabase
                 .from('schedule_mentors')
-                .insert({ mentee_email: email, mentor_email: mentorEmail, start_time: startTime, end_time: endTime, about: about, status: 'pending', mentor_name: mentorDetails[0].name })
+                .insert({ mentee_email: email, mentor_email: mentorEmail, start_time: startTime, end_time: endTime, about: about, status: 'pending', mentor_name: mentorDetails[0].name, fees: mentorDetails[0].fees })
 
             if (error) {
                 return { error: error.message }

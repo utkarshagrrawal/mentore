@@ -19,7 +19,7 @@ async function getMyBookingsLogic(user) {
 }
 
 
-async function createMeetingLogic(body) {
+async function createMeetingLogic(body, params) {
     const data = { "title": body.title, "preferred_region": "ap-south-1", "record_on_start": false, "live_stream_on_start": false }
 
     const concatenatedString = process.env.DYTE_ORG_ID + ':' + process.env.DYTE_API_KEY
@@ -50,9 +50,18 @@ async function createMeetingLogic(body) {
         return { error: error.message }
     }
 
-    const result = await razorpayOrderCreate(body.amount);
+    const { error: fetchFeesError, data: feesData } = await supabase
+        .from('schedule_mentors')
+        .select('')
+        .eq('uniq_id', params.id)
 
-    return { success: result, key_id: process.env.RAZORPAY_KEY_ID }
+    if (fetchFeesError) {
+        return { error: fetchFeesError.message }
+    }
+
+    const result = await razorpayOrderCreate(feesData[0].fees);
+
+    return { success: result, key_id: process.env.RAZORPAY_KEY_ID, fees: feesData[0].fees }
 }
 
 
