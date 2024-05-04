@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { ErrorNotify, SuccessNotify } from '../global/toast';
+import { DismissToast, ErrorNotify, Loading, SuccessNotify } from '../global/toast';
 
 
 export default function BookingsTable({ loggedIn, dataLoading, setDataLoading, id, mentorDetails }) {
@@ -49,6 +49,7 @@ export default function BookingsTable({ loggedIn, dataLoading, setDataLoading, i
     }
 
     const handlePay = async (id) => {
+        const toastId = Loading('Processing payment...')
         let options = {
             method: 'POST',
             headers: {
@@ -62,6 +63,8 @@ export default function BookingsTable({ loggedIn, dataLoading, setDataLoading, i
 
         const pay = await fetch('https://mentore-backend.vercel.app/payment/pay/' + id, options);
         const response = await pay.json();
+
+        DismissToast(toastId)
 
         if (response.error) {
             ErrorNotify(response.error)

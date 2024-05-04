@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ErrorNotify, SuccessNotify } from "../global/toast";
+import { DismissToast, ErrorNotify, Loading, SuccessNotify } from "../global/toast";
 
 const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: "medium", timeStyle: "short" });
 
@@ -28,6 +28,7 @@ export default function YourBookings() {
     }, [])
 
     const handlePay = async (id) => {
+        const toastId = Loading('Processing payment...')
         let options = {
             method: 'POST',
             headers: {
@@ -41,6 +42,8 @@ export default function YourBookings() {
 
         const pay = await fetch('https://mentore-backend.vercel.app/payment/pay/' + id, options);
         const response = await pay.json();
+
+        DismissToast(toastId);
 
         if (response.error) {
             ErrorNotify(response.error);
