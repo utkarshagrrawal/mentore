@@ -1,5 +1,5 @@
 const express = require('express')
-const { fetchMentorSkillOptions, fetchMentorDetails, fetchBookingsForMentor, approveMeetingRequest, rejectMeetingRequest, fetchWebinarsByMentor, fetchAllMentors, fetchMentorProfile, fetchBlogsByMentor, isMentorVerified } = require('../controllers/mentor.controller')
+const { fetchMentorSkillOptions, fetchMentorDetails, fetchBookingsForMentor, approveMeetingRequest, rejectMeetingRequest, fetchWebinarsByMentor, fetchAllMentors, fetchMentorProfile, fetchBlogsByMentor, isMentorVerified, updateMentorFees } = require('../controllers/mentor.controller')
 const { authentication } = require('../middlewares/auth.middleware')
 const { removeExpiredWebinars } = require('../middlewares/webinar.middleware')
 const { removeExpiredMeetings } = require('../middlewares/meeting.middleware')
@@ -25,5 +25,7 @@ router.get("/webinars", authentication, removeExpiredWebinars, fetchWebinarsByMe
 router.get("/blogs", authentication, fetchBlogsByMentor)
 
 router.get("/verified", authentication, isMentorVerified)
+
+router.put("/fees/update", authentication, updateMentorFees)
 
 module.exports = router

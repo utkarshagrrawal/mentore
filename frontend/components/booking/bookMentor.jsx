@@ -44,7 +44,7 @@ export function BookMentor() {
 
             <BookingRequest mentorId={id} mentorDetails={mentorDetails} setDataLoading={setDataLoading} />
 
-            <BookingsTable loggedIn={loggedIn} dataLoading={dataLoading} setDataLoading={setDataLoading} id={id} />
+            <BookingsTable loggedIn={loggedIn} dataLoading={dataLoading} setDataLoading={setDataLoading} id={id} mentorDetails={mentorDetails} />
         </>
     )
 

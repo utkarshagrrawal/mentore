@@ -23,7 +23,7 @@ import './App.css'
 
 function App() {
   return (
-    <ErrorBoundary>
+    <>
       <Toaster />
       <Router>
         <Routes>
@@ -44,7 +44,7 @@ function App() {
           <Route path='/500' element={<ServerError />} />
         </Routes>
       </Router>
-    </ErrorBoundary>
+    </>
   )
 }
 

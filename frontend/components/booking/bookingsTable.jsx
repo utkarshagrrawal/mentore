@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { ErrorNotify, SuccessNotify } from '../global/toast';
 
 
-export default function BookingsTable({ loggedIn, dataLoading, setDataLoading, id }) {
+export default function BookingsTable({ loggedIn, dataLoading, setDataLoading, id, mentorDetails }) {
     const dateFormatter = Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' });
 
     const meetings = useRef([]);
@@ -57,6 +57,7 @@ export default function BookingsTable({ loggedIn, dataLoading, setDataLoading, i
             },
             body: JSON.stringify({
                 'title': 'Payment_for_mentor_session_for_' + id,
+                'amount': mentorDetails.fees,
             })
         }
 
@@ -68,7 +69,7 @@ export default function BookingsTable({ loggedIn, dataLoading, setDataLoading, i
         } else {
             const options = {
                 "key": response.key_id,
-                "amount": 15000,
+                "amount": mentorDetails.fees * 100,
                 "currency": "INR",
                 "name": "Mentore",
                 "description": "Payment for mentor session",

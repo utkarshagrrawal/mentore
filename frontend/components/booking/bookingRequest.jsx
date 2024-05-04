@@ -46,6 +46,7 @@ export default function BookingRequest({ mentorId, setDataLoading, mentorDetails
             }
         } else {
             SuccessNotify("Meeting request sent successfully to mentor")
+            location.reload();
         }
         setDataLoading(true)
         setScheduling(false)

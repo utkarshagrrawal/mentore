@@ -221,6 +221,23 @@ const isMentorVerifiedLogic = async (user) => {
 }
 
 
+const updateMentorFeesLogic = async (body, user) => {
+    const { fees } = body;
+    const { email } = user;
+
+    const { error } = await supabase
+        .from('mentors')
+        .update({ fees: fees })
+        .eq('email', email)
+
+    if (error) {
+        return { error: error.message }
+    }
+
+    return { success: 'Fees updated' }
+}
+
+
 module.exports = {
     fetchBookingsForMentorLogic,
     approveMeetingRequestLogic,
@@ -232,5 +249,6 @@ module.exports = {
     fetchMentorProfileLogic,
     fetchBlogsByMentorLogic,
     fetchMentorAvailabilityLogic,
-    isMentorVerifiedLogic
+    isMentorVerifiedLogic,
+    updateMentorFeesLogic
 }
