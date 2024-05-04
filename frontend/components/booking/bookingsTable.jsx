@@ -22,7 +22,7 @@ export default function BookingsTable({ loggedIn, dataLoading, setDataLoading, i
             const allMeetings = await fetch('https://mentore-backend.vercel.app/user/bookings/mentor/' + id, options)
             const response = await allMeetings.json();
 
-            if (response.error !== 'Invalid JWT Token') {
+            if (response.error && response.error !== 'Invalid JWT Token') {
                 ErrorNotify(response.error)
             } else {
                 meetings.current = response.result;
