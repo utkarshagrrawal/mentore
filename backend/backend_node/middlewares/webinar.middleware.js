@@ -13,7 +13,7 @@ const removeExpiredWebinars = async (req, res, next) => {
     const { error } = await supabase
         .from('webinar')
         .delete()
-        .lt('end_time', now.toISOString().split('.')[0])
+        .lte('end_time', now.toISOString().split('.')[0])
 
     if (error) {
         console.log(error.message)

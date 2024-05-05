@@ -19,7 +19,7 @@ async function createWebinarLogic(body, user) {
     if (response && response.success) {
         const { error } = await supabase
             .from('webinar')
-            .insert({ title: body.title, meeting_link: 'https://api.dyte.io/v2/meetings/' + response.data.id, start_time: body.start, end_time: body.end, mentor_email: user.email, mentor_name: user.name })
+            .insert({ title: body.title, meeting_link: 'https://api.dyte.io/v2/meetings/' + response.data.id, start_time: body.start, end_time: body.end, mentor_email: user.email, mentor_name: user.name, registered_users: [user.email] })
 
         if (error) {
             return { error: error.message }
@@ -46,7 +46,7 @@ async function registerForWebinarLogic(body, user) {
     }
 
     let participants = data[0].registered_users;
-    participants ? participants.push(email) : participants = [email];
+    participants = participants.push(email);
 
     const { error: updateError } = await supabase
         .from('webinar')
@@ -72,7 +72,7 @@ async function joinWebinarAsHostLogic(body, user) {
         },
         body: JSON.stringify({
             "name": user.name,
-            "preset_name": "group_call_host",
+            "preset_name": "webinar_presenter",
             "custom_participant_id": user.email
         })
     })
@@ -97,7 +97,7 @@ async function joinWebinarAsParticipantLogic(body, user) {
         },
         body: JSON.stringify({
             "name": user.name,
-            "preset_name": "group_call_participant",
+            "preset_name": "webinar_viewer",
             "custom_participant_id": user.email
         })
     })

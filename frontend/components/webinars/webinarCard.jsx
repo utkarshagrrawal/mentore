@@ -17,8 +17,9 @@ export default function WebinarCard({ user, webinar, setLoading }) {
                 "meeting_id": meeting_id
             })
         };
+        let webinarJoiningType = webinar.mentor_email === user.current?.email ? 'host' : 'participant'
         const toastId = Loading('Joining the webinar');
-        let webinars = await fetch('https://mentore-backend.vercel.app/webinar/join/participant', options);
+        let webinars = await fetch('https://mentore-backend.vercel.app/webinar/join/' + webinarJoiningType, options);
         const result = await webinars.json();
         if (!result.success) {
             ErrorNotify("Some error occurred while joining the webinar")
@@ -66,7 +67,7 @@ export default function WebinarCard({ user, webinar, setLoading }) {
         <div className="sm:max-w-sm bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg duration-200 relative overflow-hidden">
             {new Date(webinar.start_time).toISOString() < new Date().toISOString() && (
                 <div className="absolute top-0 right-0">
-                    <div className="inline-block relative px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-r-full rounded-l-lg">
+                    <div className="inline-block relative px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-l-full rounded-l-lg">
                         Live
                         <span className="absolute top-1 right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
                     </div>
