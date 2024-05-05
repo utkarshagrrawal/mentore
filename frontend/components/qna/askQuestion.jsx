@@ -17,6 +17,10 @@ export default function AskQuestion(props) {
     }
 
     const handleAsk = async () => {
+        if (!props.loggedIn) {
+            ErrorNotify("Please login to ask a question");
+            return;
+        }
         if (question === "") {
             ErrorNotify("Question cannot be empty");
             return;

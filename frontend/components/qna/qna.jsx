@@ -122,7 +122,7 @@ export function Qna() {
         <div className="min-h-screen w-full mb-10">
             <Header loggedIn={loggedIn} />
 
-            <AskQuestion setLoading={setLoading} tags={tags} />
+            <AskQuestion setLoading={setLoading} tags={tags} loggedIn={loggedIn} />
 
             <div className="mx-16 mt-10">
                 <h2 className="text-lg font-semibold text-gray-900 mb-2">Filter questions</h2>
