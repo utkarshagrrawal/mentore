@@ -24,7 +24,7 @@ export default function Header(props) {
     useEffect(() => {
         const addHeaderClass = () => {
             const header = document.querySelector('header');
-            if (window.scrollY > 0) {
+            if (window.scrollY > 69) {
                 header.classList.add('bg-white', 'shadow-lg', 'fixed', 'z-[999]', 'transition', 'duration-600', 'ease-in-out');
             } else {
                 header.classList.remove('bg-white', 'shadow-lg', 'fixed', 'z-[999]');
@@ -46,12 +46,17 @@ export default function Header(props) {
         setSearchBoxValue(e.target.value)
     }
 
+    const handleNavigateHome = () => {
+        location.href = '/';
+        props?.setSearchQuery && props?.setSearchQuery('');
+    }
+
     return (
         <>
             <header className="w-full min-[572px]:block hidden top-0">
                 <div>
                     <div className='flex flex-wrap items-center min-[573px]:justify-between min-[760px]:mx-8 min-[830px]:mx-16 mx-4 my-3'>
-                        <Link to='/' className="flex items-center justify-center gap-2">
+                        <Link onClick={handleNavigateHome} className="flex items-center justify-center gap-2">
                             <img src="https://mwhhseuqzoudvibeyvrm.supabase.co/storage/v1/object/sign/images/logo.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvbG9nby5wbmciLCJpYXQiOjE3MTIzNDQ0ODEsImV4cCI6MTc0Mzg4MDQ4MX0.R_a_H8TO26tJm794AbsCJzLN4tdFGyF2dIPrnYfWzzg&t=2024-04-05T19%3A14%3A41.780Z" className="h-8 mix-blend-multiply" alt="Mentore" />
                             <span className="text-2xl font-semibold text-blue-700">Mentore</span>
                         </Link>
@@ -71,7 +76,7 @@ export default function Header(props) {
                 <div className=''>
                     <div className='flex flex-wrap items-center justify-between flex-col mx-4 my-3'>
                         <div className="flex justify-between items-center w-full">
-                            <Link to='/' className="flex items-center justify-center gap-2">
+                            <Link onClick={handleNavigateHome} className="flex items-center justify-center gap-2">
                                 <img src="https://mwhhseuqzoudvibeyvrm.supabase.co/storage/v1/object/sign/images/logo.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvbG9nby5wbmciLCJpYXQiOjE3MTIzNDQ0ODEsImV4cCI6MTc0Mzg4MDQ4MX0.R_a_H8TO26tJm794AbsCJzLN4tdFGyF2dIPrnYfWzzg&t=2024-04-05T19%3A14%3A41.780Z" className="h-8 mix-blend-multiply" alt="Mentore" />
                                 <span className="text-2xl font-semibold text-blue-700">Mentore</span>
                             </Link>
