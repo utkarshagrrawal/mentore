@@ -36,7 +36,7 @@ export function LoginBlock({ login, setLogin, setLoading }) {
             SuccessNotify("Logged in successfully")
             navigate('/');
         } else {
-            ErrorNotify("Some error occured. Please try again");
+            ErrorNotify(result.error);
         }
         setLoading(false);
     }

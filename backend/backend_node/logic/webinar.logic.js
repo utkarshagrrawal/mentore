@@ -46,7 +46,7 @@ async function registerForWebinarLogic(body, user) {
     }
 
     let participants = data[0].registered_users;
-    participants = participants.push(email);
+    participants = [...participants, email];
 
     const { error: updateError } = await supabase
         .from('webinar')
