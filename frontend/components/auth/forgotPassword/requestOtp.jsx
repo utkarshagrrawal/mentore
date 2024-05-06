@@ -39,7 +39,7 @@ export function RequestOtp({ forgotPassword, handleChange, setLoading, setEmailS
                 setEmailSent(true);
                 SuccessNotify("OTP sent successfully")
             } catch (error) {
-                ErrorNotify("Error sending email" + error)
+                ErrorNotify("Error sending email" + error.message)
             }
             setEmailSent(true);
         } else {
