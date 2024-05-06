@@ -66,10 +66,10 @@ const editAnswerLogic = async (params, body) => {
         .eq('answer_id', params.answer_id)
 
     if (error) {
-        return res.json({ error: error.message })
+        return { error: error.message }
     }
 
-    return res.json({ result: 'Answer updated successfully!' })
+    return { result: 'Answer updated successfully!' }
 }
 
 const likeAnswerLogic = async (params, user) => {
