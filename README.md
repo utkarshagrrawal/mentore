@@ -37,10 +37,10 @@ Mentore is a comprehensive platform designed to connect mentees with experienced
 
 - **Frontend**: React.js, Tailwind CSS
 - **Backend**: Node.js, Express.js
-- **Database**: MongoDB
+- **Database**: Supabase(PostgreSQL)
 - **Authentication**: JWT
 - **Payments**: Razorpay API
-- **Video Calls**: WebRTC
+- **Video Calls**: Dyte API
 - **AI Search**: Custom-built AI algorithms
 
 ## Setup and Installation
