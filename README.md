@@ -48,7 +48,7 @@ Mentore is a comprehensive platform designed to connect mentees with experienced
 ### Prerequisites
 
 - Node.js and npm installed on your machine.
-- MongoDB setup (local or cloud-based).
+- Supabase setup (cloud-based).
 - Razorpay account for payment integration.
 
 ## Usage
