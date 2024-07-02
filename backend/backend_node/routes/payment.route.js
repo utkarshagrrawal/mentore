@@ -1,13 +1,19 @@
-const express = require("express")
-const { authentication } = require("../middlewares/auth.middleware")
-const { pay, paymentSuccess } = require("../controllers/payment.controller")
-const { createMeeting } = require("../controllers/meeting.controller")
-const { removeExpiredMeetings } = require("../middlewares/meeting.middleware")
+const express = require("express");
+const { authentication } = require("../middlewares/auth.middleware");
+const { pay, paymentSuccess } = require("../controllers/payment.controller");
+const { createMeeting } = require("../controllers/meeting.controller");
+const { removeExpiredMeetings } = require("../middlewares/meeting.middleware");
 
-const router = express.Router()
+const router = express.Router();
 
-router.post("/pay/:id", authentication, pay, removeExpiredMeetings, createMeeting)
+router.post(
+  "/pay/:id",
+  authentication,
+  pay,
+  removeExpiredMeetings,
+  createMeeting
+);
 
-router.post("/success/:id", authentication, paymentSuccess)
+router.post("/success/:id", authentication, paymentSuccess);
 
-module.exports = router
+module.exports = router;

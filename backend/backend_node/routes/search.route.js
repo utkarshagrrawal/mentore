@@ -5,4 +5,4 @@ const router = express.Router();
 
 router.get("/:search_query", searchMentors);
 
-module.exports = router
+module.exports = router;

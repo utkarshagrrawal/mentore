@@ -1,31 +1,53 @@
-const express = require('express')
-const { fetchMentorSkillOptions, fetchMentorDetails, fetchBookingsForMentor, approveMeetingRequest, rejectMeetingRequest, fetchWebinarsByMentor, fetchAllMentors, fetchMentorProfile, fetchBlogsByMentor, isMentorVerified, updateMentorFees } = require('../controllers/mentor.controller')
-const { authentication } = require('../middlewares/auth.middleware')
-const { removeExpiredWebinars } = require('../middlewares/webinar.middleware')
-const { removeExpiredMeetings } = require('../middlewares/meeting.middleware')
+const express = require("express");
+const {
+  fetchMentorSkillOptions,
+  fetchMentorDetails,
+  fetchBookingsForMentor,
+  approveMeetingRequest,
+  rejectMeetingRequest,
+  fetchWebinarsByMentor,
+  fetchAllMentors,
+  fetchMentorProfile,
+  fetchBlogsByMentor,
+  isMentorVerified,
+  updateMentorFees,
+} = require("../controllers/mentor.controller");
+const { authentication } = require("../middlewares/auth.middleware");
+const { removeExpiredWebinars } = require("../middlewares/webinar.middleware");
+const { removeExpiredMeetings } = require("../middlewares/meeting.middleware");
 
-const router = express.Router()
+const router = express.Router();
 
-router.get("/all", fetchAllMentors)
+router.get("/all", fetchAllMentors);
 
-router.get("/skill-options", fetchMentorSkillOptions)
+router.get("/skill-options", fetchMentorSkillOptions);
 
-router.get("/profile", fetchMentorProfile)
+router.get("/profile", fetchMentorProfile);
 
-router.get("/details", authentication, fetchMentorDetails)
+router.get("/details", authentication, fetchMentorDetails);
 
-router.get("/meetings", authentication, removeExpiredMeetings, fetchBookingsForMentor)
+router.get(
+  "/meetings",
+  authentication,
+  removeExpiredMeetings,
+  fetchBookingsForMentor
+);
 
-router.put("/meeting/approve", authentication, approveMeetingRequest)
+router.put("/meeting/approve", authentication, approveMeetingRequest);
 
-router.put("/meeting/reject", authentication, rejectMeetingRequest)
+router.put("/meeting/reject", authentication, rejectMeetingRequest);
 
-router.get("/webinars", authentication, removeExpiredWebinars, fetchWebinarsByMentor)
+router.get(
+  "/webinars",
+  authentication,
+  removeExpiredWebinars,
+  fetchWebinarsByMentor
+);
 
-router.get("/blogs", authentication, fetchBlogsByMentor)
+router.get("/blogs", authentication, fetchBlogsByMentor);
 
-router.get("/verified", authentication, isMentorVerified)
+router.get("/verified", authentication, isMentorVerified);
 
-router.put("/fees/update", authentication, updateMentorFees)
+router.put("/fees/update", authentication, updateMentorFees);
 
-module.exports = router
+module.exports = router;

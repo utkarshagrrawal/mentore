@@ -8,20 +8,19 @@ import Footer from "./footer";
 import Faq from "./faq";
 
 export function Home() {
+  return (
+    <>
+      <LandingHeader />
 
-    return (
-        <>
-            <LandingHeader />
+      <Search />
 
-            <Search />
+      <Testimonials />
 
-            <Testimonials />
+      <Benefits />
 
-            <Benefits />
+      <Faq />
 
-            <Faq />
-
-            <Footer />
-        </>
-    );
+      <Footer />
+    </>
+  );
 }

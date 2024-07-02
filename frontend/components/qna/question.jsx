@@ -189,7 +189,7 @@ export function Question() {
             className="mt-4 w-full bg-blue-500 text-white py-1 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 flex justify-center"
           >
             {answering ? (
-              <div className="border-gray-300 h-5 w-5 animate-spin rounded-full border-2 border-white border-t-blue-600" />
+              <div className="border-gray-300 h-5 w-5 animate-spin rounded-full border-2 border-t-blue-600" />
             ) : (
               "Answer"
             )}

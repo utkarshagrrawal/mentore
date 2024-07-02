@@ -1,12 +1,16 @@
-const express = require('express')
-const { fetchPendingVerifications, approveMentor, rejectMentor } = require('../controllers/admin.controller')
+const express = require("express");
+const {
+  fetchPendingVerifications,
+  approveMentor,
+  rejectMentor,
+} = require("../controllers/admin.controller");
 
-const router = express.Router()
+const router = express.Router();
 
-router.get('/pending-verifications', fetchPendingVerifications)
+router.get("/pending-verifications", fetchPendingVerifications);
 
-router.put('/verify-mentor', approveMentor)
+router.put("/verify-mentor", approveMentor);
 
-router.put('/reject-mentor', rejectMentor)
+router.put("/reject-mentor", rejectMentor);
 
-module.exports = router
+module.exports = router;

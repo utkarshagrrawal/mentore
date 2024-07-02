@@ -112,7 +112,7 @@ export default function AskQuestion(props) {
             className="bg-blue-500 text-white font-bold py-2 px-6 rounded-lg focus:outline-none focus:shadow-outline"
           >
             {asking ? (
-              <div className="border-gray-300 h-5 w-5 animate-spin rounded-full border-2 border-white border-t-blue-600" />
+              <div className="border-gray-300 h-5 w-5 animate-spin rounded-full border-2 border-t-blue-600" />
             ) : (
               "Ask"
             )}

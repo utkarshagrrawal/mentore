@@ -1,123 +1,151 @@
 const { supabase } = require("../utility/database.connection");
 const { razorpayOrderCreate } = require("../utility/razorpayConnection");
 
-require('dotenv').config();
+require("dotenv").config();
 
 async function getMyBookingsLogic(user) {
-    const { email } = user;
+  const { email } = user;
 
-    const { data, error } = await supabase
-        .from("schedule_mentors")
-        .select()
-        .eq("mentee_email", email)
-        .in("status", ["approved", "payment pending", "pending"])
+  const { data, error } = await supabase
+    .from("schedule_mentors")
+    .select()
+    .eq("mentee_email", email)
+    .in("status", ["approved", "payment pending", "pending"]);
 
-    if (error) {
-        return { error: error.message }
-    }
-    return { success: data }
+  if (error) {
+    return { error: error.message };
+  }
+  return { success: data };
 }
-
 
 async function createMeetingLogic(body, params) {
-    const data = { "title": body.title, "preferred_region": "ap-south-1", "record_on_start": false, "live_stream_on_start": false }
+  const data = {
+    title: body.title,
+    preferred_region: "ap-south-1",
+    record_on_start: false,
+    live_stream_on_start: false,
+  };
 
-    const concatenatedString = process.env.DYTE_ORG_ID + ':' + process.env.DYTE_API_KEY
+  const concatenatedString =
+    process.env.DYTE_ORG_ID + ":" + process.env.DYTE_API_KEY;
 
-    const meeting = await fetch('https://api.dyte.io/v2/meetings', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Basic ${Buffer.from(concatenatedString).toString('base64')}`
-        },
-        body: JSON.stringify(data)
+  const meeting = await fetch("https://api.dyte.io/v2/meetings", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${Buffer.from(concatenatedString).toString(
+        "base64"
+      )}`,
+    },
+    body: JSON.stringify(data),
+  });
+
+  const response = await meeting.json();
+
+  if (response.error) {
+    return { error: response.error };
+  } else if (response && !response.success) {
+    return { error: response.error };
+  }
+
+  const { error } = await supabase
+    .from("schedule_mentors")
+    .update({
+      meeting_link: "https://api.dyte.io/v2/meetings/" + response.data.id,
     })
+    .eq("uniq_id", body.meeting_uuid);
 
-    const response = await meeting.json()
+  if (error) {
+    return { error: error.message };
+  }
 
-    if (response.error) {
-        return { error: response.error }
-    } else if (response && !response.success) {
-        return { error: response.error }
-    }
+  const { error: fetchFeesError, data: feesData } = await supabase
+    .from("schedule_mentors")
+    .select("")
+    .eq("uniq_id", params.id);
 
-    const { error } = await supabase
-        .from('schedule_mentors')
-        .update({ meeting_link: 'https://api.dyte.io/v2/meetings/' + response.data.id })
-        .eq('uniq_id', body.meeting_uuid)
+  if (fetchFeesError) {
+    return { error: fetchFeesError.message };
+  }
 
-    if (error) {
-        return { error: error.message }
-    }
+  const result = await razorpayOrderCreate(feesData[0].fees);
 
-    const { error: fetchFeesError, data: feesData } = await supabase
-        .from('schedule_mentors')
-        .select('')
-        .eq('uniq_id', params.id)
-
-    if (fetchFeesError) {
-        return { error: fetchFeesError.message }
-    }
-
-    const result = await razorpayOrderCreate(feesData[0].fees);
-
-    return { success: result, key_id: process.env.RAZORPAY_KEY_ID, fees: feesData[0].fees }
+  return {
+    success: result,
+    key_id: process.env.RAZORPAY_KEY_ID,
+    fees: feesData[0].fees,
+  };
 }
-
 
 async function joinMeetingParticipantLogic(body, user) {
-    const concatenatedString = process.env.DYTE_ORG_ID + ':' + process.env.DYTE_API_KEY
+  const concatenatedString =
+    process.env.DYTE_ORG_ID + ":" + process.env.DYTE_API_KEY;
 
-    const meeting = await fetch(body.meeting_id + '/participants', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Basic ${Buffer.from(concatenatedString).toString('base64')}`
-        },
-        body: JSON.stringify({
-            "name": user.name,
-            "preset_name": "group_call_participant",
-            "custom_participant_id": user.email
-        })
-    })
-    const response = await meeting.json()
+  const meeting = await fetch(body.meeting_id + "/participants", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${Buffer.from(concatenatedString).toString(
+        "base64"
+      )}`,
+    },
+    body: JSON.stringify({
+      name: user.name,
+      preset_name: "group_call_participant",
+      custom_participant_id: user.email,
+    }),
+  });
+  const response = await meeting.json();
 
-    if (response && response.success) {
-        return { success: 'https://app.dyte.io/v2/meeting?id=' + response.data.id + '&authToken=' + response.data.token }
-    }
+  if (response && response.success) {
+    return {
+      success:
+        "https://app.dyte.io/v2/meeting?id=" +
+        response.data.id +
+        "&authToken=" +
+        response.data.token,
+    };
+  }
 
-    return { error: response.error }
+  return { error: response.error };
 }
-
 
 async function joinMeetingHostLogic(body, user) {
-    const concatenatedString = process.env.DYTE_ORG_ID + ':' + process.env.DYTE_API_KEY
+  const concatenatedString =
+    process.env.DYTE_ORG_ID + ":" + process.env.DYTE_API_KEY;
 
-    const meeting = await fetch(body.meeting_id + '/participants', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Basic ${Buffer.from(concatenatedString).toString('base64')}`
-        },
-        body: JSON.stringify({
-            "name": user.name,
-            "preset_name": "group_call_host",
-            "custom_participant_id": user.email
-        })
-    })
-    const response = await meeting.json()
+  const meeting = await fetch(body.meeting_id + "/participants", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${Buffer.from(concatenatedString).toString(
+        "base64"
+      )}`,
+    },
+    body: JSON.stringify({
+      name: user.name,
+      preset_name: "group_call_host",
+      custom_participant_id: user.email,
+    }),
+  });
+  const response = await meeting.json();
 
-    if (response && response.success) {
-        return { success: 'https://app.dyte.io/v2/meeting?id=' + response.data.id + '&authToken=' + response.data.token }
-    }
+  if (response && response.success) {
+    return {
+      success:
+        "https://app.dyte.io/v2/meeting?id=" +
+        response.data.id +
+        "&authToken=" +
+        response.data.token,
+    };
+  }
 
-    return { error: response.error }
+  return { error: response.error };
 }
-
 
 module.exports = {
-    getMyBookingsLogic,
-    createMeetingLogic,
-    joinMeetingParticipantLogic,
-    joinMeetingHostLogic
-}
+  getMyBookingsLogic,
+  createMeetingLogic,
+  joinMeetingParticipantLogic,
+  joinMeetingHostLogic,
+};
