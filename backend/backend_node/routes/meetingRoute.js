@@ -1,11 +1,11 @@
 const express = require("express");
-const { authentication } = require("../middlewares/auth.middleware");
+const { authentication } = require("../middlewares/authMiddleware");
 const {
   joinMeetingParticipant,
   joinMeetingHost,
-} = require("../controllers/meeting.controller");
-const { fetchMentorAvailability } = require("../controllers/mentor.controller");
-const { removeExpiredMeetings } = require("../middlewares/meeting.middleware");
+} = require("../controllers/meetingController");
+const { fetchMentorAvailability } = require("../controllers/mentorController");
+const { removeExpiredMeetings } = require("../middlewares/meetingMiddleware");
 
 const router = express.Router();
 

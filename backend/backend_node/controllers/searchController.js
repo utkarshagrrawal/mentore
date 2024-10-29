@@ -1,4 +1,4 @@
-const { searchMentorsLogic } = require("../logic/search.logic");
+const { searchMentorsLogic } = require("../logic/searchLogic");
 
 const searchMentors = async (req, res) => {
   const response = await searchMentorsLogic(req.params);

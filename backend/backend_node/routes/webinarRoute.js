@@ -5,9 +5,9 @@ const {
   createWebinar,
   fetchAllWebinars,
   joinWebinarAsParticipant,
-} = require("../controllers/webinar.controller");
-const { authentication } = require("../middlewares/auth.middleware");
-const { removeExpiredWebinars } = require("../middlewares/webinar.middleware");
+} = require("../controllers/webinarController");
+const { authentication } = require("../middlewares/authMiddleware");
+const { removeExpiredWebinars } = require("../middlewares/webinarMiddleware");
 
 const router = express.Router();
 

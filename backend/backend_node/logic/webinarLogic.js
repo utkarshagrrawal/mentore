@@ -1,4 +1,4 @@
-const { supabase } = require("../utility/database.connection");
+const { supabase } = require("../utility/databaseConnection");
 
 async function createWebinarLogic(body, user) {
   const data = {
@@ -24,17 +24,15 @@ async function createWebinarLogic(body, user) {
   const response = await webinar.json();
 
   if (response && response.success) {
-    const { error } = await supabase
-      .from("webinar")
-      .insert({
-        title: body.title,
-        meeting_link: "https://api.dyte.io/v2/meetings/" + response.data.id,
-        start_time: body.start,
-        end_time: body.end,
-        mentor_email: user.email,
-        mentor_name: user.name,
-        registered_users: [user.email],
-      });
+    const { error } = await supabase.from("webinar").insert({
+      title: body.title,
+      meeting_link: "https://api.dyte.io/v2/meetings/" + response.data.id,
+      start_time: body.start,
+      end_time: body.end,
+      mentor_email: user.email,
+      mentor_name: user.name,
+      registered_users: [user.email],
+    });
 
     if (error) {
       return { error: error.message };
@@ -67,7 +65,7 @@ async function registerForWebinarLogic(body, user) {
     .update({ registered_users: participants })
     .eq("id", webinar_id);
 
-  if (updateError) {
+  if (updateError?.message) {
     return { error: updateError.message };
   }
 

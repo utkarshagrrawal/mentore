@@ -48,8 +48,8 @@ function Answer({
             <img
               src={
                 item.gender
-                  ? "https://mwhhseuqzoudvibeyvrm.supabase.co/storage/v1/object/sign/images/male-avatar.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvbWFsZS1hdmF0YXIucG5nIiwiaWF0IjoxNzExMTg4ODM3LCJleHAiOjE3NDI3MjQ4Mzd9.qExdt9gnnYndht7-boBf9JR7TXV4f5r87clKZAZx3ZI&t=2024-03-23T10%3A13%3A57.836Z"
-                  : "https://mwhhseuqzoudvibeyvrm.supabase.co/storage/v1/object/sign/images/female-avatar.png?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJpbWFnZXMvZmVtYWxlLWF2YXRhci5wbmciLCJpYXQiOjE3MTExODg4MDEsImV4cCI6MTc0MjcyNDgwMX0.SkW7zn8MTdTp2yQO3BousTpWQ3kBPQ2IT4wDLLKyamU&t=2024-03-23T10%3A13%3A21.412Z"
+                  ? "https://uiliugseadtftlskhpcl.supabase.co/storage/v1/object/sign/assets/male-avatar.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhc3NldHMvbWFsZS1hdmF0YXIuanBnIiwiaWF0IjoxNzMwMTk4MjkwLCJleHAiOjE4ODc4NzgyOTB9.OsZVY6VkQfE2MQEyBKfQydaM7g8eu-62rLqy2hsVRdo&t=2024-10-29T10%3A38%3A10.382Z"
+                  : "https://uiliugseadtftlskhpcl.supabase.co/storage/v1/object/sign/assets/female-avatar.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhc3NldHMvZmVtYWxlLWF2YXRhci5qcGciLCJpYXQiOjE3MzAxOTgzMzgsImV4cCI6MTg4Nzg3ODMzOH0.TL2QQ5-IkI2IaYXwD12l0CnWGUwE1MXPTB4T-uIwSSU&t=2024-10-29T10%3A38%3A58.633Z"
               }
               className="w-8 h-8 rounded-full"
               alt="User Avatar"
@@ -259,7 +259,8 @@ export default function Answers({
     const toastId = Loading("Loading...");
 
     const response = await fetch(
-      "https://mentore-backend.vercel.app/question/" +
+      import.meta.env.VITE_BACKEND_URL +
+        "/question/" +
         questionId +
         "/answer/" +
         answer_id +
@@ -289,7 +290,8 @@ export default function Answers({
       },
     };
     const response = await fetch(
-      "https://mentore-backend.vercel.app/question/" +
+      import.meta.env.VITE_BACKEND_URL +
+        "/question/" +
         questionId +
         "/answer/" +
         answer_id,
@@ -350,7 +352,8 @@ export default function Answers({
       }),
     };
     const response = await fetch(
-      "https://mentore-backend.vercel.app/question/" +
+      import.meta.env.VITE_BACKEND_URL +
+        "/question/" +
         questionId +
         "/answer/" +
         id +
@@ -421,7 +424,8 @@ export default function Answers({
     const toastId = Loading("Updating answer...");
 
     const response = await fetch(
-      "https://mentore-backend.vercel.app/question/" +
+      import.meta.env.VITE_BACKEND_URL +
+        "/question/" +
         questionId +
         "/answer/" +
         answer_id,

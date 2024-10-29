@@ -14,7 +14,7 @@ const searchMentorsLogic = async (params) => {
   );
   const result = await response.json();
 
-  if (result.Error) {
+  if (result.Error?.message) {
     return { error: result.error };
   }
   return { success: result.response };

@@ -1,4 +1,4 @@
-const { supabase } = require("../utility/database.connection");
+const { supabase } = require("../utility/databaseConnection");
 
 const createBlogLogic = async (body, user) => {
   const { title, content } = body;
@@ -9,7 +9,6 @@ const createBlogLogic = async (body, user) => {
     content: content,
     email: email,
     name: name,
-    likes: 0,
   });
 
   if (!error) {
@@ -98,7 +97,7 @@ const addLikeOnCommentLogic = async (user, params) => {
     .eq("comment_id", commentId)
     .eq("user_email", email);
 
-  if (removeDislikeError) {
+  if (removeDislikeError?.message) {
     return { error: removeDislikeError.message };
   }
 
@@ -147,7 +146,7 @@ const addDislikeOnCommentLogic = async (user, params) => {
     .eq("comment_id", commentId)
     .eq("user_email", email);
 
-  if (removeLikeError) {
+  if (removeLikeError?.message) {
     return { error: removeLikeError.message };
   }
 

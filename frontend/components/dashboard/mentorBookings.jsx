@@ -22,7 +22,7 @@ export default function MentorBookings() {
 
     const getMeetings = async () => {
       const response = await fetch(
-        "https://mentore-backend.vercel.app/mentor/meetings",
+        import.meta.env.VITE_BACKEND_URL + "/mentor/meetings",
         options
       );
       const result = await response.json();
@@ -41,7 +41,7 @@ export default function MentorBookings() {
   const handleApprove = async (id) => {
     setIsApprovingOrRejecting(true);
     const approveRequest = await fetch(
-      "https://mentore-backend.vercel.app/mentor/meeting/approve?id=" + id,
+      import.meta.env.VITE_BACKEND_URL + "/mentor/meeting/approve?id=" + id,
       {
         method: "PUT",
         headers: {
@@ -64,7 +64,7 @@ export default function MentorBookings() {
   const handleReject = async (id) => {
     setIsApprovingOrRejecting(true);
     const rejectRequest = await fetch(
-      "https://mentore-backend.vercel.app/mentor/meeting/reject?id=" + id,
+      import.meta.env.VITE_BACKEND_URL + "/mentor/meeting/reject?id=" + id,
       {
         method: "PUT",
         headers: {
@@ -96,7 +96,7 @@ export default function MentorBookings() {
       }),
     };
     const response = await fetch(
-      "https://mentore-backend.vercel.app/meeting/join/host",
+      import.meta.env.VITE_BACKEND_URL + "/meeting/join/host",
       options
     );
     const result = await response.json();

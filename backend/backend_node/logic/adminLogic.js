@@ -1,4 +1,4 @@
-const { supabase } = require("../utility/database.connection");
+const { supabase } = require("../utility/databaseConnection");
 
 const fetchPendingVerificationsLogic = async () => {
   const { data, error } = await supabase

@@ -19,7 +19,7 @@ export function VerifyOtp({ forgotPassword, handleChange, setLoading }) {
     e.preventDefault();
     setLoading(true);
     let verifyOtp = await fetch(
-      "https://mentore-backend.vercel.app/user/verifyotp",
+      import.meta.env.VITE_BACKEND_URL + "/user/verifyotp",
       {
         method: "POST",
         headers: {
@@ -60,7 +60,7 @@ export function VerifyOtp({ forgotPassword, handleChange, setLoading }) {
     e.preventDefault();
     setLoading(true);
     let resendOtp = await fetch(
-      "https://mentore-backend.vercel.app/user/resendotp",
+      import.meta.env.VITE_BACKEND_URL + "/user/resendotp",
       {
         method: "POST",
         headers: {

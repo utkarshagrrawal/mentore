@@ -1,4 +1,4 @@
-const { supabase } = require("../utility/database.connection");
+const { supabase } = require("../utility/databaseConnection");
 const { generateOtp } = require("../utility/otpConnection");
 const {
   GenerateSalt,
@@ -13,7 +13,7 @@ async function registerUserLogic(body) {
     password,
     gender,
     name,
-    age,
+    dob,
     registerFor,
     profession,
     company,
@@ -38,16 +38,14 @@ async function registerUserLogic(body) {
     email: email,
     password: hashedPassword,
     name: name,
-    dob: age,
+    dob: dob,
     type: registerFor,
     salt: salt,
-    male: gender === "male" ? true : false,
+    gender: gender === "male" ? true : false,
   });
-
-  if (registeringError) {
+  if (registeringError?.message) {
     return { error: registeringError.message };
   }
-
   if (registerFor === "mentor") {
     const { error } = await supabase.from("mentors").insert({
       email: email,
@@ -58,7 +56,7 @@ async function registerUserLogic(body) {
       experience: experience,
       fees: 150,
       verified: false,
-      male: gender === "male" ? true : false,
+      gender: gender === "male" ? true : false,
     });
 
     if (error) {
@@ -95,14 +93,14 @@ async function loginUserLogic(body) {
     .select("")
     .eq("email", email);
 
-  if (loginError) {
+  if (loginError?.message) {
     return { error: loginError.message };
   }
 
   const sign = GenerateSignature({
     email: email,
     name: data[0].name,
-    gender: data[0].male,
+    gender: data[0].gender,
   });
 
   return { success: "Login successfull", token: sign };
@@ -137,7 +135,7 @@ async function sendResetPasswordOtpLogic(body) {
     .from("otp")
     .insert({ email: email, otp: totp, created_at: new Date() });
 
-  if (otpSaveError) {
+  if (otpSaveError?.message) {
     return { error: otpSaveError.message };
   }
 
@@ -171,7 +169,7 @@ async function verifyOtpLogic(body) {
     .delete()
     .eq("email", email);
 
-  if (otpDeleteError) {
+  if (otpDeleteError?.message) {
     return { error: otpDeleteError.message };
   }
 
@@ -184,7 +182,7 @@ async function verifyOtpLogic(body) {
     .update({ password: hashedPassword, salt: salt })
     .eq("email", email);
 
-  if (newError) {
+  if (newError?.message) {
     return { error: "Password reset failed" };
   }
 
@@ -234,7 +232,7 @@ async function resendOtpLogic(body) {
     .delete()
     .eq("email", email);
 
-  if (deleteOtpError) {
+  if (deleteOtpError?.message) {
     return { error: "Otp resend failed!" };
   }
 
@@ -244,7 +242,7 @@ async function resendOtpLogic(body) {
     .from("otp")
     .insert({ email: email, otp: totp, created_at: new Date() });
 
-  if (saveOtpError) {
+  if (saveOtpError?.message) {
     return { error: "Otp resend failed!" };
   }
 
@@ -298,7 +296,15 @@ async function userDetailsLogic(user) {
   if (error) {
     return { error: error.message };
   }
-  return { success: data[0] };
+  return {
+    success: {
+      email: data[0].email,
+      name: data[0].name,
+      dob: data[0].dob,
+      type: data[0].type,
+      gender: data[0].gender,
+    },
+  };
 }
 
 async function fetchBookingsWithMentorLogic(params, user) {
@@ -321,7 +327,7 @@ async function fetchBookingsWithMentorLogic(params, user) {
     .eq("mentee_email", email)
     .in("status", ["payment pending", "pending", "approved"]);
 
-  if (meetingsError) {
+  if (meetingsError?.message) {
     return { error: meetingsError.message };
   }
 

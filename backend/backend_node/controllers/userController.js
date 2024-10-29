@@ -7,7 +7,7 @@ const {
   resendOtpLogic,
   userDetailsLogic,
   fetchBookingsWithMentorLogic,
-} = require("../logic/user.logic");
+} = require("../logic/userLogic");
 
 const registerUser = async (req, res) => {
   const response = registerUserLogic(req.body);

@@ -23,7 +23,7 @@ export function LoginBlock({ login, setLogin, setLoading }) {
     e.preventDefault();
     setLoading(true);
     let loginUser = await fetch(
-      "https://mentore-backend.vercel.app/user/login",
+      import.meta.env.VITE_BACKEND_URL + "/user/login",
       {
         method: "POST",
         headers: {

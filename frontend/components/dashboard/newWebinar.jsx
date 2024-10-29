@@ -42,7 +42,7 @@ export default function NewWebinar({ setWebinarDetailsLoading }) {
     setCreatingWebinar(true);
 
     const createMeeting = await fetch(
-      "https://mentore-backend.vercel.app/webinar/create",
+      import.meta.env.VITE_BACKEND_URL + "/webinar/create",
       {
         method: "POST",
         headers: {

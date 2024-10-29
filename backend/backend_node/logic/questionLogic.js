@@ -1,4 +1,4 @@
-const { supabase } = require("../utility/database.connection");
+const { supabase } = require("../utility/databaseConnection");
 
 const askQuestionLogic = async (body, user) => {
   const { error } = await supabase.from("questions").insert({
@@ -39,7 +39,7 @@ const fetchQuestionDetailsLogic = async (params) => {
 };
 
 const fetchAnswersWithLikesDislikesLogic = async (params) => {
-  const { data, error } = await supabase.rpc("answer_with_likes_dislikes", {
+  const { data, error } = await supabase.rpc("answer_with_likes", {
     question_id: params.id,
   });
 
@@ -108,7 +108,7 @@ const likeAnswerLogic = async (params, user) => {
     .from("question_answer_likes")
     .insert({ answer_id: params.answer_id, liked_by_email: user.email });
 
-  if (likeError) {
+  if (likeError?.message) {
     return { error: likeError.message };
   }
 

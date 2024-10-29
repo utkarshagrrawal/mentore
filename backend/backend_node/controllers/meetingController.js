@@ -3,7 +3,7 @@ const {
   createMeetingLogic,
   joinMeetingParticipantLogic,
   joinMeetingHostLogic,
-} = require("../logic/meeting.logic");
+} = require("../logic/meetingLogic");
 
 require("dotenv").config();
 

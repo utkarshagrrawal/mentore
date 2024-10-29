@@ -3,7 +3,7 @@ const {
   fetchPendingVerifications,
   approveMentor,
   rejectMentor,
-} = require("../controllers/admin.controller");
+} = require("../controllers/adminController");
 
 const router = express.Router();
 

@@ -49,7 +49,7 @@ export default function AskQuestion(props) {
     };
 
     const response = await fetch(
-      "https://mentore-backend.vercel.app/question/ask",
+      import.meta.env.VITE_BACKEND_URL + "/question/ask",
       options
     );
     const result = await response.json();

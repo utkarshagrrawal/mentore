@@ -3,19 +3,19 @@
 @tailwind utilities;
 
 #root {
-    min-height: 100vh;
+  min-height: 100vh;
 }
 
 body {
-    font-family: "IBM Plex Sans", sans-serif;
+  font-family: "IBM Plex Sans", sans-serif;
 }
 
 ::selection {
-    background-color: #fbd21b;
-    color: #111;
+  background-color: #fbd21b;
+  color: #111;
 }
 
 ::-moz-selection {
-    background-color: #fbd21b;
-    color: #111;
+  background-color: #fbd21b;
+  color: #111;
 }

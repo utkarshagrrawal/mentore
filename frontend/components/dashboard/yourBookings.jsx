@@ -18,7 +18,7 @@ export default function YourBookings() {
   useEffect(() => {
     const fetchMeetings = async () => {
       const response = await fetch(
-        "https://mentore-backend.vercel.app/user/my-bookings",
+        import.meta.env.VITE_BACKEND_URL + "/user/my-bookings",
         {
           method: "GET",
           headers: {
@@ -52,7 +52,7 @@ export default function YourBookings() {
     };
 
     const pay = await fetch(
-      "https://mentore-backend.vercel.app/payment/pay/" + id,
+      import.meta.env.VITE_BACKEND_URL + "/payment/pay/" + id,
       options
     );
     const response = await pay.json();
@@ -81,7 +81,7 @@ export default function YourBookings() {
               },
             };
             const payment = await fetch(
-              "https://mentore-backend.vercel.app/payment/success/" + id,
+              import.meta.env.VITE_BACKEND_URL + "/payment/success/" + id,
               options
             );
             const response = await payment.json();
@@ -122,7 +122,7 @@ export default function YourBookings() {
       }),
     };
     const join = await fetch(
-      "https://mentore-backend.vercel.app/meeting/join/participant",
+      import.meta.env.VITE_BACKEND_URL + "/meeting/join/participant",
       options
     );
     const response = await join.json();

@@ -27,7 +27,7 @@ export function WebinarsPage() {
         },
       };
       let users = await fetch(
-        "https://mentore-backend.vercel.app/user/details",
+        import.meta.env.VITE_BACKEND_URL + "/user/details",
         options
       );
       const result = await users.json();
@@ -52,7 +52,7 @@ export function WebinarsPage() {
         },
       };
       let webinars = await fetch(
-        "https://mentore-backend.vercel.app/webinar/all",
+        import.meta.env.VITE_BACKEND_URL + "/webinar/all",
         options
       );
       const result = await webinars.json();

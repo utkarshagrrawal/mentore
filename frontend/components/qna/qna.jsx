@@ -23,7 +23,7 @@ export function Qna() {
       };
 
       const response = await fetch(
-        "https://mentore-backend.vercel.app/user/details",
+        import.meta.env.VITE_BACKEND_URL + "/user/details",
         options
       );
       const result = await response.json();
@@ -50,7 +50,7 @@ export function Qna() {
       };
 
       const response = await fetch(
-        "https://mentore-backend.vercel.app/question/all",
+        import.meta.env.VITE_BACKEND_URL + "/question/all",
         options
       );
       const result = await response.json();
@@ -79,7 +79,7 @@ export function Qna() {
       };
 
       const response = await fetch(
-        "https://mentore-backend.vercel.app/mentor/skill-options",
+        import.meta.env.VITE_BACKEND_URL + "/mentor/skill-options",
         options
       );
       const result = await response.json();
@@ -108,7 +108,7 @@ export function Qna() {
       };
 
       const response = await fetch(
-        "https://mentore-backend.vercel.app/question/filter",
+        import.meta.env.VITE_BACKEND_URL + "/question/filter",
         options
       );
       const result = await response.json();

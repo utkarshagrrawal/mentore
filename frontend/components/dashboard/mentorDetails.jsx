@@ -23,7 +23,7 @@ export default function MentorProfile() {
         },
       };
       let skills = await fetch(
-        "https://mentore-backend.vercel.app/mentor/skill-options",
+        import.meta.env.VITE_BACKEND_URL + "/mentor/skill-options",
         options
       );
       let result = await skills.json();
@@ -47,7 +47,7 @@ export default function MentorProfile() {
         },
       };
       let mentorDetailsResponse = await fetch(
-        "https://mentore-backend.vercel.app/mentor/details",
+        import.meta.env.VITE_BACKEND_URL + "/mentor/details",
         options
       );
       let result = await mentorDetailsResponse.json();
@@ -80,7 +80,7 @@ export default function MentorProfile() {
       body: JSON.stringify({ fees: mentorDetails.fees }),
     };
     let response = await fetch(
-      "https://mentore-backend.vercel.app/mentor/fees/update",
+      import.meta.env.VITE_BACKEND_URL + "/mentor/fees/update",
       options
     );
     let result = await response.json();

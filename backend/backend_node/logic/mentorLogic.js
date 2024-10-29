@@ -1,4 +1,4 @@
-const { supabase } = require("../utility/database.connection");
+const { supabase } = require("../utility/databaseConnection");
 
 const fetchBookingsForMentorLogic = async (user) => {
   const { email } = user;

@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const { authentication } = require("../middlewares/auth.middleware");
+const { authentication } = require("../middlewares/authMiddleware");
 const {
   createBlog,
   fetchBlogDetails,
@@ -15,7 +15,7 @@ const {
   addLikeOnBlog,
   updateComment,
   fetchEditorKey,
-} = require("../controllers/blog.controller");
+} = require("../controllers/blogController");
 
 const router = express.Router();
 

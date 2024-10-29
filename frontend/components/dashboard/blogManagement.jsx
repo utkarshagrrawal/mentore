@@ -21,7 +21,7 @@ export default function BlogManagement({ blogsLoading, setBlogsLoading }) {
         },
       };
       const response = await fetch(
-        "https://mentore-backend.vercel.app/mentor/blogs",
+        import.meta.env.VITE_BACKEND_URL + "/mentor/blogs",
         options
       );
       const data = await response.json();
@@ -45,7 +45,7 @@ export default function BlogManagement({ blogsLoading, setBlogsLoading }) {
     }
 
     const deleteBlog = await fetch(
-      "https://mentore-backend.vercel.app/blog/" + id,
+      import.meta.env.VITE_BACKEND_URL + "/blog/" + id,
       {
         method: "DELETE",
         headers: {

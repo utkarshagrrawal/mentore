@@ -16,7 +16,7 @@ export default function Content({ blogId }) {
         },
       };
       let users = await fetch(
-        `https://mentore-backend.vercel.app/blog/${blogId}`,
+        `${import.meta.env.VITE_BACKEND_URL}/blog/${blogId}`,
         options
       );
       const result = await users.json();

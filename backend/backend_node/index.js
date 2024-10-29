@@ -1,15 +1,15 @@
 const express = require("express");
 const cors = require("cors");
 
-const userRoute = require("./routes/user.route");
-const adminRoute = require("./routes/admin.route");
-const webinarRoute = require("./routes/webinar.route");
-const mentorRoute = require("./routes/mentor.route");
-const blogRoute = require("./routes/blog.route");
-const paymentRoute = require("./routes/payment.route");
-const meetingRoute = require("./routes/meeting.route");
-const searchRoute = require("./routes/search.route");
-const questionRoute = require("./routes/question.route");
+const userRoute = require("./routes/userRoute");
+const adminRoute = require("./routes/adminRoute");
+const webinarRoute = require("./routes/webinarRoute");
+const mentorRoute = require("./routes/mentorRoute");
+const blogRoute = require("./routes/blogRoute");
+const paymentRoute = require("./routes/paymentRoute");
+const meetingRoute = require("./routes/meetingRoute");
+const searchRoute = require("./routes/searchRoute");
+const questionRoute = require("./routes/questionRoute");
 
 require("dotenv").config();
 

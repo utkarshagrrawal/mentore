@@ -1,4 +1,4 @@
-const { supabase } = require("../utility/database.connection");
+const { supabase } = require("../utility/databaseConnection");
 
 const removeExpiredMeetings = async (req, res, next) => {
   let now = new Date();

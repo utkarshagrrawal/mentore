@@ -27,7 +27,7 @@ export function Insights() {
         },
       };
       let users = await fetch(
-        "https://mentore-backend.vercel.app/user/details",
+        import.meta.env.VITE_BACKEND_URL + "/user/details",
         options
       );
       const result = await users.json();
@@ -53,7 +53,7 @@ export function Insights() {
         },
       };
       let blogs = await fetch(
-        "https://mentore-backend.vercel.app/blog/all",
+        import.meta.env.VITE_BACKEND_URL + "/blog/all",
         options
       );
       const response = await blogs.json();

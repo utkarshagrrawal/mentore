@@ -11,7 +11,7 @@ const {
   addLikeOnBlogLogic,
   addReplyOnCommentLogic,
   updateCommentLogic,
-} = require("../logic/blog.logic");
+} = require("../logic/blogLogic");
 
 require("dotenv").config();
 

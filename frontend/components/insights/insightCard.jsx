@@ -23,7 +23,7 @@ export default function BlogCard({ loggedIn, blog, user, setBlogsLoading }) {
 
     const toastId = Loading("Loading");
     let response = await fetch(
-      "https://mentore-backend.vercel.app/blog/" + blogId + "/like",
+      import.meta.env.VITE_BACKEND_URL + "/blog/" + blogId + "/like",
       options
     );
     let result = await response.json();

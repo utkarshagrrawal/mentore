@@ -1,4 +1,4 @@
-const { supabase } = require("../utility/database.connection");
+const { supabase } = require("../utility/databaseConnection");
 const { razorpayOrderCreate } = require("../utility/razorpayConnection");
 
 require("dotenv").config();
@@ -64,7 +64,7 @@ async function createMeetingLogic(body, params) {
     .select("")
     .eq("uniq_id", params.id);
 
-  if (fetchFeesError) {
+  if (fetchFeesError?.message) {
     return { error: fetchFeesError.message };
   }
 

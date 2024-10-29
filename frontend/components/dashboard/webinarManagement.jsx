@@ -27,7 +27,7 @@ export default function WebinarManagement({
         },
       };
       let webinars = await fetch(
-        "https://mentore-backend.vercel.app/mentor/webinars",
+        import.meta.env.VITE_BACKEND_URL + "/mentor/webinars",
         options
       );
       let response = await webinars.json();
@@ -52,7 +52,7 @@ export default function WebinarManagement({
     };
     const toastId = Loading("Joining the webinar");
     let webinars = await fetch(
-      "https://mentore-backend.vercel.app/webinar/join/host",
+      import.meta.env.VITE_BACKEND_URL + "/webinar/join/host",
       options
     );
     const result = await webinars.json();

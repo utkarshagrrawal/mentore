@@ -28,7 +28,7 @@ export default function WebinarCard({ user, webinar, setLoading }) {
       webinar.mentor_email === user.current?.email ? "host" : "participant";
     const toastId = Loading("Joining the webinar");
     let webinars = await fetch(
-      "https://mentore-backend.vercel.app/webinar/join/" + webinarJoiningType,
+      import.meta.env.VITE_BACKEND_URL + "/webinar/join/" + webinarJoiningType,
       options
     );
     const result = await webinars.json();
@@ -56,7 +56,7 @@ export default function WebinarCard({ user, webinar, setLoading }) {
     };
     const toastId = Loading("Registering for the webinar");
     const response = await fetch(
-      "https://mentore-backend.vercel.app/webinar/register",
+      import.meta.env.VITE_BACKEND_URL + "/webinar/register",
       options
     );
     const result = await response.json();

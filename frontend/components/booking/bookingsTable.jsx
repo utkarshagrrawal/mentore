@@ -33,7 +33,7 @@ export default function BookingsTable({
       setDataLoading(true);
 
       const allMeetings = await fetch(
-        "https://mentore-backend.vercel.app/user/bookings/mentor/" + id,
+        import.meta.env.VITE_BACKEND_URL + "/user/bookings/mentor/" + id,
         options
       );
       const response = await allMeetings.json();
@@ -77,7 +77,7 @@ export default function BookingsTable({
     };
 
     const pay = await fetch(
-      "https://mentore-backend.vercel.app/payment/pay/" + id,
+      import.meta.env.VITE_BACKEND_URL + "/payment/pay/" + id,
       options
     );
     const response = await pay.json();
@@ -106,7 +106,7 @@ export default function BookingsTable({
               },
             };
             const payment = await fetch(
-              "https://mentore-backend.vercel.app/payment/success/" + id,
+              import.meta.env.VITE_BACKEND_URL + "/payment/success/" + id,
               options
             );
             const response = await payment.json();
@@ -147,7 +147,7 @@ export default function BookingsTable({
       }),
     };
     const join = await fetch(
-      "https://mentore-backend.vercel.app/meeting/join/participant",
+      import.meta.env.VITE_BACKEND_URL + "/meeting/join/participant",
       options
     );
     const response = await join.json();

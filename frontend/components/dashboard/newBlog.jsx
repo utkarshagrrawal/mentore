@@ -33,7 +33,7 @@ export default function NewBlog({ setBlogsLoading }) {
       };
 
       const response = await fetch(
-        "https://mentore-backend.vercel.app/blog/editorkey",
+        import.meta.env.VITE_BACKEND_URL + "/blog/editorkey",
         options
       );
       const result = await response.json();
@@ -70,7 +70,7 @@ export default function NewBlog({ setBlogsLoading }) {
 
     const toastId = Loading("Creating blog...");
     const createBlog = await fetch(
-      "https://mentore-backend.vercel.app/blog/create",
+      import.meta.env.VITE_BACKEND_URL + "/blog/create",
       {
         method: "POST",
         headers: {

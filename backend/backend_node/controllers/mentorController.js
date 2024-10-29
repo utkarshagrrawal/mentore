@@ -11,7 +11,7 @@ const {
   fetchMentorAvailabilityLogic,
   isMentorVerifiedLogic,
   updateMentorFeesLogic,
-} = require("../logic/mentor.logic");
+} = require("../logic/mentorLogic");
 
 const fetchBookingsForMentor = async (req, res) => {
   const response = await fetchBookingsForMentorLogic(req.user);

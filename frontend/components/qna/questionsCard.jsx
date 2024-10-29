@@ -36,7 +36,7 @@ export function QuestionCard(props) {
       </div>
       <div className="mb-4">
         <h2 className="text-lg font-semibold text-gray-900 mb-2">Question:</h2>
-        <p className="text-lg text-gray-700">{props?.question}</p>
+        <span className="text-lg text-gray-700">{props?.question}</span>
       </div>
       <div className="flex items-center">
         <h2 className="text-lg font-semibold text-gray-900 mr-2">Tags:</h2>
@@ -45,7 +45,7 @@ export function QuestionCard(props) {
             props.tags.map((tag, index) => (
               <span
                 key={index}
-                className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2 mb-2 hover:bg-blue-700"
+                className="px-3 py-1 bg-blue-500 text-white rounded-md mr-2 hover:bg-blue-700"
               >
                 {tag}
               </span>

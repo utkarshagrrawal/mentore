@@ -15,11 +15,20 @@ import { Blog } from "../components/blogs/blog";
 import { Question } from "../components/qna/question";
 import ErrorBoundary from "../components/errorPages/ErrorBoundary";
 
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster, useToasterStore } from "react-hot-toast";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import "./App.css";
+import { useEffect } from "react";
 
 function App() {
+  const { toasts } = useToasterStore();
+
+  useEffect(() => {
+    toasts
+      .filter((t) => t.visible) // Only consider visible toasts
+      .filter((_, i) => i >= 3) // Is toast index over limit?
+      .forEach((t) => toast.remove(t.id));
+  }, [toasts]);
+
   return (
     <ErrorBoundary>
       <Toaster />

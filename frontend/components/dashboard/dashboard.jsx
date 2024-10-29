@@ -32,7 +32,7 @@ export function Dashboard() {
         },
       };
       let users = await fetch(
-        "https://mentore-backend.vercel.app/user/details",
+        import.meta.env.VITE_BACKEND_URL + "/user/details",
         options
       );
       let result = await users.json();
@@ -63,7 +63,7 @@ export function Dashboard() {
         },
       };
       let response = await fetch(
-        "https://mentore-backend.vercel.app/mentor/verified",
+        import.meta.env.VITE_BACKEND_URL + "/mentor/verified",
         options
       );
       let result = await response.json();

@@ -4,7 +4,7 @@ const {
   createWebinarLogic,
   fetchAllWebinarsLogic,
   joinWebinarAsParticipantLogic,
-} = require("../logic/webinar.logic");
+} = require("../logic/webinarLogic");
 
 const createWebinar = async (req, res) => {
   const response = await createWebinarLogic(req.body, req.user);

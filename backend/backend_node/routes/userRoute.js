@@ -8,10 +8,10 @@ const {
   verifyOtp,
   resendOtp,
   fetchBookingsWithMentor,
-} = require("../controllers/user.controller");
-const { authentication } = require("../middlewares/auth.middleware");
-const { getMyBookings } = require("../controllers/meeting.controller");
-const { removeExpiredMeetings } = require("../middlewares/meeting.middleware");
+} = require("../controllers/userController");
+const { authentication } = require("../middlewares/authMiddleware");
+const { getMyBookings } = require("../controllers/meetingController");
+const { removeExpiredMeetings } = require("../middlewares/meetingMiddleware");
 
 const router = express.Router();
 

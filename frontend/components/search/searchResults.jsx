@@ -32,7 +32,7 @@ export function SearchResults() {
         },
       };
       let users = await fetch(
-        "https://mentore-backend.vercel.app/user/details",
+        import.meta.env.VITE_BACKEND_URL + "/user/details",
         options
       );
       const result = await users.json();
@@ -66,7 +66,7 @@ export function SearchResults() {
         toastId = Loading("Searching for mentors");
 
         const response = await fetch(
-          "https://mentore-backend.vercel.app/search/" + searchQuery,
+          import.meta.env.VITE_BACKEND_URL + "/search/" + searchQuery,
           options
         );
         const result = await response.json();
@@ -85,7 +85,7 @@ export function SearchResults() {
             );
 
             let mentorDetail = await fetch(
-              "https://mentore-backend.vercel.app/mentor/all",
+              import.meta.env.VITE_BACKEND_URL + "/mentor/all",
               options
             );
             let result = await mentorDetail.json();
@@ -138,7 +138,7 @@ export function SearchResults() {
         },
       };
       let mentorDetail = await fetch(
-        "https://mentore-backend.vercel.app/mentor/all",
+        import.meta.env.VITE_BACKEND_URL + "/mentor/all",
         options
       );
       let result = await mentorDetail.json();

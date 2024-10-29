@@ -60,7 +60,7 @@ export default function BookingRequest({
     };
     const toastId = Loading("Scheduling the meeting");
     let schedule = await fetch(
-      "https://mentore-backend.vercel.app/meeting/schedule",
+      import.meta.env.VITE_BACKEND_URL + "/meeting/schedule",
       options
     );
     const result = await schedule.json();

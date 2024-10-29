@@ -9,7 +9,7 @@ const {
   deleteAnswerLogic,
   replyAnswerLogic,
   fetchQuestionsWithFilterLogic,
-} = require("../logic/question.logic");
+} = require("../logic/questionLogic");
 
 const askQuestion = async (req, res) => {
   const response = await askQuestionLogic(req.body, req.user);

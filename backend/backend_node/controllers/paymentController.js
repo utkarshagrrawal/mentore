@@ -1,4 +1,4 @@
-const { payLogic, paymentSuccessLogic } = require("../logic/payment.logic");
+const { payLogic, paymentSuccessLogic } = require("../logic/paymentLogic");
 
 const pay = async (req, res, next) => {
   const response = await payLogic(req.params);

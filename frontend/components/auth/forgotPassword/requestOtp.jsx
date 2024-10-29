@@ -23,7 +23,7 @@ export function RequestOtp({
     e.preventDefault();
     setLoading(true);
     let forgotPasswordUser = await fetch(
-      "https://mentore-backend.vercel.app/user/forgot-password",
+      import.meta.env.VITE_BACKEND_URL + "/user/forgot-password",
       {
         method: "POST",
         headers: {

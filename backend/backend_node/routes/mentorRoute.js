@@ -11,10 +11,10 @@ const {
   fetchBlogsByMentor,
   isMentorVerified,
   updateMentorFees,
-} = require("../controllers/mentor.controller");
-const { authentication } = require("../middlewares/auth.middleware");
-const { removeExpiredWebinars } = require("../middlewares/webinar.middleware");
-const { removeExpiredMeetings } = require("../middlewares/meeting.middleware");
+} = require("../controllers/mentorController");
+const { authentication } = require("../middlewares/authMiddleware");
+const { removeExpiredWebinars } = require("../middlewares/webinarMiddleware");
+const { removeExpiredMeetings } = require("../middlewares/meetingMiddleware");
 
 const router = express.Router();
 

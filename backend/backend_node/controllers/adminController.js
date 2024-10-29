@@ -2,7 +2,7 @@ const {
   fetchPendingVerificationsLogic,
   approveMentorLogic,
   rejectMentorLogic,
-} = require("../logic/admin.logic");
+} = require("../logic/adminLogic");
 
 const fetchPendingVerifications = async (req, res) => {
   const response = await fetchPendingVerificationsLogic();

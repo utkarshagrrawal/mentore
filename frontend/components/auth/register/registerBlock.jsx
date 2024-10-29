@@ -46,7 +46,7 @@ export function RegisterBlock({
         },
       };
       let skills = await fetch(
-        "https://mentore-backend.vercel.app/mentor/skill-options",
+        import.meta.env.VITE_BACKEND_URL + "/mentor/skill-options",
         options
       );
       let response = await skills.json();
@@ -69,7 +69,7 @@ export function RegisterBlock({
         register.name &&
           register.email &&
           register.password &&
-          register.age &&
+          register.dob &&
           register.registerFor &&
           register.profession &&
           register.company &&
@@ -83,7 +83,7 @@ export function RegisterBlock({
         register.name &&
           register.email &&
           register.password &&
-          register.age &&
+          register.dob &&
           register.registerFor
           ? false
           : true
@@ -162,9 +162,6 @@ export function RegisterBlock({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (new Date().getFullYear() - new Date(register.age).getFullYear() < 18) {
-      return ErrorNotify("You must be at least 18 years old to register");
-    }
     if (conditions.length > 0) {
       return ErrorNotify("Please enter a strong password");
     }
@@ -178,7 +175,7 @@ export function RegisterBlock({
     setLoading({ ...loading, webLoading: true });
 
     let sendData = await fetch(
-      "https://mentore-backend.vercel.app/user/register",
+      import.meta.env.VITE_BACKEND_URL + "/user/register",
       {
         method: "POST",
         headers: {
@@ -190,7 +187,7 @@ export function RegisterBlock({
           email: register.email,
           gender: register.gender,
           password: register.password,
-          age: register.age,
+          dob: register.dob,
           registerFor: register.registerFor,
           profession: register.profession,
           company: register.company,
@@ -242,18 +239,18 @@ export function RegisterBlock({
 
           <div>
             <label
-              htmlFor="age"
+              htmlFor="dob"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
-              Age
+              Date of Birth
             </label>
             <div className="mt-2">
               <input
-                id="age"
-                name="age"
+                id="dob"
+                name="dob"
                 type="date"
                 onChange={handleChange}
-                value={register.age}
+                value={register.dob}
                 required
                 className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />

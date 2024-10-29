@@ -10,8 +10,8 @@ const {
   deleteAnswer,
   replyAnswer,
   fetchQuestionsWithFilter,
-} = require("../controllers/question.controller");
-const { authentication } = require("../middlewares/auth.middleware");
+} = require("../controllers/questionController");
+const { authentication } = require("../middlewares/authMiddleware");
 
 const router = app.Router();
 

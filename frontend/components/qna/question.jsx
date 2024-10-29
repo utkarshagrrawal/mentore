@@ -25,7 +25,7 @@ export function Question() {
       };
 
       const response = await fetch(
-        "https://mentore-backend.vercel.app/user/details",
+        import.meta.env.VITE_BACKEND_URL + "/user/details",
         options
       );
       const result = await response.json();
@@ -52,7 +52,7 @@ export function Question() {
       };
 
       const response = await fetch(
-        `https://mentore-backend.vercel.app/question/${id}/answer/all`,
+        `${import.meta.env.VITE_BACKEND_URL}/question/${id}/answer/all`,
         options
       );
       const result = await response.json();
@@ -82,7 +82,7 @@ export function Question() {
       };
 
       const response = await fetch(
-        `https://mentore-backend.vercel.app/question/${id}`,
+        `${import.meta.env.VITE_BACKEND_URL}/question/${id}`,
         options
       );
       const result = await response.json();
@@ -125,7 +125,7 @@ export function Question() {
     };
 
     const response = await fetch(
-      `https://mentore-backend.vercel.app/question/${id}/answer`,
+      `${import.meta.env.VITE_BACKEND_URL}/question/${id}/answer`,
       options
     );
     const result = await response.json();

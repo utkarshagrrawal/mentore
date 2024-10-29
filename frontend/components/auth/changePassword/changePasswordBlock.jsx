@@ -92,7 +92,7 @@ export default function ChangePasswordBlock({ setLoading }) {
     const toastId = Loading("Changing password...");
     setLoading(true);
     let changePassword = await fetch(
-      "https://mentore-backend.vercel.app/user/change-password",
+      import.meta.env.VITE_BACKEND_URL + "/user/change-password",
       {
         method: "PUT",
         headers: {
