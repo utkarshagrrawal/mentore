@@ -58,7 +58,7 @@ function Answer({
               <p className="font-semibold text-blue-800">
                 {item.answered_by_name}
               </p>
-              <p>on {dateFormatter.format(new Date(item.time))}</p>
+              <p>on {dateFormatter.format(new Date(item.created_at))}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">

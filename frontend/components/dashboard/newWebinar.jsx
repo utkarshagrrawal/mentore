@@ -18,10 +18,8 @@ export default function NewWebinar({ setWebinarDetailsLoading }) {
     } else if (newWebinarDetails.title.trim() === "") {
       ErrorNotify("Please enter a valid title for the webinar");
       return;
-    } else if (!newWebinarDetails.title.trim().match("^[a-zA-Z0-9-_]*$")) {
-      ErrorNotify(
-        "The title can only contain letters, numbers, hyphens and underscores"
-      );
+    } else if (!newWebinarDetails.title.trim().match("^[a-zA-Z0-9\\s]*$")) {
+      ErrorNotify("The title can only contain letters, numbers and spaces");
       return;
     } else if (newWebinarDetails.start === "") {
       ErrorNotify("Please enter a start date and time for the webinar");
@@ -57,6 +55,11 @@ export default function NewWebinar({ setWebinarDetailsLoading }) {
     if (response.error) {
       ErrorNotify(response.error);
     } else {
+      setNewWebinarDetails({
+        title: "",
+        start: "",
+        end: "",
+      });
       SuccessNotify("Webinar created successfully");
     }
 
@@ -96,10 +99,10 @@ export default function NewWebinar({ setWebinarDetailsLoading }) {
                 Title
               </label>
               <input
-                id="title"
                 name="title"
                 type="text"
                 onChange={handleNewWebinar}
+                value={newWebinarDetails.title}
                 className="w-full p-2 border border-blue-400 rounded-md"
               />
             </div>
@@ -108,10 +111,10 @@ export default function NewWebinar({ setWebinarDetailsLoading }) {
                 Start time
               </label>
               <input
-                id="start"
                 name="start"
                 type="datetime-local"
                 onChange={handleNewWebinar}
+                value={newWebinarDetails.start}
                 className="w-full p-2 border border-blue-400 rounded-md"
               />
             </div>
@@ -120,10 +123,10 @@ export default function NewWebinar({ setWebinarDetailsLoading }) {
                 End time
               </label>
               <input
-                id="end"
                 name="end"
                 type="datetime-local"
                 onChange={handleNewWebinar}
+                value={newWebinarDetails.end}
                 className="w-full p-2 border border-blue-400 rounded-md"
               />
             </div>
@@ -137,7 +140,7 @@ export default function NewWebinar({ setWebinarDetailsLoading }) {
               disabled={creatingWebinar}
             >
               {creatingWebinar ? (
-                <div className="border-gray-300 h-5 w-5 animate-spin rounded-full border-2 border-white border-t-blue-600" />
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-blue-600" />
               ) : (
                 "Schedule"
               )}

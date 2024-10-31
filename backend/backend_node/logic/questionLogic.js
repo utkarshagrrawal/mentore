@@ -57,6 +57,7 @@ const submitAnswerLogic = async (params, body, user) => {
     answered_by_email: user.email,
     answered_by_name: user.name,
     answered_by_gender: user.gender,
+    parent_answer_id: null,
   });
 
   if (error) {

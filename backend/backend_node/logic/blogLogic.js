@@ -78,6 +78,7 @@ const postCommentOnBlogLogic = async (user, params, body) => {
     user_email: email,
     user_name: name,
     gender: gender,
+    parent_comment_id: null,
   });
 
   if (error) {

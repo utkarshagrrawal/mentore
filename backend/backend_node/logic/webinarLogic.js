@@ -2,7 +2,7 @@ const { supabase } = require("../utility/databaseConnection");
 
 async function createWebinarLogic(body, user) {
   const data = {
-    title: body.title,
+    title: body.title.split(" ").join("_"),
     preferred_region: "ap-south-1",
     record_on_start: false,
     live_stream_on_start: false,
