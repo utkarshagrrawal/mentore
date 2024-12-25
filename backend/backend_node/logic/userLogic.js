@@ -141,7 +141,7 @@ async function sendResetPasswordOtpLogic(body) {
   const passwordResetEmailResponse = sendMail({
     from: process.env.NODEMAILER_GMAIL_USER,
     to: email,
-    subject: "Shopmitra: Password Reset OTP",
+    subject: "Mentore: Password Reset OTP",
     html: `
     <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f7;">
       <table align="center" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f7; padding: 20px 0;">
@@ -150,35 +150,27 @@ async function sendResetPasswordOtpLogic(body) {
             <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border: 1px solid #eaeaea; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
               <tr>
                 <td style="background-color: #4caf50; color: #ffffff; text-align: center; padding: 20px;">
-                  <h1 style="margin: 0; font-size: 28px; font-weight: bold;">ShopMitra</h1>
-                  <p style="margin: 5px 0 0; font-size: 16px;">Your Trusted Shopping Partner</p>
+                  <h1 style="margin: 0; font-size: 28px; font-weight: bold;">Mentore</h1>
+                  <p style="margin: 5px 0 0; font-size: 16px;">Connecting Mentors and Mentees Seamlessly</p>
                 </td>
               </tr>
               <tr>
                 <td style="padding: 20px; color: #555555; text-align: left; line-height: 1.6;">
                   <h2 style="color: #333333; font-size: 22px; margin-top: 0;">Hello,</h2>
-                  <p style="margin: 10px 0;">
-                    You have requested to reset your password. Use the OTP below to complete the process:
-                  </p>
+                  <p style="margin: 10px 0;">We received a request to verify your email address. Please use the OTP below to proceed:</p>
                   <p style="text-align: center;">
                     <span style="display: inline-block; background-color: #f0f8ff; padding: 15px 30px; font-size: 24px; font-weight: bold; color: #333333; border-radius: 5px; border: 1px solid #e0e0e0;">
                       ${totp}
                     </span>
                   </p>
-                  <p style="margin: 20px 0;">
-                    This OTP is valid for <strong>10 minutes</strong>. If you did not make this request, please contact our support team immediately.
-                  </p>
-                  <p style="margin: 0;">
-                    For security reasons, never share this OTP with anyone.
-                  </p>
+                  <p style="margin: 20px 0;">This OTP is valid for the next 10 minutes. Please do not share it with anyone.</p>
+                  <p style="margin: 0;">If you did not request this OTP, please ignore this email or contact our support team immediately.</p>
                 </td>
               </tr>
               <tr>
                 <td style="background-color: #f9f9f9; color: #777777; text-align: center; padding: 15px;">
-                  <p style="margin: 0; font-size: 14px;">
-                    Need help? Contact us at <a href="mailto:mentorecapstone2024@gmail.com" style="color: #4caf50; text-decoration: none;">mentorecapstone2024@gmail.com</a>
-                  </p>
-                  <p style="margin: 5px 0 0; font-size: 12px;">© 2024 ShopMitra. All rights reserved.</p>
+                  <p style="margin: 0; font-size: 14px;">Need help? Contact us at <a href="mailto:mentorecapstone2024@gmail.com" style="color: #4caf50; text-decoration: none;">mentorecapstone2024@gmail.com</a></p>
+                  <p style="margin: 5px 0 0; font-size: 12px;">© 2024 Mentore. All rights reserved.</p>
                 </td>
               </tr>
             </table>
@@ -242,7 +234,7 @@ async function verifyOtpLogic(body) {
   const newPasswordEmailResponse = sendMail({
     from: process.env.NODEMAILER_GMAIL_USER,
     to: email,
-    subject: "Shopmitra: Temporary Password",
+    subject: "Mentore: Temporary Password",
     html: `
     <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f7;">
       <table align="center" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f7; padding: 20px 0;">
@@ -251,40 +243,27 @@ async function verifyOtpLogic(body) {
             <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border: 1px solid #eaeaea; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
               <tr>
                 <td style="background-color: #4caf50; color: #ffffff; text-align: center; padding: 20px;">
-                  <h1 style="margin: 0; font-size: 28px; font-weight: bold;">ShopMitra</h1>
-                  <p style="margin: 5px 0 0; font-size: 16px;">Your Trusted Shopping Partner</p>
+                  <h1 style="margin: 0; font-size: 28px; font-weight: bold;">Mentore</h1>
+                  <p style="margin: 5px 0 0; font-size: 16px;">Connecting Mentors and Mentees Seamlessly</p>
                 </td>
               </tr>
               <tr>
                 <td style="padding: 20px; color: #555555; text-align: left; line-height: 1.6;">
                   <h2 style="color: #333333; font-size: 22px; margin-top: 0;">Hello,</h2>
-                  <p style="margin: 10px 0;">
-                    We have generated a temporary password for your account. Please find it below:
-                  </p>
+                  <p style="margin: 10px 0;">We have generated a temporary password for your account as requested. Please use the password below to log in and update it immediately:</p>
                   <p style="text-align: center;">
                     <span style="display: inline-block; background-color: #f0f8ff; padding: 15px 30px; font-size: 24px; font-weight: bold; color: #333333; border-radius: 5px; border: 1px solid #e0e0e0;">
                       ${password}
                     </span>
                   </p>
-                  <p style="margin: 20px 0;">
-                    <strong>Important:</strong> We strongly recommend changing this temporary password as soon as possible to ensure the security of your account.
-                  </p>
-                  <p style="margin: 20px 0; text-align: center;">
-                    <a href=${process.env.CHANGE_PASSWORD_URL} style="background-color: #4caf50; color: #ffffff; text-decoration: none; padding: 12px 20px; font-size: 16px; font-weight: bold; border-radius: 5px; display: inline-block;">
-                      Change Password Now
-                    </a>
-                  </p>
-                  <p style="margin: 0;">
-                    If you did not request this temporary password, please contact our support team immediately.
-                  </p>
+                  <p style="margin: 20px 0;">For your account's security, we strongly recommend changing your password as soon as possible. To update your password, please visit your account settings after logging in.</p>
+                  <p style="margin: 0;">If you did not request this temporary password, please contact our support team immediately.</p>
                 </td>
               </tr>
               <tr>
                 <td style="background-color: #f9f9f9; color: #777777; text-align: center; padding: 15px;">
-                  <p style="margin: 0; font-size: 14px;">
-                    Need help? Contact us at <a href="mailto:mentorecapstone2024@gmail.com" style="color: #4caf50; text-decoration: none;">mentorecapstone2024@gmail.com</a>
-                  </p>
-                  <p style="margin: 5px 0 0; font-size: 12px;">© 2024 ShopMitra. All rights reserved.</p>
+                  <p style="margin: 0; font-size: 14px;">Need help? Contact us at <a href="mailto:mentorecapstone2024@gmail.com" style="color: #4caf50; text-decoration: none;">mentorecapstone2024@gmail.com</a></p>
+                  <p style="margin: 5px 0 0; font-size: 12px;">© 2024 Mentore. All rights reserved.</p>
                 </td>
               </tr>
             </table>
