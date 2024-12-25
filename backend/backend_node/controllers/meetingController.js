@@ -5,8 +5,6 @@ const {
   joinMeetingHostLogic,
 } = require("../logic/meetingLogic");
 
-require("dotenv").config();
-
 const getMyBookings = async (req, res) => {
   const response = await getMyBookingsLogic(req.user);
   if (response.error) {

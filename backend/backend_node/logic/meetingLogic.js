@@ -1,8 +1,6 @@
 const { supabase } = require("../utility/databaseConnection");
 const { razorpayOrderCreate } = require("../utility/razorpayConnection");
 
-require("dotenv").config();
-
 async function getMyBookingsLogic(user) {
   const { email } = user;
 

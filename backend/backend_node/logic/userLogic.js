@@ -1,11 +1,11 @@
 const { supabase } = require("../utility/databaseConnection");
+const { sendMail } = require("../utility/mailUtility");
 const { generateOtp } = require("../utility/otpConnection");
 const {
   GenerateSalt,
   GeneratePassword,
   GenerateSignature,
 } = require("../utility/passportUtility");
-require("dotenv").config();
 
 async function registerUserLogic(body) {
   const {
@@ -32,8 +32,8 @@ async function registerUserLogic(body) {
     return { error: "User already exists" };
   }
 
-  const salt = await GenerateSalt();
-  const hashedPassword = await GeneratePassword(password, salt);
+  const salt = GenerateSalt();
+  const hashedPassword = GeneratePassword(password, salt);
   const { error: registeringError } = await supabase.from("users").insert({
     email: email,
     password: hashedPassword,
@@ -83,7 +83,7 @@ async function loginUserLogic(body) {
   }
 
   const salt = data[0].salt;
-  const hashedPassword = await GeneratePassword(password, salt);
+  const hashedPassword = GeneratePassword(password, salt);
   if (hashedPassword !== data[0].password) {
     return { error: "Invalid credentials" };
   }
@@ -120,14 +120,13 @@ async function sendResetPasswordOtpLogic(body) {
     return { error: error.message };
   }
 
-  const checkOtp = await supabase.from("otp").select("").eq("email", email);
+  const { error: deleteOldOTPError } = await supabase
+    .from("otp")
+    .delete()
+    .eq("email", email);
 
-  if (checkOtp.data && checkOtp.data.length > 0) {
-    const { error } = await supabase.from("otp").delete().eq("email", email);
-
-    if (error) {
-      return { error: error.message };
-    }
+  if (deleteOldOTPError) {
+    return { error: deleteOldOTPError.message };
   }
 
   const totp = generateOtp();
@@ -139,13 +138,61 @@ async function sendResetPasswordOtpLogic(body) {
     return { error: otpSaveError.message };
   }
 
-  return {
-    success: "Password reset OTP sent successfully",
-    otp: totp,
-    emailServiceID: process.env.EMAILJS_SERVICE_ID,
-    emailPublicKey: process.env.EMAILJS_PUBLIC_KEY,
-    emailPrivateKey: process.env.EMAILJS_PRIVATE_KEY,
-  };
+  const passwordResetEmailResponse = sendMail({
+    from: process.env.NODEMAILER_GMAIL_USER,
+    to: email,
+    subject: "Shopmitra: Password Reset OTP",
+    html: `
+    <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f7;">
+      <table align="center" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f7; padding: 20px 0;">
+        <tr>
+          <td align="center">
+            <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border: 1px solid #eaeaea; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+              <tr>
+                <td style="background-color: #4caf50; color: #ffffff; text-align: center; padding: 20px;">
+                  <h1 style="margin: 0; font-size: 28px; font-weight: bold;">ShopMitra</h1>
+                  <p style="margin: 5px 0 0; font-size: 16px;">Your Trusted Shopping Partner</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 20px; color: #555555; text-align: left; line-height: 1.6;">
+                  <h2 style="color: #333333; font-size: 22px; margin-top: 0;">Hello,</h2>
+                  <p style="margin: 10px 0;">
+                    You have requested to reset your password. Use the OTP below to complete the process:
+                  </p>
+                  <p style="text-align: center;">
+                    <span style="display: inline-block; background-color: #f0f8ff; padding: 15px 30px; font-size: 24px; font-weight: bold; color: #333333; border-radius: 5px; border: 1px solid #e0e0e0;">
+                      ${totp}
+                    </span>
+                  </p>
+                  <p style="margin: 20px 0;">
+                    This OTP is valid for <strong>10 minutes</strong>. If you did not make this request, please contact our support team immediately.
+                  </p>
+                  <p style="margin: 0;">
+                    For security reasons, never share this OTP with anyone.
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td style="background-color: #f9f9f9; color: #777777; text-align: center; padding: 15px;">
+                  <p style="margin: 0; font-size: 14px;">
+                    Need help? Contact us at <a href="mailto:mentorecapstone2024@gmail.com" style="color: #4caf50; text-decoration: none;">mentorecapstone2024@gmail.com</a>
+                  </p>
+                  <p style="margin: 5px 0 0; font-size: 12px;">© 2024 ShopMitra. All rights reserved.</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>`,
+  });
+
+  if (passwordResetEmailResponse.error) {
+    return { error: passwordResetEmailResponse.error };
+  }
+
+  return { success: "Password reset OTP sent successfully" };
 }
 
 async function verifyOtpLogic(body) {
@@ -173,10 +220,16 @@ async function verifyOtpLogic(body) {
     return { error: otpDeleteError.message };
   }
 
-  const salt = await GenerateSalt();
-  const password =
-    email.split("@")[0].charAt(0).toUpperCase() + email.split("@")[0].slice(1);
-  const hashedPassword = await GeneratePassword(password, salt);
+  const salt = GenerateSalt();
+  let characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let password = "";
+  for (let i = 0; i < 16; i++) {
+    password += characters.charAt(
+      Math.floor(Math.random() * characters.length)
+    );
+  }
+  const hashedPassword = GeneratePassword(password, salt);
   const { error: newError } = await supabase
     .from("users")
     .update({ password: hashedPassword, salt: salt })
@@ -186,73 +239,66 @@ async function verifyOtpLogic(body) {
     return { error: "Password reset failed" };
   }
 
-  return {
-    success: "Otp verified successfully",
-    tempPassword: password,
-    emailServiceID: process.env.EMAILJS_SERVICE_ID,
-    emailPublicKey: process.env.EMAILJS_PUBLIC_KEY,
-    emailPrivateKey: process.env.EMAILJS_PRIVATE_KEY,
-  };
-}
+  const newPasswordEmailResponse = sendMail({
+    from: process.env.NODEMAILER_GMAIL_USER,
+    to: email,
+    subject: "Shopmitra: Temporary Password",
+    html: `
+    <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f7;">
+      <table align="center" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f7; padding: 20px 0;">
+        <tr>
+          <td align="center">
+            <table width="600" cellpadding="0" cellspacing="0" style="background-color: #ffffff; border: 1px solid #eaeaea; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+              <tr>
+                <td style="background-color: #4caf50; color: #ffffff; text-align: center; padding: 20px;">
+                  <h1 style="margin: 0; font-size: 28px; font-weight: bold;">ShopMitra</h1>
+                  <p style="margin: 5px 0 0; font-size: 16px;">Your Trusted Shopping Partner</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 20px; color: #555555; text-align: left; line-height: 1.6;">
+                  <h2 style="color: #333333; font-size: 22px; margin-top: 0;">Hello,</h2>
+                  <p style="margin: 10px 0;">
+                    We have generated a temporary password for your account. Please find it below:
+                  </p>
+                  <p style="text-align: center;">
+                    <span style="display: inline-block; background-color: #f0f8ff; padding: 15px 30px; font-size: 24px; font-weight: bold; color: #333333; border-radius: 5px; border: 1px solid #e0e0e0;">
+                      ${password}
+                    </span>
+                  </p>
+                  <p style="margin: 20px 0;">
+                    <strong>Important:</strong> We strongly recommend changing this temporary password as soon as possible to ensure the security of your account.
+                  </p>
+                  <p style="margin: 20px 0; text-align: center;">
+                    <a href=${process.env.CHANGE_PASSWORD_URL} style="background-color: #4caf50; color: #ffffff; text-decoration: none; padding: 12px 20px; font-size: 16px; font-weight: bold; border-radius: 5px; display: inline-block;">
+                      Change Password Now
+                    </a>
+                  </p>
+                  <p style="margin: 0;">
+                    If you did not request this temporary password, please contact our support team immediately.
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td style="background-color: #f9f9f9; color: #777777; text-align: center; padding: 15px;">
+                  <p style="margin: 0; font-size: 14px;">
+                    Need help? Contact us at <a href="mailto:mentorecapstone2024@gmail.com" style="color: #4caf50; text-decoration: none;">mentorecapstone2024@gmail.com</a>
+                  </p>
+                  <p style="margin: 5px 0 0; font-size: 12px;">© 2024 ShopMitra. All rights reserved.</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </body>`,
+  });
 
-async function resendOtpLogic(body) {
-  const { email } = body;
-
-  const { data, error } = await supabase
-    .from("otp")
-    .select()
-    .eq("email", email);
-
-  if (error) {
-    return { error: error.message };
+  if (newPasswordEmailResponse.error) {
+    return { error: newPasswordEmailResponse.error };
   }
 
-  if (data && data.length === 0) {
-    const totp = generateOtp();
-
-    const { error } = await supabase
-      .from("otp")
-      .insert({ email: email, otp: totp, created_at: new Date() });
-
-    if (error) {
-      return { error: "Otp resend failed!" };
-    }
-
-    const response = await sendForgotPasswordMail(email, totp);
-
-    if (response.error) {
-      return { error: response.error };
-    }
-
-    return { success: "Otp resend successfull!" };
-  }
-
-  const { error: deleteOtpError } = await supabase
-    .from("otp")
-    .delete()
-    .eq("email", email);
-
-  if (deleteOtpError?.message) {
-    return { error: "Otp resend failed!" };
-  }
-
-  const totp = generateOtp();
-
-  const { error: saveOtpError } = await supabase
-    .from("otp")
-    .insert({ email: email, otp: totp, created_at: new Date() });
-
-  if (saveOtpError?.message) {
-    return { error: "Otp resend failed!" };
-  }
-
-  return {
-    success: "Otp resend successfull!",
-    otp: totp,
-    emailServiceID: process.env.EMAILJS_SERVICE_ID,
-    emailPublicKey: process.env.EMAILJS_PUBLIC_KEY,
-    emailPrivateKey: process.env.EMAILJS_PRIVATE_KEY,
-  };
+  return { success: "Otp verified successfully" };
 }
 
 async function changePasswordLogic(body, user) {
@@ -339,7 +385,6 @@ module.exports = {
   loginUserLogic,
   sendResetPasswordOtpLogic,
   verifyOtpLogic,
-  resendOtpLogic,
   changePasswordLogic,
   userDetailsLogic,
   fetchBookingsWithMentorLogic,

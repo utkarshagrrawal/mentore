@@ -44,7 +44,7 @@ export function LoginBlock({ login, setLogin, setLoading }) {
   };
 
   return (
-    <div className="border-2 border-gray-300 mt-3 px-6 py-8 w-full md:w-[75%] lg:w-1/3 flex flex-col bg-white rounded-xl shadow-2xl">
+    <div className="border border-gray-100 mt-3 px-6 py-8 w-full max-w-md flex flex-col bg-white rounded-xl shadow-sm">
       <div className="sm:w-full">
         <h2 className="mt-4 text-center text-3xl font-bold leading-9 text-gray-900">
           Sign in to your account

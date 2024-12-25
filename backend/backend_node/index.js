@@ -11,28 +11,29 @@ const meetingRoute = require("./routes/meetingRoute");
 const searchRoute = require("./routes/searchRoute");
 const questionRoute = require("./routes/questionRoute");
 
-require("dotenv").config();
-
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      "https://mentormentee.vercel.app",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use("/user", userRoute);
-
 app.use("/admin", adminRoute);
-
 app.use("/search", searchRoute);
-
 app.use("/webinar", webinarRoute);
-
 app.use("/mentor", mentorRoute);
-
 app.use("/blog", blogRoute);
-
 app.use("/payment", paymentRoute);
-
 app.use("/meeting", meetingRoute);
-
 app.use("/question", questionRoute);
 
 app.listen(3000, () => {

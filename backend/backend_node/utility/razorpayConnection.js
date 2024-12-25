@@ -1,6 +1,5 @@
 const razorpay = require("razorpay");
 const { v4: uuidv4 } = require("uuid");
-require("dotenv").config();
 
 const razorpayInstance = new razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,

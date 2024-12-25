@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ErrorNotify, SuccessNotify } from "../../global/toast";
-import emailjs from "@emailjs/browser";
 
 export function VerifyOtp({ forgotPassword, handleChange, setLoading }) {
   const navigate = useNavigate();
@@ -31,27 +30,10 @@ export function VerifyOtp({ forgotPassword, handleChange, setLoading }) {
     );
     let result = await verifyOtp.json();
     if (result.success) {
-      const templateParams = {
-        reply_to: forgotPassword.email,
-        message: `Hey, your new password is: ${result.tempPassword}. Please do not share it with anyone and change it after login.`,
-      };
-      try {
-        await emailjs.send(
-          result.emailServiceID,
-          "template_531nigr",
-          templateParams,
-          {
-            publicKey: result.emailPublicKey,
-            privateKey: result.emailPrivateKey,
-          }
-        );
-        SuccessNotify("Password reset successfull");
-        navigate("/user/login");
-      } catch (error) {
-        ErrorNotify("Error sending email" + error);
-      }
+      SuccessNotify("Password reset successfull");
+      navigate("/user/login");
     } else {
-      ErrorNotify(result.error);
+      ErrorNotify(result.error || "Error verifying OTP");
     }
     setLoading(false);
   };
@@ -72,32 +54,15 @@ export function VerifyOtp({ forgotPassword, handleChange, setLoading }) {
     );
     let result = await resendOtp.json();
     if (result.success) {
-      const templateParams = {
-        reply_to: forgotPassword.email,
-        message: `Hey, your otp for verification is: ${result.otp}. Please do not share it with anyone.`,
-      };
-      try {
-        await emailjs.send(
-          result.emailServiceID,
-          "template_mdm21jv",
-          templateParams,
-          {
-            publicKey: result.emailPublicKey,
-            privateKey: result.emailPrivateKey,
-          }
-        );
-        SuccessNotify("OTP sent successfully");
-      } catch (error) {
-        ErrorNotify("Error sending email" + error);
-      }
+      SuccessNotify("OTP sent successfully");
     } else {
-      ErrorNotify(result.error);
+      ErrorNotify(result.error || "Error sending OTP");
     }
     setLoading(false);
   };
 
   return (
-    <div className="border-2 border-gray-300 mt-3 px-6 py-8 w-full md:w-[75%] lg:w-1/3 flex flex-col bg-white rounded-xl shadow-2xl">
+    <div className="border border-gray-100 mt-3 px-6 py-8 w-full max-w-md flex flex-col bg-white rounded-xl shadow-sm">
       <div className="sm:w-full">
         <h2 className="mt-4 text-center text-3xl font-bold leading-9 text-gray-900">
           Forgot your password?

@@ -13,8 +13,6 @@ const {
   updateCommentLogic,
 } = require("../logic/blogLogic");
 
-require("dotenv").config();
-
 const fetchAllBlogs = async (req, res) => {
   const response = await fetchAllBlogsLogic();
   if (response.error) {

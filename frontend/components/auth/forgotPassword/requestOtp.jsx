@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ErrorNotify, SuccessNotify } from "../../global/toast";
-import emailjs from "@emailjs/browser";
 
 export function RequestOtp({
   forgotPassword,
@@ -35,38 +34,16 @@ export function RequestOtp({
     );
     let result = await forgotPasswordUser.json();
     if (result.success) {
-      const templateParams = {
-        reply_to: forgotPassword.email,
-        message: `Hey, your otp for verification is: ${result.otp}. Please do not share it with anyone.`,
-      };
-      try {
-        await emailjs.send(
-          result.emailServiceID,
-          "template_mdm21jv",
-          templateParams,
-          {
-            publicKey: result.emailPublicKey,
-            privateKey: result.emailPrivateKey,
-          }
-        );
-        setEmailSent(true);
-        SuccessNotify("OTP sent successfully");
-      } catch (error) {
-        ErrorNotify("Error sending email" + error.message);
-      }
       setEmailSent(true);
+      SuccessNotify("OTP sent successfully");
     } else {
-      if (result.error === "User with this mail does not exists") {
-        ErrorNotify(result.error);
-      } else {
-        ErrorNotify("Something went wrong");
-      }
+      ErrorNotify(result.error || "Error sending OTP");
     }
     setLoading(false);
   };
 
   return (
-    <div className="border-2 border-gray-300 mt-3 px-6 py-8 w-full md:w-[75%] lg:w-1/3 flex flex-col bg-white rounded-xl shadow-2xl">
+    <div className="border border-gray-100 mt-3 px-6 py-8 w-full max-w-md flex flex-col bg-white rounded-xl shadow-sm">
       <div className="sm:w-full">
         <h2 className="mt-4 text-center text-3xl font-bold leading-9 text-gray-900">
           Forgot your password?

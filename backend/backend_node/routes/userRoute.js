@@ -6,7 +6,6 @@ const {
   changepassword,
   currentUserDetails,
   verifyOtp,
-  resendOtp,
   fetchBookingsWithMentor,
 } = require("../controllers/userController");
 const { authentication } = require("../middlewares/authMiddleware");
@@ -20,14 +19,13 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 
 router.post("/forgot-password", forgotPassword);
+router.post("/resendotp", forgotPassword);
 
 router.put("/change-password", authentication, changepassword);
 
 router.get("/details", authentication, currentUserDetails);
 
 router.post("/verifyotp", verifyOtp);
-
-router.post("/resendotp", resendOtp);
 
 router.get(
   "/my-bookings",

@@ -1,17 +1,16 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-require("dotenv").config();
 
 const GenerateSignature = (payload) => {
   return jwt.sign(payload, process.env.APP_SECRET_KEY, { expiresIn: "1d" });
 };
 
-const GenerateSalt = async () => {
-  return await bcrypt.genSalt();
+const GenerateSalt = () => {
+  return bcrypt.genSaltSync();
 };
 
-const GeneratePassword = async (password, salt) => {
-  return await bcrypt.hash(password, salt);
+const GeneratePassword = (password, salt) => {
+  return bcrypt.hashSync(password, salt);
 };
 
 module.exports = {

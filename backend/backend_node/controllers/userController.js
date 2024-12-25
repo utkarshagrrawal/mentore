@@ -41,14 +41,6 @@ const verifyOtp = async (req, res) => {
   return res.json(response);
 };
 
-const resendOtp = async (req, res) => {
-  const response = await resendOtpLogic(req.body);
-  if (response.error) {
-    return res.json({ error: response.error });
-  }
-  return res.json(response);
-};
-
 const changepassword = async (req, res) => {
   const response = await changePasswordLogic(req.body, req.user);
   if (response.error) {
@@ -80,6 +72,5 @@ module.exports = {
   changepassword,
   currentUserDetails,
   verifyOtp,
-  resendOtp,
   fetchBookingsWithMentor,
 };

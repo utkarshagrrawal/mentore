@@ -1,12 +1,10 @@
-const speakeasy = require("speakeasy");
-
-const secret = speakeasy.generateSecret({ length: 20 });
-
 const generateOtp = () => {
-  return speakeasy.totp({
-    secret: secret.base32,
-    encoding: "base32",
-  });
+  let otp = "";
+  let digists = "0123456789";
+  for (let i = 0; i < 6; i++) {
+    otp += digists[Math.floor(Math.random() * 10)];
+  }
+  return otp;
 };
 
 module.exports = {
