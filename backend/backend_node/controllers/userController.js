@@ -29,7 +29,7 @@ const loginUser = async (req, res) => {
   };
   if (process.env.ENV === "production") {
     cookieOptions.secure = true;
-    cookieOptions.sameSite = "none";
+    cookieOptions.sameSite = "None";
   }
   res.cookie("SESSION_ID", response.token, cookieOptions);
   return res.json({ success: response.success });
