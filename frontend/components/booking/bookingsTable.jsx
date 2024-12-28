@@ -21,20 +21,18 @@ export default function BookingsTable({
   const meetings = useRef([]);
 
   useEffect(() => {
-    let options = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-    };
-
     const getAllMeetings = async () => {
       setDataLoading(true);
 
       const allMeetings = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/user/bookings/mentor/" + id,
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const response = await allMeetings.json();
 
@@ -65,20 +63,19 @@ export default function BookingsTable({
 
   const handlePay = async (id) => {
     const toastId = Loading("Processing payment...");
-    let options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        title: "Payment_for_mentor_session_for_" + id,
-      }),
-    };
 
     const pay = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/payment/pay/" + id,
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          title: "Payment_for_mentor_session_for_" + id,
+        }),
+      }
     );
     const response = await pay.json();
 
@@ -98,16 +95,15 @@ export default function BookingsTable({
         order_id: response.result.id,
         handler: async function (response) {
           const paymentsuccess = async () => {
-            let options = {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: localStorage.getItem("token"),
-              },
-            };
             const payment = await fetch(
               import.meta.env.VITE_BACKEND_URL + "/payment/success/" + id,
-              options
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                credentials: "include",
+              }
             );
             const response = await payment.json();
 
@@ -136,19 +132,18 @@ export default function BookingsTable({
   };
 
   const handleJoinMeeting = async (link) => {
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        meeting_id: link,
-      }),
-    };
     const join = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/meeting/join/participant",
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          meeting_id: link,
+        }),
+        credentials: "include",
+      }
     );
     const response = await join.json();
     if (response.error) {

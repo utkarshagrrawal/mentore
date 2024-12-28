@@ -45,23 +45,22 @@ export default function BookingRequest({
 
     setScheduling(true);
 
-    let options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        mentorId: mentorId,
-        startDateTime: schedulingDetails.startDateTime,
-        duration: schedulingDetails.duration,
-        about: schedulingDetails.about,
-      }),
-    };
     const toastId = Loading("Scheduling the meeting");
     let schedule = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/meeting/schedule",
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          mentorId: mentorId,
+          startDateTime: schedulingDetails.startDateTime,
+          duration: schedulingDetails.duration,
+          about: schedulingDetails.about,
+        }),
+      }
     );
     const result = await schedule.json();
     DismissToast(toastId);
@@ -73,7 +72,7 @@ export default function BookingRequest({
       }
     } else {
       SuccessNotify("Meeting request sent successfully to mentor");
-      location.reload();
+      // location.reload();
     }
     setDataLoading(true);
     setScheduling(false);

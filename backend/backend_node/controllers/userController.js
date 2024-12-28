@@ -22,7 +22,17 @@ const loginUser = async (req, res) => {
   if (response.error) {
     return res.json({ error: response.error });
   }
-  return res.json({ success: response.success, token: response.token });
+  let cookieOptions = {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24,
+    Path: "/",
+  };
+  if (process.env.ENV === "production") {
+    cookieOptions.secure = true;
+    cookieOptions.sameSite = "none";
+  }
+  res.cookie("SESSION_ID", response.token, cookieOptions);
+  return res.json({ success: response.success });
 };
 
 const forgotPassword = async (req, res) => {

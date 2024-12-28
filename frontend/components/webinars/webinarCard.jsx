@@ -14,22 +14,21 @@ export default function WebinarCard({ user, webinar, setLoading }) {
   });
 
   const handleJoinWebinar = async (meeting_id) => {
-    let options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        meeting_id: meeting_id,
-      }),
-    };
     let webinarJoiningType =
       webinar.mentor_email === user.current?.email ? "host" : "participant";
     const toastId = Loading("Joining the webinar");
     let webinars = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/webinar/join/" + webinarJoiningType,
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          meeting_id: meeting_id,
+        }),
+        credentials: "include",
+      }
     );
     const result = await webinars.json();
     if (!result.success) {
@@ -44,20 +43,19 @@ export default function WebinarCard({ user, webinar, setLoading }) {
     if (user.current?.email === undefined) {
       return ErrorNotify("Please login to register for the webinar");
     }
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        webinar_id: id,
-      }),
-    };
     const toastId = Loading("Registering for the webinar");
     const response = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/webinar/register",
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          webinar_id: id,
+        }),
+      }
     );
     const result = await response.json();
     if (result.error) {

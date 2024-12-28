@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import MentorCard from "./mentorCard";
-import Paginate from "../global/paginate";
 import Header from "../global/header";
 import {
   DismissToast,
@@ -15,29 +14,27 @@ export function SearchResults() {
   const [searchQuery, setSearchQuery] = useState(
     searchParams.get("search_query") || ""
   );
-
   const [loggedIn, setLoggedIn] = useState(false);
   const [detailsLoading, setDetailsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(0); // Track current page
-  const mentorsPerPage = 18; // Number of mentors per page
-  const [mentors, setMentors] = useState([]); // List of mentors
+  const [currentPage, setCurrentPage] = useState(0);
+  const [mentors, setMentors] = useState([]);
+  const [currentMentors, setCurrentMentors] = useState([]);
+  const allMentors = useRef([]);
 
   useEffect(() => {
     const getUser = async () => {
-      let options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
       let users = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/user/details",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const result = await users.json();
       if (result.error) {
-        localStorage.removeItem("token");
         setLoggedIn(false);
       } else {
         setLoggedIn(true);
@@ -47,18 +44,33 @@ export function SearchResults() {
   }, []);
 
   useEffect(() => {
+    const getAllMentors = async () => {
+      let mentorDetail = await fetch(
+        import.meta.env.VITE_BACKEND_URL + "/mentor/all",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
+      );
+      let result = await mentorDetail.json();
+      if (result.error) {
+        ErrorNotify("Some error occured. Please try again");
+      } else {
+        setMentors(result.result);
+        allMentors.current = result.result;
+      }
+      setDetailsLoading(false);
+    };
+    getAllMentors();
+  }, []);
+
+  useEffect(() => {
     let controller = new AbortController();
 
     const findMentors = async () => {
-      const options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-        signal: controller.signal,
-      };
-
       let toastId;
 
       try {
@@ -67,9 +79,18 @@ export function SearchResults() {
 
         const response = await fetch(
           import.meta.env.VITE_BACKEND_URL + "/search/" + searchQuery,
-          options
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+            signal: controller.signal,
+          }
         );
         const result = await response.json();
+
+        setCurrentPage(0);
 
         DismissToast(toastId);
 
@@ -81,41 +102,19 @@ export function SearchResults() {
             setMentors(JSON.parse(result.response));
           } else {
             const toastId = Loading(
-              "No mentors found. Searching for similar mentors"
+              "No mentors found. Searching for names similar to the query"
             );
-
-            let mentorDetail = await fetch(
-              import.meta.env.VITE_BACKEND_URL + "/mentor/all",
-              options
-            );
-            let result = await mentorDetail.json();
-
-            DismissToast(toastId);
-
-            if (result.error) {
-              ErrorNotify("Some error occured. Please try again");
-            } else {
-              let filteredPersons = result.result.filter((person) => {
+            setMentors(() => {
+              return allMentors.current.filter((person) => {
                 if (
                   person.name.toLowerCase().includes(searchQuery.toLowerCase())
                 ) {
-                  return person.uniq_id;
+                  return person;
                 }
-                return null;
               });
-              setMentors(
-                filteredPersons.map((person) => {
-                  return result.result.find(
-                    (mentor) => mentor.uniq_id === person.uniq_id
-                  );
-                })
-              );
-              if (filteredPersons.length > 0) {
-                SuccessNotify("Similar mentors found");
-              } else {
-                ErrorNotify("No mentors found");
-              }
-            }
+            });
+
+            DismissToast(toastId);
           }
         }
       } catch (error) {}
@@ -129,41 +128,21 @@ export function SearchResults() {
   }, [searchQuery]);
 
   useEffect(() => {
-    const getAllMentors = async () => {
-      let options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
-      let mentorDetail = await fetch(
-        import.meta.env.VITE_BACKEND_URL + "/mentor/all",
-        options
-      );
-      let result = await mentorDetail.json();
-      if (result.error) {
-        ErrorNotify("Some error occured. Please try again");
-      } else {
-        setMentors(result.result);
+    const scrollListener = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 100
+      ) {
+        setCurrentPage((prev) => prev + 1);
       }
-      setDetailsLoading(false);
     };
-    getAllMentors();
-  }, []);
+    window.addEventListener("scroll", scrollListener);
+    return () => window.removeEventListener("scroll", scrollListener);
+  }, [mentors]);
 
-  // Pagination: Logic to slice mentors based on current page
-  const indexOfLastMentor = (currentPage + 1) * mentorsPerPage;
-  const indexOfFirstMentor = indexOfLastMentor - mentorsPerPage;
-  const currentMentors =
-    mentors &&
-    mentors.length > 0 &&
-    mentors.slice(indexOfFirstMentor, indexOfLastMentor);
-
-  // Pagination: Handle page change
-  const handlePageChange = ({ selected }) => {
-    setCurrentPage(selected);
-  };
+  useEffect(() => {
+    setCurrentMentors(mentors.slice(0, currentPage * 3 + 6));
+  }, [currentPage, mentors]);
 
   return (
     <div className="min-h-screen items-center flex flex-col w-full">
@@ -177,22 +156,13 @@ export function SearchResults() {
       <div className="w-full my-10">
         {!detailsLoading && (
           <div className="grid lg:grid-cols-3 gap-2 md:grid-cols-2 grid-cols-1 place-content-center place-items-center drop-shadow-xl">
-            {currentMentors &&
-              currentMentors.length > 0 &&
+            {currentMentors?.length > 0 &&
               currentMentors.map((mentor, index) => (
                 <MentorCard key={index} mentor={mentor} />
               ))}
           </div>
         )}
       </div>
-
-      {/* Pagination */}
-      {!detailsLoading && (
-        <Paginate
-          pages={mentors ? Math.ceil(mentors.length / mentorsPerPage) : 1}
-          onChange={handlePageChange}
-        />
-      )}
     </div>
   );
 }

@@ -1,0 +1,27 @@
+.scroller {
+  overflow: hidden;
+  mask: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 3%,
+    black 97%,
+    transparent 100%
+  );
+}
+
+.scroller_inner:hover {
+  cursor: pointer;
+}
+
+.scroller_inner {
+  display: flex;
+  gap: 1rem;
+  animation: scroll 20s linear infinite;
+  width: max-content;
+}
+
+@keyframes scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}

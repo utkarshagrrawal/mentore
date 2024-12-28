@@ -4,7 +4,7 @@ export const questions = [
     question: "Question 1: Does Long-term mentorship really produce outcomes?",
     answer: `
       <p>1:1 long-term mentorship is a new concept in comparison to a typical course or a bootcamp.</p>
-      <p>Hence, your doubt is completely valid. So let’s us resolve your doubt with Preplaced mentor stats</p>
+      <p>Hence, your doubt is completely valid. So let’s us resolve your doubt with Mentore mentor stats</p>
       <ul class="list-inside list-disc">
         <li>Avg. 90% of mentees say they became more consistent with the help of 1:1 long-term mentorship (Compared to a 10% completion rate of courses)</li>
         <li>Avg. 70% of mentees achieve their career aspirations with the power of 1:1 long-term mentorship (Compared to 30% of people who get success)</li>
@@ -33,7 +33,7 @@ export const questions = [
       </ul>
       <br>
       <p>Tip:</p>
-      <p>Every Preplaced mentor feels it is their responsibility to achieve your dreams. And to do that, transactional relations and a fixed number of interactions are not enough. So when you gauge the mentors, we recommend not just using session count as a definition of value. But rather use description, skills & trial sessions to select the mentor.</p>
+      <p>Every Mentore mentor feels it is their responsibility to achieve your dreams. And to do that, transactional relations and a fixed number of interactions are not enough. So when you gauge the mentors, we recommend not just using session count as a definition of value. But rather use description, skills & trial sessions to select the mentor.</p>
     `,
   },
   {

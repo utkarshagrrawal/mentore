@@ -248,14 +248,6 @@ export default function Answers({
       return ErrorNotify("Please login to like the answer");
     }
 
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-    };
-
     const toastId = Loading("Loading...");
 
     const response = await fetch(
@@ -265,7 +257,13 @@ export default function Answers({
         "/answer/" +
         answer_id +
         "/like",
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
     );
     const result = await response.json();
 
@@ -282,20 +280,19 @@ export default function Answers({
     if (!resp) {
       return ErrorNotify("Answer not deleted");
     }
-    const options = {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-    };
     const response = await fetch(
       import.meta.env.VITE_BACKEND_URL +
         "/question/" +
         questionId +
         "/answer/" +
         answer_id,
-      options
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
     );
     const result = await response.json();
     if (result.error) {
@@ -341,16 +338,6 @@ export default function Answers({
 
     const toastId = Loading("Adding reply...");
 
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        reply: value,
-      }),
-    };
     const response = await fetch(
       import.meta.env.VITE_BACKEND_URL +
         "/question/" +
@@ -358,7 +345,16 @@ export default function Answers({
         "/answer/" +
         id +
         "/reply",
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          reply: value,
+        }),
+        credentials: "include",
+      }
     );
     const result = await response.json();
 
@@ -410,17 +406,6 @@ export default function Answers({
       return ErrorNotify("Answer should be less than 1000 characters");
     }
 
-    const options = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        answer: value,
-      }),
-    };
-
     const toastId = Loading("Updating answer...");
 
     const response = await fetch(
@@ -429,7 +414,16 @@ export default function Answers({
         questionId +
         "/answer/" +
         answer_id,
-      options
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          answer: value,
+        }),
+        credentials: "include",
+      }
     );
     const result = await response.json();
 

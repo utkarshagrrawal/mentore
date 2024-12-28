@@ -45,9 +45,9 @@ export default function NewWebinar({ setWebinarDetailsLoading }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
         },
         body: JSON.stringify(newWebinarDetails),
+        credentials: "include",
       }
     );
     const response = await createMeeting.json();

@@ -19,20 +19,18 @@ export function Insights() {
   // checks if the user is logged in
   useEffect(() => {
     const getUser = async () => {
-      let options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
       let users = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/user/details",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const result = await users.json();
       if (result.error) {
-        localStorage.removeItem("token");
         setLoggedIn(false);
       } else {
         user.current = result.result;
@@ -45,17 +43,13 @@ export function Insights() {
   useEffect(() => {
     const getBlogs = async () => {
       setBlogsLoading(true);
-      let options = {
+      let blogs = await fetch(import.meta.env.VITE_BACKEND_URL + "/blog/all", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
         },
-      };
-      let blogs = await fetch(
-        import.meta.env.VITE_BACKEND_URL + "/blog/all",
-        options
-      );
+        credentials: "include",
+      });
       const response = await blogs.json();
       if (response.error) {
         ErrorNotify("Some error occurred while fetching blogs");

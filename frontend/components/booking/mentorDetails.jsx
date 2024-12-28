@@ -7,16 +7,15 @@ export default function MentorDetails({ id, mentorDetails, setMentorDetails }) {
   useEffect(() => {
     setLoading(true);
     const getMentorDetails = async () => {
-      let options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
       let mentors = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/mentor/profile?id=${id}`,
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const result = await mentors.json();
       if (result.error) {

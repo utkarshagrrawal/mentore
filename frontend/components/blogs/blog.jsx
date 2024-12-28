@@ -13,20 +13,18 @@ export function Blog() {
   // checks if the user is logged in
   useEffect(() => {
     const getUser = async () => {
-      let options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
       let users = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/user/details",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const result = await users.json();
       if (result.error) {
-        localStorage.removeItem("token");
         setLoggedIn(false);
       } else {
         user.current = result.result;

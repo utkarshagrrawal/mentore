@@ -14,22 +14,19 @@ export function Qna() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
-
       const response = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/user/details",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const result = await response.json();
 
       if (result.error) {
-        localStorage.removeItem("token");
         setLoggedIn(false);
       } else {
         setLoggedIn(true);
@@ -41,17 +38,15 @@ export function Qna() {
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      const options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
-
       const response = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/question/all",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const result = await response.json();
 
@@ -70,17 +65,15 @@ export function Qna() {
 
   useEffect(() => {
     const fetchTags = async () => {
-      const options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
-
       const response = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/mentor/skill-options",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const result = await response.json();
 
@@ -98,18 +91,16 @@ export function Qna() {
     const filterQuestions = async () => {
       const toastId = Loading("Filtering questions");
 
-      const options = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-        body: JSON.stringify({ tags: selectedTags }),
-      };
-
       const response = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/question/filter",
-        options
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ tags: selectedTags }),
+        }
       );
       const result = await response.json();
 

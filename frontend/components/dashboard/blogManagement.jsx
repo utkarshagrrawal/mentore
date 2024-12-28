@@ -13,16 +13,15 @@ export default function BlogManagement({ blogsLoading, setBlogsLoading }) {
   // get all blogs
   useEffect(() => {
     const getBlogs = async () => {
-      let options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
       const response = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/mentor/blogs",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const data = await response.json();
       if (data.error) {
@@ -50,8 +49,8 @@ export default function BlogManagement({ blogsLoading, setBlogsLoading }) {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
         },
+        credentials: "include",
       }
     );
     const result = await deleteBlog.json();

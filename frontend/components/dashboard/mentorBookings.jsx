@@ -12,18 +12,16 @@ export default function MentorBookings() {
   const [isApprovingOrRejecting, setIsApprovingOrRejecting] = useState(false);
 
   useEffect(() => {
-    const options = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-    };
-
     const getMeetings = async () => {
       const response = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/mentor/meetings",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const result = await response.json();
       if (result.error) {
@@ -46,8 +44,8 @@ export default function MentorBookings() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
         },
+        credentials: "include",
       }
     );
     const response = await approveRequest.json();
@@ -69,8 +67,8 @@ export default function MentorBookings() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
         },
+        credentials: "include",
       }
     );
     const response = await rejectRequest.json();
@@ -85,19 +83,18 @@ export default function MentorBookings() {
   };
 
   const handleJoinMeeting = async (link) => {
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        meeting_id: link,
-      }),
-    };
     const response = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/meeting/join/host",
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          meeting_id: link,
+        }),
+      }
     );
     const result = await response.json();
 

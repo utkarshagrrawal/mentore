@@ -19,20 +19,18 @@ export function WebinarsPage() {
 
   useEffect(() => {
     const getUser = async () => {
-      let options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
       let users = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/user/details",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const result = await users.json();
       if (result.error) {
-        localStorage.removeItem("token");
         setLoggedIn(false);
       } else {
         user.current = result.result;
@@ -44,16 +42,15 @@ export function WebinarsPage() {
 
   useEffect(() => {
     const webinars = async () => {
-      let options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
       let webinars = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/webinar/all",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const result = await webinars.json();
       if (result.error) {

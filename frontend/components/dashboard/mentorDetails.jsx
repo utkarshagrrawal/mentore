@@ -15,16 +15,15 @@ export default function MentorProfile() {
 
   useEffect(() => {
     const getSkills = async () => {
-      let options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
       let skills = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/mentor/skill-options",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       let result = await skills.json();
       if (result.error) {
@@ -39,16 +38,15 @@ export default function MentorProfile() {
 
   useEffect(() => {
     const getMentorDetails = async () => {
-      let options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
       let mentorDetailsResponse = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/mentor/details",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       let result = await mentorDetailsResponse.json();
       if (result.error) {
@@ -71,17 +69,16 @@ export default function MentorProfile() {
     }
     const toastId = Loading("Updating fees");
     setUpdatingFees(true);
-    let options = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({ fees: mentorDetails.fees }),
-    };
     let response = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/mentor/fees/update",
-      options
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ fees: mentorDetails.fees }),
+      }
     );
     let result = await response.json();
     DismissToast(toastId);

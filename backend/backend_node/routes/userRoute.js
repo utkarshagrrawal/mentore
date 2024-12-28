@@ -14,31 +14,29 @@ const { removeExpiredMeetings } = require("../middlewares/meetingMiddleware");
 
 const router = express.Router();
 
-router.post("/register", registerUser);
-
-router.post("/login", loginUser);
-
-router.post("/forgot-password", forgotPassword);
-router.post("/resendotp", forgotPassword);
-
-router.put("/change-password", authentication, changepassword);
-
 router.get("/details", authentication, currentUserDetails);
-
-router.post("/verifyotp", verifyOtp);
-
 router.get(
   "/my-bookings",
   authentication,
   removeExpiredMeetings,
   getMyBookings
 );
-
 router.get(
   "/bookings/mentor/:id",
   authentication,
   removeExpiredMeetings,
   fetchBookingsWithMentor
 );
+
+router.post("/register", registerUser);
+router.post("/login", loginUser);
+router.post("/logout", (req, res) => {
+  res.clearCookie("SESSION_ID");
+  return res.json({ success: "Logged out successfully" });
+});
+router.post("/forgot-password", forgotPassword);
+router.post("/verifyotp", verifyOtp);
+
+router.put("/change-password", authentication, changepassword);
 
 module.exports = router;

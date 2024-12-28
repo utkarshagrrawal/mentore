@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import parse from "html-react-parser";
 import { ErrorNotify } from "../global/toast";
 
 export default function Content({ blogId }) {
@@ -8,16 +7,15 @@ export default function Content({ blogId }) {
 
   useEffect(() => {
     const getBlog = async () => {
-      let options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
       let users = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/blog/${blogId}`,
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const result = await users.json();
       if (result.error) {
@@ -41,7 +39,7 @@ export default function Content({ blogId }) {
             By {blog.current.name}
           </h2>
           <div className="bg-white rounded-lg border border-gray-200 p-6">
-            {parse(blog.current.content)}
+            <div dangerouslySetInnerHTML={{ __html: blog.current.content }} />
           </div>
         </div>
       </div>

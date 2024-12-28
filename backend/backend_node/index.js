@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const userRoute = require("./routes/userRoute");
 const adminRoute = require("./routes/adminRoute");
@@ -12,6 +13,7 @@ const searchRoute = require("./routes/searchRoute");
 const questionRoute = require("./routes/questionRoute");
 
 const app = express();
+
 app.use(
   cors({
     origin: [
@@ -20,11 +22,12 @@ app.use(
       "https://mentormentee.vercel.app",
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type"],
     credentials: true,
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/user", userRoute);
 app.use("/admin", adminRoute);

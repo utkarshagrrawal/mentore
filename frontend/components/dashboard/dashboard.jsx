@@ -24,20 +24,18 @@ export function Dashboard() {
 
   useEffect(() => {
     const getUser = async () => {
-      let options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
       let users = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/user/details",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       let result = await users.json();
       if (result.error) {
-        localStorage.removeItem("token");
         navigate("/user/login");
         return;
       } else {
@@ -55,16 +53,15 @@ export function Dashboard() {
 
   useEffect(() => {
     const checkVerification = async () => {
-      let options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
       let response = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/mentor/verified",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       let result = await response.json();
       if (result.error) {

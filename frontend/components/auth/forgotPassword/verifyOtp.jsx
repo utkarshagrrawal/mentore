@@ -23,8 +23,8 @@ export function VerifyOtp({ forgotPassword, handleChange, setLoading }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
         },
+        credentials: "include",
         body: JSON.stringify(forgotPassword),
       }
     );
@@ -42,13 +42,13 @@ export function VerifyOtp({ forgotPassword, handleChange, setLoading }) {
     e.preventDefault();
     setLoading(true);
     let resendOtp = await fetch(
-      import.meta.env.VITE_BACKEND_URL + "/user/resendotp",
+      import.meta.env.VITE_BACKEND_URL + "/user/forgot-password",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
         },
+        credentials: "include",
         body: JSON.stringify(forgotPassword),
       }
     );

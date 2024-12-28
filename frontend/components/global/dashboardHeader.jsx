@@ -1,13 +1,28 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RiLockPasswordLine, RiLogoutCircleRLine } from "react-icons/ri";
+import { ErrorNotify } from "./toast";
 
 export default function DashboardHeader() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    localStorage.removeItem("token");
-    navigate("/user/login");
+    let logoutReq = await fetch(
+      import.meta.env.VITE_BACKEND_URL + "/user/logout",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    let response = await logoutReq.json();
+    if (response.success) {
+      navigate("/user/login");
+    } else {
+      ErrorNotify(response.error || "Error logging out");
+    }
   };
 
   return (

@@ -19,8 +19,8 @@ export default function VerifyMentor() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
           },
+          credentials: "include",
         }
       );
       const result = await response.json();
@@ -47,8 +47,8 @@ export default function VerifyMentor() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
         },
+        credentials: "include",
       }
     );
     const response = await approveRequest.json();
@@ -72,8 +72,8 @@ export default function VerifyMentor() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
         },
+        credentials: "include",
       }
     );
     const response = await rejectRequest.json();

@@ -1,5 +1,4 @@
 import React from "react";
-import parse from "html-react-parser";
 import { DismissToast, ErrorNotify, Loading } from "../global/toast";
 
 export default function BlogCard({ loggedIn, blog, user, setBlogsLoading }) {
@@ -13,18 +12,17 @@ export default function BlogCard({ loggedIn, blog, user, setBlogsLoading }) {
       ErrorNotify("Please login to like the blog");
       return;
     }
-    let options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-    };
 
     const toastId = Loading("Loading");
     let response = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/blog/" + blogId + "/like",
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
     );
     let result = await response.json();
 
@@ -59,7 +57,9 @@ export default function BlogCard({ loggedIn, blog, user, setBlogsLoading }) {
           </h3>
         </div>
       </div>
-      <div className="mb-4 h-24 overflow-hidden">{parse(blog.content)}</div>
+      <div
+        dangerouslySetInnerHTML={{ __html: blog.content?.substring(0, 500) }}
+      />
       <button
         onClick={() => handleRedirect(blog.id)}
         className="block text-blue-700 hover:underline"

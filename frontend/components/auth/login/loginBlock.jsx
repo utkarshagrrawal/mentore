@@ -30,11 +30,11 @@ export function LoginBlock({ login, setLogin, setLoading }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(login),
+        credentials: "include",
       }
     );
     let result = await loginUser.json();
     if (result.success) {
-      localStorage.setItem("token", result.token);
       SuccessNotify("Logged in successfully");
       navigate("/");
     } else {

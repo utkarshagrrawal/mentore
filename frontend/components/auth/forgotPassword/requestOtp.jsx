@@ -27,9 +27,9 @@ export function RequestOtp({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
         },
         body: JSON.stringify(forgotPassword),
+        credentials: "include",
       }
     );
     let result = await forgotPasswordUser.json();

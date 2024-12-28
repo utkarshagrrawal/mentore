@@ -13,7 +13,6 @@ router.post(
   removeExpiredMeetings,
   createMeeting
 );
-
 router.post("/success/:id", authentication, paymentSuccess);
 
 module.exports = router;

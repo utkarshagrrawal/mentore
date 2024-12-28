@@ -16,17 +16,15 @@ export function Question() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
-
       const response = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/user/details",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const result = await response.json();
 
@@ -43,17 +41,15 @@ export function Question() {
 
   useEffect(() => {
     const fetchAnswers = async () => {
-      const options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
-
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/question/${id}/answer/all`,
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const result = await response.json();
 
@@ -73,17 +69,15 @@ export function Question() {
 
   useEffect(() => {
     const fetchQuestion = async () => {
-      const options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
-
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_URL}/question/${id}`,
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const result = await response.json();
 
@@ -115,18 +109,16 @@ export function Question() {
 
     setAnswering(true);
 
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({ answer: answer }),
-    };
-
     const response = await fetch(
       `${import.meta.env.VITE_BACKEND_URL}/question/${id}/answer`,
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ answer: answer }),
+      }
     );
     const result = await response.json();
 

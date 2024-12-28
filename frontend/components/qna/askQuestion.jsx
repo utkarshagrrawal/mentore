@@ -39,18 +39,16 @@ export default function AskQuestion(props) {
 
     setAsking(true);
 
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({ question: question, tags: selectedTags }),
-    };
-
     const response = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/question/ask",
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ question: question, tags: selectedTags }),
+      }
     );
     const result = await response.json();
 

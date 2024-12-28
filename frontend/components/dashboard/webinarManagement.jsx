@@ -19,16 +19,15 @@ export default function WebinarManagement({
 
   useEffect(() => {
     const getWebinars = async () => {
-      let options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
       let webinars = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/mentor/webinars",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       let response = await webinars.json();
       allWebinars.current = response.success;
@@ -40,20 +39,19 @@ export default function WebinarManagement({
   }, [webinarDetailsLoading]);
 
   const handleJoinWebinar = async (link) => {
-    let options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        meeting_id: link,
-      }),
-    };
     const toastId = Loading("Joining the webinar");
     let webinars = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/webinar/join/host",
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          meeting_id: link,
+        }),
+      }
     );
     const result = await webinars.json();
     if (!result.success) {

@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const validateSignature = async (req, res) => {
-  const signature = req.headers.authorization;
+  const signature = req.cookies?.SESSION_ID;
   if (signature) {
     try {
       const payload = jwt.verify(signature, process.env.APP_SECRET_KEY);
@@ -22,6 +22,7 @@ const authentication = async (req, res, next) => {
   if (validate.success) {
     next();
   } else {
+    res.clearCookie("SESSION_ID");
     return res.json({ error: validate.failure });
   }
 };

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { questions } from "../../src/assets/question_ans";
-import parse from "html-react-parser";
 
 export default function Faq() {
   const [selectedQuestion, setSelectedQuestion] = useState(null);
@@ -46,7 +45,11 @@ export default function Faq() {
             </button>
             {selectedQuestion === id && (
               <div className="dark:border-gray-150 border border-b-0 border-gray-200 p-5 dark:bg-gray-100">
-                {parse(answer)}
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: answer,
+                  }}
+                />
               </div>
             )}
           </div>

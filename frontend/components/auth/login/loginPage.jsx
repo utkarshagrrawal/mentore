@@ -17,15 +17,12 @@ export function Login() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
           },
+          credentials: "include",
         }
       );
       let result = await user.json();
-      if (result.error) {
-        localStorage.removeItem("token");
-        return;
-      } else {
+      if (!result.error) {
         navigate("/");
       }
     };

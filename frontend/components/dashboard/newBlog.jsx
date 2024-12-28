@@ -24,17 +24,15 @@ export default function NewBlog({ setBlogsLoading }) {
 
   useEffect(() => {
     const getApiKey = async () => {
-      const options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
-
       const response = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/blog/editorkey",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const result = await response.json();
       if (result.key) {
@@ -75,8 +73,8 @@ export default function NewBlog({ setBlogsLoading }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
         },
+        credentials: "include",
         body: JSON.stringify({
           title: blogTitle,
           content: content,

@@ -97,9 +97,9 @@ export default function ChangePasswordBlock({ setLoading }) {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
         },
         body: JSON.stringify(password),
+        credentials: "include",
       }
     );
     let response = await changePassword.json();

@@ -38,16 +38,15 @@ export function RegisterBlock({
     setLoading({ ...loading, skillsLoading: true });
     const getSkills = async () => {
       const toastId = Loading("Fetching registeration fields for mentor");
-      let options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
       let skills = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/mentor/skill-options",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       let response = await skills.json();
       if (response.error) {
@@ -180,8 +179,8 @@ export function RegisterBlock({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
         },
+        credentials: "include",
         body: JSON.stringify({
           name: register.name,
           email: register.email,

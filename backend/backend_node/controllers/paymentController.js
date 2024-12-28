@@ -19,7 +19,7 @@ const paymentSuccess = async (req, res, next) => {
     return res.json({ error: response.error });
   }
 
-  next();
+  return res.json({ success: response.success });
 };
 
 module.exports = {

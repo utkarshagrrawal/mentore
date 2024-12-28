@@ -284,17 +284,16 @@ export default function Comments({ blogId, user }) {
   useEffect(() => {
     const getComments = async () => {
       setLoading(true);
-      const options = {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: localStorage.getItem("token"),
-        },
-      };
 
       const response = await fetch(
         import.meta.env.VITE_BACKEND_URL + "/blog/" + blogId + "/comments",
-        options
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        }
       );
       const result = await response.json();
 
@@ -341,20 +340,18 @@ export default function Comments({ blogId, user }) {
 
     setCommenting(true);
 
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        comment: newComment,
-      }),
-    };
-
     const response = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/blog/" + blogId + "/comment",
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          comment: newComment,
+        }),
+      }
     );
     const result = await response.json();
     if (result.error) {
@@ -368,14 +365,6 @@ export default function Comments({ blogId, user }) {
   };
 
   const handleLike = async (comment_id) => {
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-    };
-
     const toastId = Loading("Loading...");
 
     const response = await fetch(
@@ -385,7 +374,13 @@ export default function Comments({ blogId, user }) {
         "/comment/" +
         comment_id +
         "/like",
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
     );
     const result = await response.json();
 
@@ -398,14 +393,6 @@ export default function Comments({ blogId, user }) {
   };
 
   const handleDislike = async (comment_id) => {
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-    };
-
     const toastId = Loading("Loading...");
 
     const response = await fetch(
@@ -415,7 +402,13 @@ export default function Comments({ blogId, user }) {
         "/comment/" +
         comment_id +
         "/dislike",
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
     );
     const result = await response.json();
 
@@ -432,20 +425,19 @@ export default function Comments({ blogId, user }) {
     if (!resp) {
       return ErrorNotify("Comment not deleted");
     }
-    const options = {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-    };
     const response = await fetch(
       import.meta.env.VITE_BACKEND_URL +
         "/blog/" +
         blogId +
         "/comment/" +
         commentId,
-      options
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
     );
     const result = await response.json();
     if (result.error) {
@@ -491,16 +483,6 @@ export default function Comments({ blogId, user }) {
 
     const toastId = Loading("Adding reply...");
 
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        reply: value,
-      }),
-    };
     const response = await fetch(
       import.meta.env.VITE_BACKEND_URL +
         "/blog/" +
@@ -508,7 +490,16 @@ export default function Comments({ blogId, user }) {
         "/comment/" +
         id +
         "/reply",
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          reply: value,
+        }),
+        credentials: "include",
+      }
     );
     const result = await response.json();
 
@@ -560,17 +551,6 @@ export default function Comments({ blogId, user }) {
       return ErrorNotify("Comment should be less than 1000 characters");
     }
 
-    const options = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        comment: value,
-      }),
-    };
-
     const toastId = Loading("Updating comment...");
 
     const response = await fetch(
@@ -579,7 +559,16 @@ export default function Comments({ blogId, user }) {
         blogId +
         "/comment/" +
         comment_id,
-      options
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          comment: value,
+        }),
+      }
     );
     const result = await response.json();
 

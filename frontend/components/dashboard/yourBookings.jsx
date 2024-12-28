@@ -23,8 +23,8 @@ export default function YourBookings() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: localStorage.getItem("token"),
           },
+          credentials: "include",
         }
       );
       const result = await response.json();
@@ -40,20 +40,19 @@ export default function YourBookings() {
 
   const handlePay = async (id) => {
     const toastId = Loading("Processing payment...");
-    let options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        title: "Payment_for_mentor_session_for_" + id,
-      }),
-    };
 
     const pay = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/payment/pay/" + id,
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          title: "Payment_for_mentor_session_for_" + id,
+        }),
+      }
     );
     const response = await pay.json();
 
@@ -73,16 +72,15 @@ export default function YourBookings() {
         order_id: response.result.id,
         handler: function (response) {
           const paymentsuccess = async () => {
-            let options = {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: localStorage.getItem("token"),
-              },
-            };
             const payment = await fetch(
               import.meta.env.VITE_BACKEND_URL + "/payment/success/" + id,
-              options
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                credentials: "include",
+              }
             );
             const response = await payment.json();
 
@@ -111,19 +109,18 @@ export default function YourBookings() {
   };
 
   const handleJoinMeeting = async (link) => {
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: localStorage.getItem("token"),
-      },
-      body: JSON.stringify({
-        meeting_id: link,
-      }),
-    };
     const join = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/meeting/join/participant",
-      options
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          meeting_id: link,
+        }),
+        credentials: "include",
+      }
     );
     const response = await join.json();
     if (response.error) {
