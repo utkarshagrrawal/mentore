@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import { Loader } from "../global/loader";
 
 import BlogManagement from "./blogManagement";
@@ -13,14 +12,10 @@ import NewBlog from "./newBlog";
 import VerifyMentor from "./verifyMentor";
 
 export function Dashboard() {
-  const user = useRef({});
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isMentor, setIsMentor] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isVerified, setIsVerified] = useState(false);
   const [webinarDetailsLoading, setWebinarDetailsLoading] = useState(true);
   const [blogsLoading, setBlogsLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const getUser = async () => {
@@ -36,85 +31,55 @@ export function Dashboard() {
       );
       let result = await users.json();
       if (result.error) {
-        navigate("/user/login");
+        window.location.href = "/user/login";
         return;
       } else {
-        user.current = result.result;
-        if (user.current.type === "mentor") {
-          setIsMentor(true);
-        } else if (user.current.type === "admin") {
-          setIsAdmin(true);
-        }
+        setUser(result.result);
       }
       setLoading(false);
     };
     getUser();
   }, []);
 
-  useEffect(() => {
-    const checkVerification = async () => {
-      let response = await fetch(
-        import.meta.env.VITE_BACKEND_URL + "/mentor/verified",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        }
-      );
-      let result = await response.json();
-      if (result.error) {
-        setIsVerified(false);
-      } else {
-        setIsVerified(result.success);
-      }
-    };
-
-    if (isMentor) {
-      checkVerification();
-    }
-  }, [isMentor]);
-
-  const dashboard = (
-    <div className="mb-10">
-      <DashboardHeader />
-
-      <Profile user={user} isMentor={isMentor} />
-
-      {isMentor && isVerified && (
-        <>
-          <NewWebinar setWebinarDetailsLoading={setWebinarDetailsLoading} />
-
-          <NewBlog setBlogsLoading={setBlogsLoading} />
-        </>
-      )}
-
-      <YourBookings />
-
-      {isAdmin && <VerifyMentor />}
-
-      {isMentor && isVerified && <MentorBookings />}
-
-      {isMentor && isVerified && (
-        <WebinarManagement
-          webinarDetailsLoading={webinarDetailsLoading}
-          setWebinarDetailsLoading={setWebinarDetailsLoading}
-        />
-      )}
-
-      {isMentor && isVerified && (
-        <BlogManagement
-          blogsLoading={blogsLoading}
-          setBlogsLoading={setBlogsLoading}
-        />
-      )}
-    </div>
-  );
-
   return (
     <div className="flex justify-center items-center flex-col">
-      {loading ? <Loader /> : dashboard}
+      {loading ? (
+        <Loader />
+      ) : (
+        <div>
+          <DashboardHeader />
+
+          {user && <Profile user={user} />}
+
+          {user?.type === "mentor" && user?.verified && (
+            <>
+              <NewWebinar setWebinarDetailsLoading={setWebinarDetailsLoading} />
+
+              <NewBlog setBlogsLoading={setBlogsLoading} />
+            </>
+          )}
+
+          <YourBookings />
+
+          {user?.type === "admin" && <VerifyMentor />}
+
+          {user?.type === "mentor" && user?.verified && <MentorBookings />}
+
+          {user?.type === "mentor" && user?.verified && (
+            <WebinarManagement
+              webinarDetailsLoading={webinarDetailsLoading}
+              setWebinarDetailsLoading={setWebinarDetailsLoading}
+            />
+          )}
+
+          {user?.type === "mentor" && user?.verified && (
+            <BlogManagement
+              blogsLoading={blogsLoading}
+              setBlogsLoading={setBlogsLoading}
+            />
+          )}
+        </div>
+      )}
     </div>
   );
 }

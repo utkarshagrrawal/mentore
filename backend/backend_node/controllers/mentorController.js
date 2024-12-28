@@ -53,14 +53,6 @@ const fetchMentorSkillOptions = async (req, res) => {
   return res.json({ result: response.success });
 };
 
-const fetchMentorDetails = async (req, res) => {
-  const response = await fetchMentorDetailsLogic(req.user);
-  if (response.error) {
-    return res.json({ error: response.error });
-  }
-  return res.json({ result: response.success });
-};
-
 const fetchAllMentors = async (req, res) => {
   const response = await fetchAllMentorsLogic();
   if (response.error) {
@@ -93,14 +85,6 @@ const fetchMentorAvailability = async (req, res) => {
   return res.json({ result: response.success });
 };
 
-const isMentorVerified = async (req, res) => {
-  const response = await isMentorVerifiedLogic(req.user);
-  if (response.error) {
-    return res.json({ error: response.error });
-  }
-  return res.json({ success: response.success });
-};
-
 const updateMentorFees = async (req, res) => {
   const response = await updateMentorFeesLogic(req.body, req.user);
   if (response.error) {
@@ -111,7 +95,6 @@ const updateMentorFees = async (req, res) => {
 
 module.exports = {
   fetchMentorSkillOptions,
-  fetchMentorDetails,
   fetchAllMentors,
   fetchMentorProfile,
   fetchBookingsForMentor,
@@ -120,6 +103,5 @@ module.exports = {
   fetchWebinarsByMentor,
   fetchBlogsByMentor,
   fetchMentorAvailability,
-  isMentorVerified,
   updateMentorFees,
 };

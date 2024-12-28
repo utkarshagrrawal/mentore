@@ -62,66 +62,64 @@ export default function BlogManagement({ blogsLoading, setBlogsLoading }) {
   };
 
   return (
-    <>
+    <div className="container mx-auto my-4">
       <h1 className="text-center text-3xl font-bold my-4">Manage blogs</h1>
-      <div className="w-full">
-        <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
-            <thead className="text-xs text-white uppercase bg-blue-600">
+      <div className="w-full relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
+          <thead className="text-xs text-white uppercase bg-blue-600">
+            <tr className="text-center">
+              <th scope="col" className="px-6 py-3">
+                Posted on
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Title
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Link
+              </th>
+              <th scope="col" className="px-6 my-3">
+                Delete
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {!blogsLoading && allBlogs.current?.length > 0 ? (
+              allBlogs.current.map((item, id) => {
+                return (
+                  <tr key={id} className="text-center">
+                    <td className="px-6 py-4 text-black">
+                      {dateFormatter.format(new Date(item.created_at))}
+                    </td>
+                    <td className="px-6 py-4 text-black">{item.title}</td>
+                    <td className="px-6 py-4 text-black whitespace-pre-line">
+                      <Link
+                        to={`/blog/${item.id}`}
+                        className="border border-blue-500 duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-6 py-1"
+                      >
+                        View
+                      </Link>
+                    </td>
+                    <td className="px-6 py-4 text-black">
+                      <button
+                        className="border border-red-500 duration-150 hover:bg-red-700 focus:ring-2 focus:ring-red-500 hover:text-white font-medium rounded-lg text-sm px-6 py-1"
+                        onClick={() => handleDelete(item.id)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
               <tr className="text-center">
-                <th scope="col" className="px-6 py-3">
-                  Posted on
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Title
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Link
-                </th>
-                <th scope="col" className="px-6 my-3">
-                  Delete
-                </th>
+                <td colSpan="4" className="px-6 py-4 text-black">
+                  No blogs found
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {!blogsLoading && allBlogs.current?.length > 0 ? (
-                allBlogs.current.map((item, id) => {
-                  return (
-                    <tr key={id} className="text-center">
-                      <td className="px-6 py-4 text-black">
-                        {dateFormatter.format(new Date(item.created_at))}
-                      </td>
-                      <td className="px-6 py-4 text-black">{item.title}</td>
-                      <td className="px-6 py-4 text-black whitespace-pre-line">
-                        <Link
-                          to={`/blog/${item.id}`}
-                          className="border border-blue-500 duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-6 py-1"
-                        >
-                          View
-                        </Link>
-                      </td>
-                      <td className="px-6 py-4 text-black">
-                        <button
-                          className="border border-red-500 duration-150 hover:bg-red-700 focus:ring-2 focus:ring-red-500 hover:text-white font-medium rounded-lg text-sm px-6 py-1"
-                          onClick={() => handleDelete(item.id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })
-              ) : (
-                <tr className="text-center">
-                  <td colSpan="4" className="px-6 py-4 text-black">
-                    No blogs found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+            )}
+          </tbody>
+        </table>
       </div>
-    </>
+    </div>
   );
 }

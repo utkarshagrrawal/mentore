@@ -321,6 +321,16 @@ async function userDetailsLogic(user) {
   if (error) {
     return { error: error.message };
   }
+
+  const { data: mentorData, error: mentorError } = await supabase
+    .from("mentors")
+    .select()
+    .eq("email", email);
+
+  if (mentorError) {
+    return { error: mentorError.message };
+  }
+
   return {
     success: {
       email: data[0].email,
@@ -328,6 +338,13 @@ async function userDetailsLogic(user) {
       dob: data[0].dob,
       type: data[0].type,
       gender: data[0].gender,
+      skills: mentorData[0]?.skills,
+      profession: mentorData[0]?.profession,
+      company: mentorData[0]?.company,
+      experience: mentorData[0]?.experience,
+      fees: mentorData[0]?.fees,
+      verified: mentorData[0]?.verified,
+      uniq_id: mentorData[0]?.uniq_id,
     },
   };
 }

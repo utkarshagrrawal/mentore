@@ -63,70 +63,68 @@ export default function WebinarManagement({
   };
 
   return (
-    <>
+    <div className="container mx-auto my-4">
       <h1 className="text-center text-3xl font-bold my-4">Schedule webinars</h1>
-      <div className="w-full">
-        <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
-            <thead className="text-xs text-white uppercase bg-blue-600">
+      <div className="w-full relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
+          <thead className="text-xs text-white uppercase bg-blue-600">
+            <tr className="text-center">
+              <th scope="col" className="px-6 py-3">
+                Date and time
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Till date and time
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Title
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Link
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {!webinarDetailsLoading && allWebinars.current?.length > 0 ? (
+              allWebinars.current.map((item, id) => {
+                if (
+                  new Date().toISOString() <
+                  new Date(item.end_time).toISOString()
+                ) {
+                  return (
+                    <tr
+                      key={id}
+                      className="border-b border-blue-400 text-center"
+                    >
+                      <td className="px-6 py-4 text-black">
+                        {dateFormatter.format(new Date(item.start_time))}
+                      </td>
+                      <td className="px-6 py-4 text-black">
+                        {dateFormatter.format(new Date(item.end_time))}
+                      </td>
+                      <td className="px-6 py-4 text-black">{item.title}</td>
+                      <td className="px-6 py-4 text-black whitespace-pre-line">
+                        <button
+                          onClick={() => handleJoinWebinar(item.meeting_link)}
+                          target="_blank"
+                          className="border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-1 w-full"
+                        >
+                          Join
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                }
+              })
+            ) : (
               <tr className="text-center">
-                <th scope="col" className="px-6 py-3">
-                  Date and time
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Till date and time
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Title
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Link
-                </th>
+                <td className="px-6 py-4 text-black" colSpan="4">
+                  No webinars
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {!webinarDetailsLoading && allWebinars.current?.length > 0 ? (
-                allWebinars.current.map((item, id) => {
-                  if (
-                    new Date().toISOString() <
-                    new Date(item.end_time).toISOString()
-                  ) {
-                    return (
-                      <tr
-                        key={id}
-                        className="border-b border-blue-400 text-center"
-                      >
-                        <td className="px-6 py-4 text-black">
-                          {dateFormatter.format(new Date(item.start_time))}
-                        </td>
-                        <td className="px-6 py-4 text-black">
-                          {dateFormatter.format(new Date(item.end_time))}
-                        </td>
-                        <td className="px-6 py-4 text-black">{item.title}</td>
-                        <td className="px-6 py-4 text-black whitespace-pre-line">
-                          <button
-                            onClick={() => handleJoinWebinar(item.meeting_link)}
-                            target="_blank"
-                            className="border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm px-8 py-1 w-full"
-                          >
-                            Join
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  }
-                })
-              ) : (
-                <tr className="text-center">
-                  <td className="px-6 py-4 text-black" colSpan="4">
-                    No webinars
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+            )}
+          </tbody>
+        </table>
       </div>
-    </>
+    </div>
   );
 }

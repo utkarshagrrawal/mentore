@@ -131,93 +131,88 @@ export default function YourBookings() {
   };
 
   return (
-    <>
+    <div className="container mx-auto my-4">
       <h1 className="text-center text-3xl font-bold my-4">Your bookings</h1>
-      <div className="w-full">
-        <div className="relative overflow-x-auto mx-14 shadow-md sm:rounded-lg">
-          <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
-            <thead className="text-xs text-white uppercase bg-blue-600">
+      <div className="w-full relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table className="w-full text-sm text-left rtl:text-right text-blue-100 table-fixed">
+          <thead className="text-xs text-white uppercase bg-blue-600">
+            <tr className="text-center">
+              <th scope="col" className="px-6 py-3">
+                Applied on
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Mentor name
+              </th>
+              <th scope="col" className="px-6 py-3">
+                About
+              </th>
+              <th scope="col" className="px-6 my-3">
+                Link
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {!menteeMeetingsLoading && menteeMeetings.current.length > 0 ? (
+              menteeMeetings.current.map((item, id) => {
+                return (
+                  <tr key={id} className="border-b border-blue-400 text-center">
+                    <td className="px-6 py-4 text-black">
+                      {dateFormatter.format(new Date(item.start_time))}
+                    </td>
+                    <td className="px-6 py-4 text-black">
+                      {item.mentor_name || "N/A"}
+                    </td>
+                    <td className="px-6 py-4 text-black whitespace-pre-line">
+                      {item.about}
+                    </td>
+                    <td className="px-6 py-4 text-black">
+                      {item.status === "pending" && (
+                        <button
+                          disabled
+                          className="border-[0.1rem] bg-yellow-400 focus:ring-2 focus:ring-blue-500 font-medium rounded-lg text-sm py-1 w-full"
+                        >
+                          Pending
+                        </button>
+                      )}
+                      {item.status === "payment pending" && (
+                        <button
+                          onClick={() => handlePay(item.uniq_id)}
+                          className="bg-blue-700 focus:ring-2 focus:ring-blue-500 text-white font-medium rounded-lg text-sm py-1 w-full"
+                        >
+                          Pay
+                        </button>
+                      )}
+                      {item.status === "approved" && (
+                        <button
+                          disabled={
+                            new Date() > new Date(item.end_time) ||
+                            (new Date() < new Date(item.start_time)
+                              ? "true"
+                              : "false")
+                          }
+                          onClick={() => handleJoinMeeting(item.meeting_link)}
+                          className="border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm py-1 w-full"
+                        >
+                          {new Date() > new Date(item.end_time) ||
+                          new Date() < new Date(item.start_time)
+                            ? "Waiting to start..."
+                            : "Join"}
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
               <tr className="text-center">
-                <th scope="col" className="px-6 py-3">
-                  Applied on
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Mentor name
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  About
-                </th>
-                <th scope="col" className="px-6 my-3">
-                  Link
-                </th>
+                <td colSpan="4" className="px-6 py-4 text-black">
+                  No bookings found
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {!menteeMeetingsLoading && menteeMeetings.current.length > 0 ? (
-                menteeMeetings.current.map((item, id) => {
-                  return (
-                    <tr
-                      key={id}
-                      className="border-b border-blue-400 text-center"
-                    >
-                      <td className="px-6 py-4 text-black">
-                        {dateFormatter.format(new Date(item.start_time))}
-                      </td>
-                      <td className="px-6 py-4 text-black">
-                        {item.mentor_name || "N/A"}
-                      </td>
-                      <td className="px-6 py-4 text-black whitespace-pre-line">
-                        {item.about}
-                      </td>
-                      <td className="px-6 py-4 text-black">
-                        {item.status === "pending" && (
-                          <button
-                            disabled
-                            className="border-[0.1rem] bg-yellow-400 focus:ring-2 focus:ring-blue-500 font-medium rounded-lg text-sm py-1 w-full"
-                          >
-                            Pending
-                          </button>
-                        )}
-                        {item.status === "payment pending" && (
-                          <button
-                            onClick={() => handlePay(item.uniq_id)}
-                            className="bg-blue-700 focus:ring-2 focus:ring-blue-500 text-white font-medium rounded-lg text-sm py-1 w-full"
-                          >
-                            Pay
-                          </button>
-                        )}
-                        {item.status === "approved" && (
-                          <button
-                            disabled={
-                              new Date() > new Date(item.end_time) ||
-                              (new Date() < new Date(item.start_time)
-                                ? "true"
-                                : "false")
-                            }
-                            onClick={() => handleJoinMeeting(item.meeting_link)}
-                            className="border-[0.1rem] border-black duration-150 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 hover:text-white font-medium rounded-lg text-sm py-1 w-full"
-                          >
-                            {new Date() > new Date(item.end_time) ||
-                            new Date() < new Date(item.start_time)
-                              ? "Waiting to start..."
-                              : "Join"}
-                          </button>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })
-              ) : (
-                <tr className="text-center">
-                  <td colSpan="4" className="px-6 py-4 text-black">
-                    No bookings found
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+            )}
+          </tbody>
+        </table>
       </div>
-    </>
+    </div>
   );
 }

@@ -61,21 +61,6 @@ const fetchWebinarsByMentorLogic = async (user) => {
   return { success: data };
 };
 
-const fetchMentorDetailsLogic = async (user) => {
-  const { email } = user;
-
-  const { data, error } = await supabase
-    .from("mentors")
-    .select()
-    .eq("email", email);
-
-  if (error) {
-    return { error: error.message };
-  }
-
-  return { success: data[0] };
-};
-
 const fetchMentorSkillOptionsLogic = async () => {
   const { data, error } = await supabase.from("domains").select("");
 
@@ -196,25 +181,6 @@ const fetchMentorAvailabilityLogic = async (body, user) => {
   }
 };
 
-const isMentorVerifiedLogic = async (user) => {
-  const { email } = user;
-
-  const { data, error } = await supabase
-    .from("mentors")
-    .select()
-    .eq("email", email);
-
-  if (error) {
-    return { error: error.message };
-  }
-
-  if (data.length === 0) {
-    return { error: "You are not a mentor" };
-  }
-
-  return { success: data[0].verified };
-};
-
 const updateMentorFeesLogic = async (body, user) => {
   const { fees } = body;
   const { email } = user;
@@ -236,12 +202,10 @@ module.exports = {
   approveMeetingRequestLogic,
   rejectMeetingRequestLogic,
   fetchWebinarsByMentorLogic,
-  fetchMentorDetailsLogic,
   fetchMentorSkillOptionsLogic,
   fetchAllMentorsLogic,
   fetchMentorProfileLogic,
   fetchBlogsByMentorLogic,
   fetchMentorAvailabilityLogic,
-  isMentorVerifiedLogic,
   updateMentorFeesLogic,
 };

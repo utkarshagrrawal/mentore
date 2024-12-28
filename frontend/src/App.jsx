@@ -30,28 +30,28 @@ function App() {
   }, [toasts]);
 
   return (
-    <ErrorBoundary>
-      <Toaster />
-      <Router>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/user/login" element={<Login />} />
-          <Route path="/user/register" element={<Register />} />
-          <Route path="/user/forgot-password" element={<ForgotPassword />} />
-          <Route path="/user/dashboard" element={<Dashboard />} />
-          <Route path="/insights" element={<Insights />} />
-          <Route path="/qna" element={<Qna />} />
-          <Route path="/question/:id" element={<Question />} />
-          <Route path="/results" element={<SearchResults />} />
-          <Route path="/mentor/:id?" element={<BookMentor />} />
-          <Route path="/live-webinars" element={<WebinarsPage />} />
-          <Route path="/user/change-password" element={<ChangePassword />} />
-          <Route path="/blog/:id" element={<Blog />} />
-          <Route path="*" element={<NotFound />} />
-          <Route path="/500" element={<ServerError />} />
-        </Routes>
-      </Router>
-    </ErrorBoundary>
+    // <ErrorBoundary>
+    // <Toaster />
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/user/login" element={<Login />} />
+        <Route path="/user/register" element={<Register />} />
+        <Route path="/user/forgot-password" element={<ForgotPassword />} />
+        <Route path="/user/dashboard" element={<Dashboard />} />
+        <Route path="/insights" element={<Insights />} />
+        <Route path="/qna" element={<Qna />} />
+        <Route path="/question/:id" element={<Question />} />
+        <Route path="/results" element={<SearchResults />} />
+        <Route path="/mentor/:id?" element={<BookMentor />} />
+        <Route path="/live-webinars" element={<WebinarsPage />} />
+        <Route path="/user/change-password" element={<ChangePassword />} />
+        <Route path="/blog/:id" element={<Blog />} />
+        <Route path="*" element={<NotFound />} />
+        <Route path="/500" element={<ServerError />} />
+      </Routes>
+    </Router>
+    // </ErrorBoundary>
   );
 }
 

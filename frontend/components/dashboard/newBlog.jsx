@@ -10,7 +10,6 @@ import {
 export default function NewBlog({ setBlogsLoading }) {
   const [blogBtnText, setBlogBtnText] = useState("Create blog");
   const [creatingBlog, setCreatingBlog] = useState(false);
-  const [TINY_MCE_API_KEY, setTINY_MCE_API_KEY] = useState("");
   const [blogTitle, setBlogTitle] = useState("");
   const editorRef = useRef(null);
 
@@ -21,28 +20,6 @@ export default function NewBlog({ setBlogsLoading }) {
       setBlogBtnText("Create blog");
     }
   };
-
-  useEffect(() => {
-    const getApiKey = async () => {
-      const response = await fetch(
-        import.meta.env.VITE_BACKEND_URL + "/blog/editorkey",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        }
-      );
-      const result = await response.json();
-      if (result.key) {
-        setTINY_MCE_API_KEY(result.key);
-      }
-    };
-    if (TINY_MCE_API_KEY === "") {
-      getApiKey();
-    }
-  }, []);
 
   const handleChange = (e) => {
     setBlogTitle(e.target.value);
@@ -94,14 +71,14 @@ export default function NewBlog({ setBlogsLoading }) {
   };
 
   return (
-    <div className="flex flex-col w-full mb-8 mt-4 px-14">
+    <div className="container mx-auto my-4">
       <div
         onClick={handleCreateBlogBtn}
         className="text-center bg-yellow-400 focus:ring-2 focus:ring-black text-slate-[850] font-medium rounded-t-lg text-sm px-8 py-2"
       >
         {blogBtnText}
       </div>
-      {blogBtnText === "Cancel creation" && TINY_MCE_API_KEY !== "" ? (
+      {blogBtnText === "Cancel creation" ? (
         <div className="flex flex-col w-full p-4 rounded-b-lg bg-blue-50">
           <div className="w-full">
             <h1 className="font-bold my-4">Title</h1>
@@ -113,7 +90,7 @@ export default function NewBlog({ setBlogsLoading }) {
             />
           </div>
           <Editor
-            apiKey={TINY_MCE_API_KEY}
+            apiKey={import.meta.env.VITE_TINY_MCE_API_KEY}
             onInit={(evt, editor) => (editorRef.current = editor)}
             initialValue="<p>This is the initial content of the editor.</p>"
             init={{

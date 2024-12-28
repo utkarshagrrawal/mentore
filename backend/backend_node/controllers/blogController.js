@@ -109,10 +109,6 @@ const updateComment = async (req, res) => {
   return res.json({ success: response.success });
 };
 
-const fetchEditorKey = async (req, res) => {
-  return res.json({ key: process.env.TINY_MCE_API_KEY });
-};
-
 module.exports = {
   fetchAllBlogs,
   createBlog,
@@ -126,5 +122,4 @@ module.exports = {
   deleteCommentOnBlog,
   addReplyOnComment,
   updateComment,
-  fetchEditorKey,
 };

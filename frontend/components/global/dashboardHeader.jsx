@@ -27,7 +27,7 @@ export default function DashboardHeader() {
 
   return (
     <header className="w-full">
-      <div className="flex flex-wrap sm:flex-nowrap items-center justify-center sm:gap-0 gap-4 min-[500px]:justify-between mx-10 sm:mx-14 my-3">
+      <div className="flex flex-wrap sm:flex-nowrap items-center justify-center sm:gap-0 gap-4 min-[500px]:justify-between py-4">
         <Link to="/" className="flex items-center justify-center gap-2">
           <img
             src="https://uiliugseadtftlskhpcl.supabase.co/storage/v1/object/sign/assets/mentore.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhc3NldHMvbWVudG9yZS5qcGciLCJpYXQiOjE3MzAxODUwOTQsImV4cCI6MTg4Nzg2NTA5NH0.kJcsFJEOAC4hrV88B9d0FnDp1wgpntRboWfe0RIJAOo&t=2024-10-29T06%3A58%3A14.455Z"
@@ -55,7 +55,6 @@ export default function DashboardHeader() {
           </button>
         </div>
       </div>
-      <hr className="w-full"></hr>
     </header>
   );
 }

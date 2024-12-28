@@ -14,12 +14,10 @@ const {
   addReplyOnComment,
   addLikeOnBlog,
   updateComment,
-  fetchEditorKey,
 } = require("../controllers/blogController");
 
 const router = express.Router();
 
-router.get("/editorkey", fetchEditorKey);
 router.get("/all", fetchAllBlogs);
 router.get("/:id/comments", authentication, fetchCommentsOnBlog);
 router.get("/:id", authentication, fetchBlogDetails);
