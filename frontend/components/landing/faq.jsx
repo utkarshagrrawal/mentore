@@ -9,12 +9,12 @@ export default function Faq() {
   };
 
   return (
-    <>
-      <div className="mx-auto my-10 flex flex-col items-center justify-center gap-4">
-        <p className="text-2xl font-bold md:text-6xl">Frequently Asked</p>
-        <p className="text-2xl font-bold md:text-6xl">Questions</p>
-      </div>
-      <div className="mx-auto mb-20 flex w-3/4 flex-col">
+    <div className="container mx-auto my-10">
+      <p className="text-2xl text-center font-bold md:text-6xl">
+        Frequently Asked
+      </p>
+      <p className="text-2xl text-center font-bold md:text-6xl">Questions</p>
+      <div className="mx-auto mt-10">
         {questions.map(({ id, question, answer }) => (
           <div key={id} className="mb-4 w-full">
             <button
@@ -55,6 +55,6 @@ export default function Faq() {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }

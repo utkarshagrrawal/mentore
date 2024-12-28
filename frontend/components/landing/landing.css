@@ -10,6 +10,7 @@
 }
 
 .scroller_inner:hover {
+  animation-play-state: paused;
   cursor: pointer;
 }
 

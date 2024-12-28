@@ -20,8 +20,7 @@
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.16",
-    "razorpay": "^2.9.2",
-    "uuid": "^11.0.3"
+    "razorpay": "^2.9.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.3"

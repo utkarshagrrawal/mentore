@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
 import { benefitsData } from "../../src/assets/landingBenefits";
 
 export default function Benefits() {
   return (
-    <>
-      <div className="mx-auto my-10 flex flex-col items-center justify-center gap-4">
-        <p className="text-2xl font-bold md:text-6xl">No need to struggle</p>
-        <p className="text-2xl font-bold md:text-6xl">alone anymore</p>
-      </div>
+    <div className="container mx-auto my-10">
+      <p className="text-2xl text-center font-bold md:text-6xl">
+        No need to struggle
+      </p>
+      <p className="text-2xl text-center font-bold md:text-6xl">
+        alone anymore
+      </p>
 
-      <div className="mx-auto grid w-3/4 grid-cols-1 md:gap-2 lg:grid-cols-2">
+      <div className="grid grid-cols-1 md:gap-2 lg:grid-cols-2 mt-10">
         {benefitsData.map((data) => (
           <div
             key={data.id}
@@ -28,6 +29,6 @@ export default function Benefits() {
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 }

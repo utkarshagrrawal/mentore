@@ -1,5 +1,4 @@
 const razorpay = require("razorpay");
-const { v4: uuidv4 } = require("uuid");
 
 const razorpayInstance = new razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
@@ -7,10 +6,18 @@ const razorpayInstance = new razorpay({
 });
 
 const razorpayOrderCreate = async (amount) => {
+  let receiptId = "";
+  let characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  for (let i = 0; i < 12; i++) {
+    receiptId += characters.charAt(
+      Math.floor(Math.random() * characters.length)
+    );
+  }
   const order = await razorpayInstance.orders.create({
     amount: amount * 100,
     currency: "INR",
-    receipt: uuidv4(),
+    receipt: receiptId + "_" + Date.now(),
   });
   return order;
 };
