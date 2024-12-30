@@ -30,20 +30,18 @@ export default function MentorDetails({ id, mentorDetails, setMentorDetails }) {
 
   return (
     !loading && (
-      <div className="w-full drop-shadow-xl">
-        <div className='bg-[url("https://uiliugseadtftlskhpcl.supabase.co/storage/v1/object/sign/assets/ProfileHeader.gif?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhc3NldHMvUHJvZmlsZUhlYWRlci5naWYiLCJpYXQiOjE3MzAyMjgzMDEsImV4cCI6MTg4NzkwODMwMX0.NwDuLnbgeNByaYbkbJ5ZIXufUTM7LgG0Bc8uDUIcXeA&t=2024-10-29T18%3A58%3A21.680Z")] bg-no-repeat bg-cover min-h-32 mx-16 rounded-t-lg mt-8'></div>
-        <div className="mx-16">
-          <img
-            src={
-              mentorDetails && mentorDetails.gender
-                ? "https://uiliugseadtftlskhpcl.supabase.co/storage/v1/object/sign/assets/male-avatar.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhc3NldHMvbWFsZS1hdmF0YXIuanBnIiwiaWF0IjoxNzMwMTk4MjkwLCJleHAiOjE4ODc4NzgyOTB9.OsZVY6VkQfE2MQEyBKfQydaM7g8eu-62rLqy2hsVRdo&t=2024-10-29T10%3A38%3A10.382Z"
-                : "https://uiliugseadtftlskhpcl.supabase.co/storage/v1/object/sign/assets/female-avatar.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhc3NldHMvZmVtYWxlLWF2YXRhci5qcGciLCJpYXQiOjE3MzAxOTgzMzgsImV4cCI6MTg4Nzg3ODMzOH0.TL2QQ5-IkI2IaYXwD12l0CnWGUwE1MXPTB4T-uIwSSU&t=2024-10-29T10%3A38%3A58.633Z"
-            }
-            className="w-32 h-36 object-cover rounded-full absolute -mt-20 sm:ml-4 ml-4 border-4 border-white"
-            alt="mentor"
-          />
-        </div>
-        <div className="bg-gray-100 min-h-32 mx-16 rounded-b-lg py-4">
+      <div className="container mx-auto drop-shadow-xl">
+        <div className='bg-[url("https://uiliugseadtftlskhpcl.supabase.co/storage/v1/object/sign/assets/ProfileHeader.gif?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhc3NldHMvUHJvZmlsZUhlYWRlci5naWYiLCJpYXQiOjE3MzAyMjgzMDEsImV4cCI6MTg4NzkwODMwMX0.NwDuLnbgeNByaYbkbJ5ZIXufUTM7LgG0Bc8uDUIcXeA&t=2024-10-29T18%3A58%3A21.680Z")] bg-no-repeat bg-cover min-h-32 rounded-t-lg mt-8'></div>
+        <img
+          src={
+            mentorDetails && mentorDetails.gender
+              ? "https://uiliugseadtftlskhpcl.supabase.co/storage/v1/object/sign/assets/male-avatar.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhc3NldHMvbWFsZS1hdmF0YXIuanBnIiwiaWF0IjoxNzMwMTk4MjkwLCJleHAiOjE4ODc4NzgyOTB9.OsZVY6VkQfE2MQEyBKfQydaM7g8eu-62rLqy2hsVRdo&t=2024-10-29T10%3A38%3A10.382Z"
+              : "https://uiliugseadtftlskhpcl.supabase.co/storage/v1/object/sign/assets/female-avatar.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhc3NldHMvZmVtYWxlLWF2YXRhci5qcGciLCJpYXQiOjE3MzAxOTgzMzgsImV4cCI6MTg4Nzg3ODMzOH0.TL2QQ5-IkI2IaYXwD12l0CnWGUwE1MXPTB4T-uIwSSU&t=2024-10-29T10%3A38%3A58.633Z"
+          }
+          className="w-32 h-36 object-cover rounded-full absolute -mt-20 sm:ml-4 ml-4 border-4 border-white"
+          alt="mentor"
+        />
+        <div className="bg-gray-100 min-h-32 rounded-b-lg py-4">
           <div className="pt-14 pl-6 flex items-center gap-2">
             <h3 className="text-2xl font-semibold">
               {mentorDetails && mentorDetails.name}

@@ -142,7 +142,7 @@ export function LoginBlock({ login, setLogin, setLoading }) {
             <button
               disabled={isButtonDisabled}
               type="submit"
-              className={`w-full py-3 rounded-md bg-indigo-600 text-white text-sm font-semibold shadow-sm hover:bg-indigo-500 focus:ring-indigo-500 focus:ring-offset-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-opacity-50 ${
+              className={`w-full py-3 rounded-md bg-indigo-600 text-white text-sm font-semibold shadow-sm hover:bg-indigo-500 focus:ring-indigo-500 focus:ring-offset-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-opacity-50 ${
                 isButtonDisabled
                   ? "opacity-50 cursor-not-allowed"
                   : "cursor-pointer"

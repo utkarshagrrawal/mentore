@@ -80,8 +80,8 @@ export default function BookingRequest({
   };
 
   return (
-    <div className="w-full mt-10">
-      <div className="bg-blue-50 rounded-lg shadow-lg p-6 mx-16">
+    <div className="container mx-auto mt-10">
+      <div className="bg-blue-50 rounded-lg shadow-lg p-6">
         <h2 className="text-2xl font-bold mb-4 text-blue-700">
           Book a 1:1 meet here with {mentorDetails && mentorDetails.name}:
         </h2>
@@ -135,7 +135,7 @@ export default function BookingRequest({
             onClick={handleSchedule}
           >
             {scheduling ? (
-              <div className="border-gray-300 h-5 w-5 animate-spin rounded-full border-2 border-white border-t-blue-600" />
+              <div className="border-gray-300 h-5 w-5 animate-spin rounded-full border-2 border-t-blue-600" />
             ) : (
               "Schedule"
             )}

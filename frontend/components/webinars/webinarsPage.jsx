@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import Header from "../global/header";
 import { ErrorNotify } from "../global/toast";
 import WebinarsDisplay from "./webinarsDisplay";
-import EmptyWebinarsPage from "./emptyWebinarsPage";
 
 export function WebinarsPage() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -84,41 +83,39 @@ export function WebinarsPage() {
   };
 
   return (
-    <div className="min-h-screen items-center flex flex-col w-full ">
+    <div className="min-h-screen container mx-auto">
       <Header loggedIn={loggedIn} />
       <div className="w-full mt-10">
-        <div className="mx-4 sm:mx-16 flex flex-col items-center">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-            Search and Filter
-          </h2>
-          <div className="flex sm:flex-row flex-col w-full items-center">
-            <input
-              className="m-2 rounded-lg w-3/4 md:w-full border border-gray-300 p-3 focus:outline-none"
-              type="text"
-              placeholder="Webinar Title"
-              value={searchTitle}
-              onChange={(e) => setSearchTitle(e.target.value)}
-            />
-            <input
-              className="m-2 rounded-lg w-3/4 md:w-full border border-gray-300 p-3 focus:outline-none"
-              type="text"
-              placeholder="Author Name"
-              value={searchAuthor}
-              onChange={(e) => setSearchAuthor(e.target.value)}
-            />
-            <input
-              className="m-2 rounded-lg w-3/4 md:w-full border border-gray-300 p-3 focus:outline-none"
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-            />
-            <button
-              className="bg-blue-500 hover:bg-blue-600 text-white w-3/4 md:w-full m-2 p-3 rounded-md transition-colors duration-300 ease-in-out"
-              onClick={handleFilter}
-            >
-              Filter
-            </button>
-          </div>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          Search and Filter
+        </h2>
+        <div className="flex sm:flex-row flex-col gap-2 w-full items-center mb-10">
+          <input
+            className="rounded-lg w-3/4 md:w-full border border-gray-300 p-3 focus:outline-none"
+            type="text"
+            placeholder="Webinar Title"
+            value={searchTitle}
+            onChange={(e) => setSearchTitle(e.target.value)}
+          />
+          <input
+            className="rounded-lg w-3/4 md:w-full border border-gray-300 p-3 focus:outline-none"
+            type="text"
+            placeholder="Author Name"
+            value={searchAuthor}
+            onChange={(e) => setSearchAuthor(e.target.value)}
+          />
+          <input
+            className="rounded-lg w-3/4 md:w-full border border-gray-300 p-3 focus:outline-none"
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
+          <button
+            className="bg-blue-500 hover:bg-blue-600 text-white w-3/4 md:w-full p-3 rounded-md transition-colors duration-300 ease-in-out"
+            onClick={handleFilter}
+          >
+            Filter
+          </button>
         </div>
       </div>
       <div className="w-full">
@@ -130,7 +127,9 @@ export function WebinarsPage() {
             user={user}
           />
         ) : (
-          <EmptyWebinarsPage />
+          <p className="mt-4 text-gray-600 text-lg font-medium text-center">
+            No live webinars currently
+          </p>
         )}
       </div>
     </div>

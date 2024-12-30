@@ -58,7 +58,6 @@ export function BookMentor() {
         dataLoading={dataLoading}
         setDataLoading={setDataLoading}
         id={id}
-        mentorDetails={mentorDetails}
       />
     </>
   );

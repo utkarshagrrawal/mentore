@@ -42,8 +42,14 @@ const deleteBlogLogic = async (params) => {
   return { error: error.message };
 };
 
-const fetchAllBlogsLogic = async () => {
-  const { data, error } = await supabase.rpc("get_blogs_with_likes");
+const fetchAllBlogsLogic = async (query) => {
+  const { page } = query;
+  const skip = (page - 1) * 10;
+
+  const { data, error } = await supabase.rpc("get_blogs_with_likes", {
+    page,
+    skip,
+  });
 
   if (!error) {
     return { success: data };

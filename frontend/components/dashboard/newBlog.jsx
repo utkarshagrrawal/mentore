@@ -133,7 +133,7 @@ export default function NewBlog({ setBlogsLoading }) {
             disabled={creatingBlog}
           >
             {creatingBlog ? (
-              <div className="border-gray-300 h-5 w-5 animate-spin rounded-full border-2 border-white border-t-blue-600" />
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-blue-600" />
             ) : (
               "Publish"
             )}

@@ -14,7 +14,7 @@ const {
 } = require("../logic/blogLogic");
 
 const fetchAllBlogs = async (req, res) => {
-  const response = await fetchAllBlogsLogic();
+  const response = await fetchAllBlogsLogic(req.query);
   if (response.error) {
     return res.json({ error: response.error });
   }

@@ -80,33 +80,25 @@ export default function WebinarCard({ user, webinar, setLoading }) {
   };
 
   return (
-    <div className="sm:max-w-sm bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg duration-200 relative overflow-hidden">
-      {new Date(webinar.start_time).toISOString() <
-        new Date().toISOString() && (
-        <div className="absolute top-0 right-0">
-          <div className="inline-block relative px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-l-lg">
-            Live
-            <span className="absolute top-1 right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
+    <div className="sm:max-w-sm bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg duration-200 relative overflow-hidden flex flex-col justify-between p-4">
+      <div>
+        {new Date(webinar.start_time).toISOString() <
+          new Date().toISOString() && (
+          <div className="absolute top-0 right-0">
+            <div className="inline-block relative px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-l-lg">
+              Live
+              <span className="absolute top-1 right-1 w-2 h-2 bg-white rounded-full animate-ping"></span>
+            </div>
           </div>
-        </div>
-      )}
-      <span className="flex items-center justify-center">
-        <img
-          className="rounded-t-lg"
-          src="https://static.thenounproject.com/png/479238-200.png"
-          alt=""
-          height={200}
-          width={200}
-        />
-      </span>
-      <div className="p-5">
-        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
+        )}
+      </div>
+      <div>
+        <h3 className="mb-2 text-xl font-bold text-gray-900">
           {webinar.title}
+        </h3>
+        <h5 className="text-sm mb-3 text-gray-500">
+          Hosted by {webinar.mentor_name}
         </h5>
-        <div className="flex items-center text-gray-700 text-sm mb-3">
-          <span className="font-semibold">By: </span>
-          <span>{webinar.mentor_name}</span>
-        </div>
         <div className="flex items-center text-gray-700 text-sm mb-3">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -137,37 +129,35 @@ export default function WebinarCard({ user, webinar, setLoading }) {
           </svg>
           <span>{dateFormatter.format(new Date(webinar.end_time))}</span>
         </div>
-        <div className="flex justify-between items-center">
-          <button
-            onClick={() => handleRegister(webinar.id)}
-            disabled={
-              webinar.registered_users?.includes(user.current?.email) && true
-            }
-            className={
-              webinar.registered_users?.includes(user.current?.email)
-                ? "px-3 py-2 text-sm font-medium border text-white rounded-lg bg-green-600"
-                : "px-3 py-2 text-sm font-medium border border-blue-700 rounded-lg duration-200 hover:text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-            }
-          >
-            {webinar.registered_users?.includes(user.current?.email)
-              ? "Registered"
-              : "Register"}
-          </button>
-          <button
-            disabled={
-              checkRegistered(webinar) === "Join webinar" ? false : true
-            }
-            onClick={() => handleJoinWebinar(webinar.meeting_link)}
-            target="_blank"
-            className={
-              checkRegistered(webinar) === "Join webinar"
-                ? "px-3 py-2 text-sm font-medium border border-blue-700 duration-200 hover:text-white rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
-                : "px-3 py-2 text-sm font-medium border bg-[#fdc113] duration-200 rounded-lg"
-            }
-          >
-            {checkRegistered(webinar)}
-          </button>
-        </div>
+      </div>
+      <div className="flex justify-between items-center">
+        <button
+          onClick={() => handleRegister(webinar.id)}
+          disabled={
+            webinar.registered_users?.includes(user.current?.email) && true
+          }
+          className={
+            webinar.registered_users?.includes(user.current?.email)
+              ? "px-3 py-2 text-sm font-medium border text-white rounded-lg bg-green-600"
+              : "px-3 py-2 text-sm font-medium border border-blue-700 rounded-lg duration-200 hover:text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+          }
+        >
+          {webinar.registered_users?.includes(user.current?.email)
+            ? "Registered"
+            : "Register"}
+        </button>
+        <button
+          disabled={checkRegistered(webinar) === "Join webinar" ? false : true}
+          onClick={() => handleJoinWebinar(webinar.meeting_link)}
+          target="_blank"
+          className={
+            checkRegistered(webinar) === "Join webinar"
+              ? "px-3 py-2 text-sm font-medium border border-blue-700 duration-200 hover:text-white rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
+              : "px-3 py-2 text-sm font-medium border bg-[#fdc113] duration-200 rounded-lg"
+          }
+        >
+          {checkRegistered(webinar)}
+        </button>
       </div>
     </div>
   );

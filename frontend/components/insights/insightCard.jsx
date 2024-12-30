@@ -1,7 +1,7 @@
 import React from "react";
 import { DismissToast, ErrorNotify, Loading } from "../global/toast";
 
-export default function BlogCard({ loggedIn, blog, user, setBlogsLoading }) {
+export default function BlogCard({ loggedIn, blog, user }) {
   const dateTimeFormatter = Intl.DateTimeFormat(undefined, {
     timeStyle: "short",
     dateStyle: "medium",
@@ -27,7 +27,6 @@ export default function BlogCard({ loggedIn, blog, user, setBlogsLoading }) {
     let result = await response.json();
 
     if (result.success) {
-      setBlogsLoading(true);
     } else {
       ErrorNotify("Some error occurred while liking the blog");
     }
@@ -57,9 +56,7 @@ export default function BlogCard({ loggedIn, blog, user, setBlogsLoading }) {
           </h3>
         </div>
       </div>
-      <div
-        dangerouslySetInnerHTML={{ __html: blog.content?.substring(0, 500) }}
-      />
+      <div dangerouslySetInnerHTML={{ __html: blog.content }} />
       <button
         onClick={() => handleRedirect(blog.id)}
         className="block text-blue-700 hover:underline"

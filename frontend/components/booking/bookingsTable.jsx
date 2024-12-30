@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import {
   DismissToast,
   ErrorNotify,
@@ -11,14 +11,13 @@ export default function BookingsTable({
   dataLoading,
   setDataLoading,
   id,
-  mentorDetails,
 }) {
   const dateFormatter = Intl.DateTimeFormat(undefined, {
     dateStyle: "medium",
     timeStyle: "short",
   });
 
-  const meetings = useRef([]);
+  const [meetings, setMeetings] = useState([]);
 
   useEffect(() => {
     const getAllMeetings = async () => {
@@ -39,7 +38,7 @@ export default function BookingsTable({
       if (response.error && response.error !== "Invalid JWT Token") {
         ErrorNotify(response.error);
       } else {
-        meetings.current = response.result;
+        setMeetings(response.result);
       }
       setDataLoading(false);
     };
@@ -154,8 +153,8 @@ export default function BookingsTable({
   };
 
   return (
-    <div className="w-full my-10">
-      <div className="bg-blue-50 rounded-lg shadow-lg p-6 mx-16">
+    <div className="container mx-auto my-10">
+      <div className="bg-blue-50 rounded-lg shadow-lg p-6">
         <h1 className="text-center text-3xl font-bold text-black">
           Current bookings
         </h1>
@@ -178,8 +177,8 @@ export default function BookingsTable({
               </tr>
             </thead>
             <tbody>
-              {meetings.current && meetings.current?.length > 0 ? (
-                meetings.current.map((item) => {
+              {meetings && meetings?.length > 0 ? (
+                meetings.map((item) => {
                   if (
                     new Date(item.end_time).toISOString() >
                     new Date().toISOString()
