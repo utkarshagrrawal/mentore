@@ -138,8 +138,17 @@ async function joinWebinarAsParticipantLogic(body, user) {
   return { error: response.error };
 }
 
-async function fetchAllWebinarsLogic() {
-  const { data, error } = await supabase.from("webinar").select("");
+async function fetchAllWebinarsLogic(query) {
+  const skip = query?.page ? (query.page - 1) * 10 : 0;
+
+  const { data, error } = await supabase.rpc("get_webinars_with_filter", {
+    skip,
+    web_title: query?.title || null,
+    author_name: query?.author || null,
+    start_date: query?.start_date
+      ? new Date(query.start_date).toISOString().split("T")[0]
+      : null,
+  });
 
   if (error) {
     return { error: error.message };

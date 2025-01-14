@@ -4,24 +4,17 @@ import { ErrorNotify, SuccessNotify } from "../../global/toast";
 
 export function LoginBlock({ login, setLogin, setLoading }) {
   const [eye, setEye] = useState(true);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const navigate = useNavigate();
-
-  const handleEye = () => {
-    setEye(!eye);
-  };
 
   const handleChange = (e) => {
     setLogin({ ...login, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    setIsButtonDisabled(login.email && login.password ? false : true);
-  }, [login]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setLoading(true);
+
     let loginUser = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/user/login",
       {
@@ -40,6 +33,7 @@ export function LoginBlock({ login, setLogin, setLoading }) {
     } else {
       ErrorNotify(result.error);
     }
+
     setLoading(false);
   };
 
@@ -109,7 +103,7 @@ export function LoginBlock({ login, setLogin, setLoading }) {
                     viewBox="0 0 20 20"
                     fill="currentColor"
                     className="w-5 h-5 absolute right-3 cursor-pointer text-gray-400"
-                    onClick={handleEye}
+                    onClick={() => setEye(!eye)}
                   >
                     <path d="M10 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
                     <path
@@ -124,7 +118,7 @@ export function LoginBlock({ login, setLogin, setLoading }) {
                     viewBox="0 0 20 20"
                     fill="currentColor"
                     className="w-5 h-5 absolute right-3 cursor-pointer text-gray-400"
-                    onClick={handleEye}
+                    onClick={() => setEye(!eye)}
                   >
                     <path
                       fillRule="evenodd"
@@ -140,13 +134,8 @@ export function LoginBlock({ login, setLogin, setLoading }) {
 
           <div>
             <button
-              disabled={isButtonDisabled}
               type="submit"
-              className={`w-full py-3 rounded-md bg-indigo-600 text-white text-sm font-semibold shadow-sm hover:bg-indigo-500 focus:ring-indigo-500 focus:ring-offset-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-opacity-50 ${
-                isButtonDisabled
-                  ? "opacity-50 cursor-not-allowed"
-                  : "cursor-pointer"
-              }`}
+              className="w-full py-3 rounded-md bg-indigo-600 text-white text-sm font-semibold shadow-sm hover:bg-indigo-500 focus:ring-indigo-500 focus:ring-offset-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-opacity-50"
             >
               Sign in
             </button>

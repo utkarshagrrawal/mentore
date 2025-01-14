@@ -12,7 +12,8 @@ export default function WebinarsDisplay({
       {!loading &&
         allWebinars.map((webinar, index) => {
           if (
-            new Date().toISOString() < new Date(webinar.end_time).toISOString()
+            new Date().toISOString() <
+            new Date(webinar.rt_end_time).toISOString()
           ) {
             return (
               <WebinarCard

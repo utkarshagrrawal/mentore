@@ -5,7 +5,6 @@ import {
   Loading,
   SuccessNotify,
 } from "../global/toast";
-import { Link } from "react-router-dom";
 
 export default function WebinarCard({ user, webinar, setLoading }) {
   const dateFormatter = Intl.DateTimeFormat(undefined, {
@@ -82,7 +81,7 @@ export default function WebinarCard({ user, webinar, setLoading }) {
   return (
     <div className="sm:max-w-sm bg-white border border-gray-200 rounded-lg shadow-md hover:shadow-lg duration-200 relative overflow-hidden flex flex-col justify-between p-4">
       <div>
-        {new Date(webinar.start_time).toISOString() <
+        {new Date(webinar.rt_start_time).toISOString() <
           new Date().toISOString() && (
           <div className="absolute top-0 right-0">
             <div className="inline-block relative px-3 py-1 text-sm font-semibold text-white bg-red-500 rounded-l-lg">
@@ -94,10 +93,10 @@ export default function WebinarCard({ user, webinar, setLoading }) {
       </div>
       <div>
         <h3 className="mb-2 text-xl font-bold text-gray-900">
-          {webinar.title}
+          {webinar.rt_title}
         </h3>
         <h5 className="text-sm mb-3 text-gray-500">
-          Hosted by {webinar.mentor_name}
+          Hosted by {webinar.rt_mentor_name}
         </h5>
         <div className="flex items-center text-gray-700 text-sm mb-3">
           <svg
@@ -112,7 +111,7 @@ export default function WebinarCard({ user, webinar, setLoading }) {
               clipRule="evenodd"
             />
           </svg>
-          <span>{dateFormatter.format(new Date(webinar.start_time))}</span>
+          <span>{dateFormatter.format(new Date(webinar.rt_start_time))}</span>
         </div>
         <div className="flex items-center text-gray-700 text-sm mb-3">
           <svg
@@ -127,28 +126,28 @@ export default function WebinarCard({ user, webinar, setLoading }) {
               clipRule="evenodd"
             />
           </svg>
-          <span>{dateFormatter.format(new Date(webinar.end_time))}</span>
+          <span>{dateFormatter.format(new Date(webinar.rt_end_time))}</span>
         </div>
       </div>
       <div className="flex justify-between items-center">
         <button
-          onClick={() => handleRegister(webinar.id)}
+          onClick={() => handleRegister(webinar.rt_id)}
           disabled={
-            webinar.registered_users?.includes(user.current?.email) && true
+            webinar.rt_registered_users?.includes(user.current?.email) && true
           }
           className={
-            webinar.registered_users?.includes(user.current?.email)
+            webinar.rt_registered_users?.includes(user.current?.email)
               ? "px-3 py-2 text-sm font-medium border text-white rounded-lg bg-green-600"
               : "px-3 py-2 text-sm font-medium border border-blue-700 rounded-lg duration-200 hover:text-white hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300"
           }
         >
-          {webinar.registered_users?.includes(user.current?.email)
+          {webinar.rt_registered_users?.includes(user.current?.email)
             ? "Registered"
             : "Register"}
         </button>
         <button
           disabled={checkRegistered(webinar) === "Join webinar" ? false : true}
-          onClick={() => handleJoinWebinar(webinar.meeting_link)}
+          onClick={() => handleJoinWebinar(webinar.rt_meeting_link)}
           target="_blank"
           className={
             checkRegistered(webinar) === "Join webinar"

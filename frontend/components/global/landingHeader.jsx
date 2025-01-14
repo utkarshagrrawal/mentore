@@ -33,7 +33,7 @@ export default function LandingHeader() {
   };
 
   return (
-    <nav className="container mx-auto border-gray-200 bg-white border-b">
+    <nav className="container mx-auto border-gray-200 bg-white">
       <div className="flex max-w-screen-xl flex-wrap items-center justify-between py-4">
         <Link
           to="/"

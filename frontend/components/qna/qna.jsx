@@ -5,12 +5,23 @@ import { QuestionCard } from "./questionsCard";
 import { DismissToast, ErrorNotify, Loading } from "../global/toast";
 import Select from "react-select";
 
+const debounce = (fn, delay) => {
+  let timer;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+};
+
 export function Qna() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -92,7 +103,7 @@ export function Qna() {
       const toastId = Loading("Filtering questions");
 
       const response = await fetch(
-        import.meta.env.VITE_BACKEND_URL + "/question/filter",
+        import.meta.env.VITE_BACKEND_URL + "/question/filter?page=" + page,
         {
           method: "POST",
           headers: {

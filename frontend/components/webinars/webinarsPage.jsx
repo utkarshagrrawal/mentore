@@ -3,6 +3,14 @@ import Header from "../global/header";
 import { ErrorNotify } from "../global/toast";
 import WebinarsDisplay from "./webinarsDisplay";
 
+const debounce = (func, delay) => {
+  let debounceTimer;
+  return function (...args) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => func(...args), delay);
+  };
+};
+
 export function WebinarsPage() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -14,7 +22,22 @@ export function WebinarsPage() {
   const user = useRef({});
 
   const [allWebinars, setAllWebinars] = useState([]);
-  const [filteredWebinars, setFilteredWebinars] = useState([]);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 100
+      )
+        setPage((prev) => prev + 1);
+    };
+    const debouncedHandleScroll = debounce(handleScroll, 100);
+    window.addEventListener("scroll", debouncedHandleScroll);
+    return () => {
+      window.removeEventListener("scroll", debouncedHandleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const getUser = async () => {
@@ -42,7 +65,15 @@ export function WebinarsPage() {
   useEffect(() => {
     const webinars = async () => {
       let webinars = await fetch(
-        import.meta.env.VITE_BACKEND_URL + "/webinar/all",
+        import.meta.env.VITE_BACKEND_URL +
+          "/webinar/all?page=" +
+          page +
+          "&title=" +
+          searchTitle +
+          "&author=" +
+          searchAuthor +
+          "&start_date=" +
+          startDate,
         {
           method: "GET",
           headers: {
@@ -56,30 +87,40 @@ export function WebinarsPage() {
         ErrorNotify("Some error occurred while fetching webinars");
       } else {
         setAllWebinars(result.success);
-        setFilteredWebinars(result.success);
         setLoading(false);
       }
     };
-    if (loading) {
-      webinars();
+    webinars();
+  }, [page]);
+
+  const handleFilter = async () => {
+    setLoading(true);
+    setPage(1);
+
+    let webinars = await fetch(
+      import.meta.env.VITE_BACKEND_URL +
+        "/webinar/all?page=1" +
+        "&title=" +
+        searchTitle +
+        "&author=" +
+        searchAuthor +
+        "&start_date=" +
+        startDate,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
+    const result = await webinars.json();
+    if (result.error) {
+      ErrorNotify("Some error occurred while fetching webinars");
+    } else {
+      setAllWebinars(result.success);
+      setLoading(false);
     }
-  }, [loading]);
-
-  const handleFilter = () => {
-    const filteredWebinars1 = allWebinars.filter((webinar) => {
-      const webinarTitle = webinar.title.toLowerCase();
-      const authorName = webinar.mentor_name.toLowerCase();
-      const webinarStartDate = new Date(webinar.start_time).toDateString();
-      const filterStartDate = new Date(startDate).toDateString();
-
-      return (
-        webinarTitle.includes(searchTitle.toLowerCase()) &&
-        authorName.includes(searchAuthor.toLowerCase()) &&
-        (!startDate || webinarStartDate === filterStartDate)
-      );
-    });
-
-    setFilteredWebinars(filteredWebinars1);
   };
 
   return (
@@ -119,9 +160,9 @@ export function WebinarsPage() {
         </div>
       </div>
       <div className="w-full">
-        {filteredWebinars?.length > 0 ? (
+        {allWebinars?.length > 0 ? (
           <WebinarsDisplay
-            allWebinars={filteredWebinars}
+            allWebinars={allWebinars}
             loading={loading}
             setLoading={setLoading}
             user={user}

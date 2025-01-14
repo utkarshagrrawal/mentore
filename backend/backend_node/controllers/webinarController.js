@@ -39,7 +39,7 @@ const joinWebinarAsParticipant = async (req, res) => {
 };
 
 const fetchAllWebinars = async (req, res) => {
-  const response = await fetchAllWebinarsLogic();
+  const response = await fetchAllWebinarsLogic(req.query);
   if (response.error) {
     return res.json({ error: response.error });
   }

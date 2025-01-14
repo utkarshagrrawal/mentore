@@ -15,24 +15,18 @@ const { authentication } = require("../middlewares/authMiddleware");
 
 const router = app.Router();
 
-router.post("/ask", authentication, askQuestion);
-
 router.get("/all", fetchQuestions);
-
 router.get("/:id", fetchQuestionWithDetails);
-
 router.get("/:id/answer/all", fetchAnswersWithLikesDislikes);
 
+router.post("/ask", authentication, askQuestion);
+router.post("/filter", fetchQuestionsWithFilter);
 router.post("/:id/answer", authentication, submitAnswer);
+router.post("/:id/answer/:answer_id/like", authentication, likeAnswer);
+router.post("/:id/answer/:answer_id/reply", authentication, replyAnswer);
 
 router.put("/:id/answer/:answer_id", authentication, editAnswer);
 
-router.post("/:id/answer/:answer_id/like", authentication, likeAnswer);
-
 router.delete("/:id/answer/:answer_id", authentication, deleteAnswer);
-
-router.post("/:id/answer/:answer_id/reply", authentication, replyAnswer);
-
-router.post("/filter", fetchQuestionsWithFilter);
 
 module.exports = router;
