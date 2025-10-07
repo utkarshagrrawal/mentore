@@ -19,7 +19,7 @@
     "cors": "^2.8.5",
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
-    "nodemailer": "^6.9.16",
+    "nodemailer": "^7.0.7",
     "razorpay": "^2.9.2"
   },
   "devDependencies": {
